@@ -1,3 +1,4 @@
+#include "prompt.hpp"
 #include "scenario.hpp"
 
 #include <QFile>
@@ -18,8 +19,10 @@ Scenario::Scenario(QString name)
 
 	writer.writeStartDocument();
 	writer.writeStartElement("scenario");
-	writer.writeAttribute("name", name);
-	writer.writeEndElement();
+		writer.writeAttribute("name", name);
+		writer.writeStartElement("prompt");
+			writer.writeAttribute("id", "0");
+		writer.writeEndElement();
 	writer.writeEndDocument();
 }
 

@@ -3,16 +3,15 @@
 
 #include "reply.hpp"
 
-#include <QList>
 #include <QDomDocument>
-
+#include <QHash>
 
 
 class Scenario
 {
 public:
 	QString name;
-	QList<Prompt*> prompts;
+	QHash<QString, Prompt*> prompts;
 
 	Scenario(QString name);
 

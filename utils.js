@@ -13,3 +13,17 @@ function parseStr(str) {
 
 	return newstr;
 }
+
+// Start "typewriting" the prompt
+function writePrompt(text) {
+	prompter.stop()
+	prompter.i = 0
+	prompt.text = ""
+	prompter.text = text
+	prompter.start()
+}
+
+// Displays a prompt and its replies on the UI.
+function displayPrompt(node) {
+	writePrompt(node.text);
+}

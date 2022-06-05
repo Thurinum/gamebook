@@ -19,7 +19,7 @@ Window {
 		x: 0
 		y: 0
 
-		source: App.setting("Main/sMainMenuBackground");
+		source: Game.setting("Main/sMainMenuBackground");
 	}
 
 	Rectangle {
@@ -28,7 +28,7 @@ Window {
 		color: "transparent"
 
 		width: app.width
-		height: app.height
+		implicitHeight: app.height
 
 		Behavior on height {
 			NumberAnimation {
@@ -71,12 +71,12 @@ Window {
 						model: FolderListModel {
 							id: cbo_selectScenario_model
 							showDirs: false
-							folder: App.getScenariosFolder()
+							folder: Game.getScenariosFolder()
 							nameFilters: ["*.scenario"]
 						}
 
 						onActivated: {
-							App.setSetting("Main/sLastScenario", currentText);
+							Game.setSetting("Main/sLastScenario", currentText);
 						}
 					}
 
@@ -85,7 +85,7 @@ Window {
 						property: "currentIndex"
 						value: {
 							cbo_selectScenario.count;
-							let lastScenario = App.setting("Main/sLastScenario");
+							let lastScenario = Game.setting("Main/sLastScenario");
 							if (lastScenario)
 								cbo_selectScenario.currentIndex = cbo_selectScenario.find(lastScenario);
 						}
@@ -127,6 +127,8 @@ Window {
 						}
 
 						appmenu.height = 0;
+						console.log(Game.getPrompt("0"))
+						Utils.displayPrompt(Game.getPrompt("0"));
 					}
 				}
 			}
@@ -193,16 +195,7 @@ Window {
 						i = 0
 						prompter.stop()
 					}
-				}
-
-				// Start "typewriting" the prompt
-				function setPrompt(text) {
-					prompter.stop()
-					prompter.i = 0
-					prompt.text = ""
-					prompter.text = text
-					prompter.start()
-				}
+				}				
 			}
 		}
 
@@ -255,7 +248,7 @@ Window {
 			MouseArea {
 				anchors.fill: replies
 				acceptedButtons: Qt.RightButton
-				onClicked: {
+				onClicked: (mouse) => {
 					let pt = mapToItem(repliesView, mouse.x, mouse.y)
 					repliesEditMenu.selection = repliesView.childAt(pt.x, pt.y);
 					//dialog_editReply_text.text = story.value(game.currentnode).split("|")[2].split("~")[2]; // :P
@@ -311,8 +304,7 @@ Window {
 
 		onAccepted: {
 			let name = dialog_addScenario_text.text
-			App.createScenario(name);
-			cbo_selectScenario.currentIndex = cbo_selectScenario.find(name);
+			Game.createScenario(name);
 		}
 	}
 
@@ -330,7 +322,7 @@ Window {
 
 		onAccepted: {
 			let name = dialog_addScenarioProfileo_text.text
-			App.createScenarioProfile(name);
+			Game.createScenarioProfile(name);
 		}
 	}
 
@@ -356,7 +348,7 @@ Window {
 			}
 
 			appmenu.height = 0;
-			App.loadScenarioProfile(name);
+			Game.loadScenarioProfile(name);
 		}
 	}
 

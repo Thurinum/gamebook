@@ -1,31 +1,45 @@
 #include "backend.hpp"
+#include "prompt.hpp"
 #include "scenario.hpp"
 
 #include <QDir>
 #include <QGuiApplication>
 #include <QUrl>
 
-Backend::Backend()
+Game::Game()
 {
 	settings = new QSettings(QDir::currentPath() + "/gamebook.ini", QSettings::IniFormat);
 }
 
-QVariant Backend::setting(QString key)
+QVariant Game::setting(QString key)
 {
 	return this->settings->value(key);
 }
 
-void Backend::setSetting(QString key, QVariant val)
+void Game::setSetting(QString key, QVariant val)
 {
 	settings->setValue(key, val);
 }
 
-void Backend::createScenario(QString name)
+void Game::createScenario(QString name)
 {
-	Scenario scn(name);
+	this->currentScenario = new Scenario(name);
+	Prompt* root = new Prompt();
+	root->setId("0");
+	root->setText("test test test");
+	this->currentScenario->prompts["0"] = root;
 }
 
-QUrl Backend::getScenariosFolder()
+QUrl Game::getScenariosFolder()
 {
 	return QUrl::fromLocalFile(QDir::currentPath() + "/scenarios");
+}
+
+Prompt* Game::getPrompt(QString key)
+{
+	Prompt *root = new Prompt();
+	root->setId("0");
+	root->setText("test test test");
+	return root;
+	//return currentScenario->prompts.value(key);
 }

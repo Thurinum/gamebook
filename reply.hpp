@@ -8,8 +8,6 @@ class Prompt;
 class Reply
 {
 public:
-	int id;
-
 	QString text;
 	Prompt* target;
 

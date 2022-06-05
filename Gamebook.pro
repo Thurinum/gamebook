@@ -1,4 +1,4 @@
-QT = core qml quick quickcontrols2 xml
+QT += qml quick quickcontrols2 xml
 
 SOURCES += \
         backend.cpp \
@@ -18,4 +18,5 @@ HEADERS += \
 DISTFILES += \
 	gamebook.ini \
 	gamebook.ini \
-	utils.js
+	utils.js \
+	Main.qml

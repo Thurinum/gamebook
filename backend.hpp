@@ -1,12 +1,14 @@
 #ifndef BACKEND_HPP
 #define BACKEND_HPP
 
+#include "scenario.hpp"
+
 #include <QObject>
 #include <QSettings>
 #include <QUrl>
 #include <QVariant>
 
-class Backend : public QObject
+class Game : public QObject
 {
 	Q_OBJECT
 public:
@@ -17,10 +19,13 @@ public:
 
 	Q_INVOKABLE QUrl getScenariosFolder();
 
-	Backend();
+	Q_INVOKABLE Prompt* getPrompt(QString key);
+
+	Game();
 
 private:
 	QSettings* settings;
+	Scenario* currentScenario;
 };
 
 #endif // BACKEND_HPP

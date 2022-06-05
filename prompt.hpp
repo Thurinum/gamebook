@@ -4,22 +4,37 @@
 #include "reply.hpp"
 
 #include <QList>
+#include <QObject>
 #include <QString>
 
 class Reply;
 
-class Prompt
+class Prompt : public QObject
 {
+	Q_OBJECT
+	Q_PROPERTY(QString id READ id WRITE setId NOTIFY idChanged)
+
 public:
-	int id;
+	const QString& id() const;
+	void setId(const QString& newId);
 
-	QString text;
-	QString characterPath;
-	QString backgroundPath;
+	const QString& text() const;
+	void setText(const QString& newText);
 
-	QList<Reply*> replies;
+signals:
+	void idChanged();
+	void textChanged();
 
-	Prompt();
+private:
+	QString m_id;
+
+	QString m_text = "";
+	QString m_characterPath;
+	QString m_backgroundPath;
+
+	QList<Reply*> m_replies;
+
+	Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
 };
 
 #endif // PROMPT_HPP
