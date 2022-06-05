@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 	Backend backend;
 	engine.rootContext()->setContextProperty("App", &backend);
 
-	const QUrl url("main.qml");
+	const QUrl url("Main.qml");
 	QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
 			     &app, [url](QObject *obj, const QUrl &objUrl) {
 		if (!obj && url == objUrl)
