@@ -127,7 +127,8 @@ Window {
 						}
 
 						appmenu.height = 0;
-						console.log(Game.getPrompt("0"))
+						game.isEditingAllowed = true
+
 						Utils.displayPrompt(Game.getPrompt("0"));
 					}
 				}
@@ -257,14 +258,25 @@ Window {
 			}
 		}
 
+		Menu {
+			id: promptEditMenu
+
+			MenuItem {
+				text: "Edit prompt..."
+				onTriggered: {
+					dialog_editPrompt_text.text = prompt.text
+					dialog_editPrompt.visible = true;
+				}
+			}
+		}
+
 		MouseArea {
 			anchors.fill: parent
 			acceptedButtons: Qt.RightButton
 			enabled: game.isEditingAllowed
 
 			onClicked: {
-				//dialog_editPrompt_text.text = story.value(game.currentnode).split("|")[1] // unparsed prompt
-				dialog_editPrompt.visible = true;
+				promptEditMenu.popup();
 			}
 		}
 	}
