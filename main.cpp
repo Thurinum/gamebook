@@ -18,9 +18,9 @@ int main(int argc, char *argv[])
 	app.setOrganizationName("Thurinum");
 	app.setApplicationName("Gamebook");
 
+	Backend backend;
 	QQmlApplicationEngine engine;
 
-	Backend backend;
 	engine.rootContext()->setContextProperty("App", &backend);
 
 	const QUrl url("Main.qml");
