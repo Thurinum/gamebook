@@ -1,6 +1,7 @@
 #ifndef BACKEND_HPP
 #define BACKEND_HPP
 
+#include "profile.hpp"
 #include "scenario.hpp"
 
 #include <QObject>
@@ -16,16 +17,19 @@ public:
 	Q_INVOKABLE void setSetting(QString key, QVariant val);
 
 	Q_INVOKABLE void createScenario(QString name);
+	Q_INVOKABLE void loadScenario(QString name);
+	Q_INVOKABLE void loadScenarioProfile(QString name);
 
 	Q_INVOKABLE QUrl getScenariosFolder();
 
-	Q_INVOKABLE Prompt* getPrompt(QString key);
-
 	Game();
+
+signals:
 
 private:
 	QSettings* settings;
-	Scenario* currentScenario;
+	Scenario* scenario;
+	Profile* profile;
 };
 
 #endif // BACKEND_HPP

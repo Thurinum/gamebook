@@ -9,7 +9,7 @@ function parseStr(str) {
 	let newstr = "";
 
 	// TODO: Add per-scenario expansions directory
-	newstr = replaceAll(str, "@!PLAYER", root.profile);
+	newstr = replaceAll(str, "@!PLAYER", profile.player);
 
 	return newstr;
 }
@@ -24,6 +24,8 @@ function writePrompt(text) {
 }
 
 // Displays a prompt and its replies on the UI.
-function displayPrompt(node) {
-	writePrompt(node.text);
+function displayPrompt(id) {
+	let prompt = app.scenario.prompts[id];
+	console.log(app.scenario.prompts.value())
+	writePrompt(prompt.text);
 }

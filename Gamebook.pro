@@ -3,6 +3,7 @@ QT += qml quick quickcontrols2 xml
 SOURCES += \
         backend.cpp \
         main.cpp \
+        profile.cpp \
         prompt.cpp \
         reply.cpp \
         replytype.cpp \
@@ -10,6 +11,7 @@ SOURCES += \
 
 HEADERS += \
 	backend.hpp \
+	profile.hpp \
 	prompt.hpp \
 	reply.hpp \
 	replytype.hpp \

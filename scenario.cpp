@@ -4,29 +4,29 @@
 #include <QFile>
 #include <QXmlStreamWriter>
 
-Scenario::Scenario(QString name)
+const QString& Scenario::name() const
 {
-	this->name = name;
-
-	QString filename = "scenarios/" + this->name + ".scenario";
-	QFile file(filename);
-	QXmlStreamWriter writer(&file);
-
-	if (!file.open(QIODevice::ReadWrite)) {
-		qDebug("Could not open XML file to writing");
+	return m_name;
+}
+void Scenario::setName(const QString& newName)
+{
+	if (m_name == newName)
 		return;
-	}
-
-	writer.writeStartDocument();
-	writer.writeStartElement("scenario");
-		writer.writeAttribute("name", name);
-		writer.writeStartElement("prompt");
-			writer.writeAttribute("id", "0");
-		writer.writeEndElement();
-	writer.writeEndDocument();
+	m_name = newName;
+	emit nameChanged();
 }
 
-void Scenario::save()
+QHash<QString, Prompt*>& Scenario::prompts()
 {
+	return m_prompts;
+}
 
+const QHash<QString, ReplyType*>& Scenario::replyTypes() const
+{
+	return m_replyTypes;
+}
+
+Scenario::Scenario()
+{
+	this->id = 0; // TODO: use QUuid
 }

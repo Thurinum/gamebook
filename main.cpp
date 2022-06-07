@@ -5,6 +5,7 @@
 #include <QDir>
 #include <QFont>
 #include <QGuiApplication>
+#include <QHash>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickStyle>
@@ -14,6 +15,9 @@ int main(int argc, char *argv[])
 {
 	qputenv("QT_QUICK_CONTROLS_CONF", QDir::currentPath().toLocal8Bit() + "/gamebook.ini");
 	qRegisterMetaType<Prompt*>();
+	qRegisterMetaType<Scenario*>();
+	qRegisterMetaType<Profile*>();
+	qRegisterMetaType<QHash<QString, Prompt*>>("prompthash");
 
 	QGuiApplication app(argc, argv);
 	app.setOrganizationName("Thurinum");

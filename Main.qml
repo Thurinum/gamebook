@@ -6,6 +6,9 @@ import "utils.js" as Utils
 Window {
 	id: app
 
+	property var scenario
+	property var profile
+
 	width: 640
 	height: 480
 	visible: true
@@ -128,8 +131,9 @@ Window {
 
 						appmenu.height = 0;
 						game.isEditingAllowed = true
-
-						Utils.displayPrompt(Game.getPrompt("0"));
+						app.scenario = Game.loadScenario(cbo_selectScenario.currentText);
+						//app.profile = Game.loadScenarioProfile("_editModeProfile");
+						Utils.displayPrompt("0");
 					}
 				}
 			}
@@ -139,7 +143,7 @@ Window {
 	Rectangle {
 		id: game
 
-		property string currentBackground
+		property string character
 		property bool isEditingAllowed
 
 		width: app.width
@@ -218,6 +222,8 @@ Window {
 
 				height: app.height - 25
 				fillMode: Image.PreserveAspectFit
+
+				source: game.character
 			}
 
 			Column {
@@ -387,14 +393,9 @@ Window {
 
 
 		onAccepted: {
-			let text = dialog_editPrompt_text.text;
-			prompt.text = parseStr(text);
-
-			// replace prompt text
-			let data = story.value(game.currentnode).split("|");
-			data[1] = text;
-
-			story.setValue(game.currentnode, data.join("|"));
+			let text = Utils.parseStr(dialog_editPrompt_text.text);
+			prompt.text = text;
+			Game.currentPrompt.text = text;
 		}
 	}
 
