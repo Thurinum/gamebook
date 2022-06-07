@@ -88,6 +88,11 @@ void Game::loadScenarioProfile(QString name)
 	file.close();
 }
 
+Prompt* Game::getPrompt(QString id)
+{
+	return this->scenario->prompts().value(id);
+}
+
 QUrl Game::getScenariosFolder()
 {
 	return QUrl::fromLocalFile(QDir::currentPath() + "/scenarios");

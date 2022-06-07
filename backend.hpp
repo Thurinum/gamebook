@@ -16,11 +16,12 @@ public:
 	Q_INVOKABLE QVariant setting(QString key);
 	Q_INVOKABLE void setSetting(QString key, QVariant val);
 
+	Q_INVOKABLE QUrl getScenariosFolder();
 	Q_INVOKABLE void createScenario(QString name);
 	Q_INVOKABLE void loadScenario(QString name);
 	Q_INVOKABLE void loadScenarioProfile(QString name);
 
-	Q_INVOKABLE QUrl getScenariosFolder();
+	Q_INVOKABLE Prompt* getPrompt(QString id);
 
 	Game();
 
