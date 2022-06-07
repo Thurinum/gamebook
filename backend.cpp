@@ -43,7 +43,8 @@ void Game::loadScenario(QString name)
 	Prompt* p = nullptr;
 	reader.readNextStartElement(); // scenario
 
-	while (!reader.atEnd() && reader.readNextStartElement()) {
+	while (!reader.atEnd()) {
+		reader.readNextStartElement();
 		QString name = reader.name().toString();
 
 		if (name == "prompt") {
@@ -51,6 +52,8 @@ void Game::loadScenario(QString name)
 			QString id = reader.attributes().value("id").toString();
 			p->setId(id);
 			p->setText(reader.attributes().value("text").toString());
+			p->setCharacterPath(reader.attributes().value("character").toString());
+			p->setBackgroundPath(reader.attributes().value("background").toString());
 			scn->prompts().insert(id, p);
 		} else if (p && name == "reply") {
 			Reply* r = new Reply();
