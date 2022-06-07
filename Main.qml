@@ -6,8 +6,8 @@ import "utils.js" as Utils
 Window {
 	id: app
 
-	property var scenario
-	property var profile
+	property var currentPrompt
+	property bool isEditingAllowed
 
 	width: 640
 	height: 480
@@ -130,9 +130,9 @@ Window {
 						}
 
 						appmenu.height = 0;
-						game.isEditingAllowed = true
-						app.scenario = Game.loadScenario(cbo_selectScenario.currentText);
-						//app.profile = Game.loadScenarioProfile("_editModeProfile");
+						app.isEditingAllowed = true
+						Game.loadScenario(cbo_selectScenario.currentText);
+						//Game.loadScenarioProfile("_editModeProfile");
 						Utils.displayPrompt("0");
 					}
 				}
@@ -142,9 +142,6 @@ Window {
 
 	Rectangle {
 		id: game
-
-		property string character
-		property bool isEditingAllowed
 
 		width: app.width
 		height: app.height
@@ -223,7 +220,7 @@ Window {
 				height: app.height - 25
 				fillMode: Image.PreserveAspectFit
 
-				source: game.character
+				source: "resources/graphics/" + app.currentPrompt.characterPath
 			}
 
 			Column {
@@ -279,7 +276,7 @@ Window {
 		MouseArea {
 			anchors.fill: parent
 			acceptedButtons: Qt.RightButton
-			enabled: game.isEditingAllowed
+			enabled: app.isEditingAllowed
 
 			onClicked: {
 				promptEditMenu.popup();

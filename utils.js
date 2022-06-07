@@ -25,7 +25,7 @@ function writePrompt(text) {
 
 // Displays a prompt and its replies on the UI.
 function displayPrompt(id) {
-	let prompt = app.scenario.prompts[id];
-	console.log(app.scenario.prompts.value())
-	writePrompt(prompt.text);
+	app.currentPrompt = Game.getPrompt(id);
+	console.log(app.currentPrompt.characterPath)
+	writePrompt(app.currentPrompt.text);
 }
