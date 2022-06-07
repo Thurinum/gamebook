@@ -22,7 +22,8 @@ Window {
 		x: 0
 		y: 0
 
-		source: Game.setting("Main/sMainMenuBackground");
+		source: app.currentPrompt ? "resources/graphics/" + app.currentPrompt.backgroundPath : Game.setting("Main/sMainMenuBackground");
+		fillMode: Image.PreserveAspectCrop
 	}
 
 	Rectangle {
@@ -148,7 +149,7 @@ Window {
 
 		anchors.top: appmenu.bottom
 
-		color: "lightgrey"
+		color: "#CCCCCC44"
 		border.width: 10
 		border.color: "darkred"
 
@@ -220,7 +221,7 @@ Window {
 				height: app.height - 25
 				fillMode: Image.PreserveAspectFit
 
-				source: "resources/graphics/" + app.currentPrompt.characterPath
+				source: app.currentPrompt ? "resources/graphics/" + app.currentPrompt.characterPath : ""
 			}
 
 			Column {
