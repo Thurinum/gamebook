@@ -1,7 +1,10 @@
 QT += qml quick quickcontrols2 xml
 
+CONFIG += c++17
+
 SOURCES += \
         backend.cpp \
+        character.cpp \
         main.cpp \
         profile.cpp \
         prompt.cpp \
@@ -11,6 +14,7 @@ SOURCES += \
 
 HEADERS += \
 	backend.hpp \
+	character.hpp \
 	profile.hpp \
 	prompt.hpp \
 	reply.hpp \
