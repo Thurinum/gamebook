@@ -22,6 +22,7 @@ public:
 	Q_INVOKABLE void loadScenarioProfile(QString name);
 
 	Q_INVOKABLE Prompt* getPrompt(QString id);
+	Q_INVOKABLE QString getCharacter(QString name);
 
 	Game();
 

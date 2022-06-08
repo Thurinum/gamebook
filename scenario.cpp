@@ -30,3 +30,16 @@ Scenario::Scenario()
 {
 	this->id = 0; // TODO: use QUuid
 }
+
+QHash<QString, Character *> &Scenario::characters()
+{
+	return m_characters;
+}
+
+void Scenario::setCharacters(const QHash<QString, Character *> &newCharacters)
+{
+	if (m_characters == newCharacters)
+		return;
+	m_characters = newCharacters;
+	emit charactersChanged();
+}

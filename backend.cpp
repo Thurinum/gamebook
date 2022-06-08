@@ -52,14 +52,22 @@ void Game::loadScenario(QString name)
 			QString id = reader.attributes().value("id").toString();
 			p->setId(id);
 			p->setText(reader.attributes().value("text").toString());
-			p->setCharacterPath(reader.attributes().value("character").toString());
-			p->setBackgroundPath(reader.attributes().value("background").toString());
+			p->setCharacter(reader.attributes().value("character").toString());
+			p->setBackground(reader.attributes().value("background").toString());
 			scn->prompts().insert(id, p);
 		} else if (p && name == "reply") {
 			Reply* r = new Reply();
 			r->setTarget(reader.attributes().value("target").toString());
 			r->setText(reader.attributes().value("text").toString());
-			p->replies().append(r);
+			if (reader.isStartElement())
+				p->replies().append(r);
+		} else if (name == "replytype") {
+
+		} else if (name == "character") {
+			Character* c = new Character;
+			c->setName(reader.attributes().value("name").toString());
+			c->setSprite(reader.attributes().value("sprite").toString());
+			scn->characters().insert(c->getName(), c);
 		}
 	}
 
@@ -91,6 +99,11 @@ void Game::loadScenarioProfile(QString name)
 Prompt* Game::getPrompt(QString id)
 {
 	return this->scenario->prompts().value(id);
+}
+
+QString Game::getCharacter(QString name)
+{
+	return this->scenario->characters().value(name)->getSprite();
 }
 
 QUrl Game::getScenariosFolder()

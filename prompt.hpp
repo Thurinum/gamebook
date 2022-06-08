@@ -14,22 +14,22 @@ class Prompt : public QObject
 	Q_OBJECT
 	Q_PROPERTY(QString id READ id WRITE setId NOTIFY idChanged)
 	Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
-	Q_PROPERTY(QString characterPath READ characterPath WRITE setCharacterPath NOTIFY characterPathChanged)
-	Q_PROPERTY(QString backgroundPath READ backgroundPath WRITE setBackgroundPath NOTIFY backgroundPathChanged)
+	Q_PROPERTY(QString character READ character WRITE setCharacter NOTIFY characterChanged)
+	Q_PROPERTY(QString background READ background WRITE setBackground NOTIFY backgroundChanged)
 	Q_PROPERTY(QList<Reply*> replies READ replies WRITE setReplies NOTIFY repliesChanged)
 
-public:
+public:	
 	const QString& id() const;
 	void setId(const QString& newId);
 
 	const QString& text() const;
 	void setText(const QString& newText);
 
-	const QString& characterPath() const;
-	void setCharacterPath(const QString& newCharacterPath);
+	const QString& character() const;
+	void setCharacter(const QString& newCharacter);
 
-	const QString& backgroundPath() const;
-	void setBackgroundPath(const QString& newBackgroundPath);
+	const QString& background() const;
+	void setBackground(const QString& newBackground);
 
 	QList<Reply*>& replies();
 	void setReplies(const QList<Reply*>& newReplies);
@@ -37,15 +37,15 @@ public:
 signals:
 	void idChanged();
 	void textChanged();
-	void characterPathChanged();
-	void backgroundPathChanged();
+	void characterChanged();
+	void backgroundChanged();
 	void repliesChanged();
 
 private:
 	QString m_id;
 	QString m_text = "";
-	QString m_characterPath;
-	QString m_backgroundPath;
+	QString m_character;
+	QString m_background;
 	QList<Reply*> m_replies;
 };
 

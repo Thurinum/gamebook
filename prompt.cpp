@@ -24,28 +24,28 @@ void Prompt::setText(const QString& newText)
 	emit textChanged();
 }
 
-const QString& Prompt::characterPath() const
+const QString& Prompt::character() const
 {
-	return m_characterPath;
+	return m_character;
 }
-void Prompt::setCharacterPath(const QString& newCharacterPath)
+void Prompt::setCharacter(const QString& newCharacter)
 {
-	if (m_characterPath == newCharacterPath)
+	if (m_character == newCharacter)
 		return;
-	m_characterPath = newCharacterPath;
-	emit characterPathChanged();
+	m_character = newCharacter;
+	emit characterChanged();
 }
 
-const QString& Prompt::backgroundPath() const
+const QString& Prompt::background() const
 {
-	return m_backgroundPath;
+	return m_background;
 }
-void Prompt::setBackgroundPath(const QString& newBackgroundPath)
+void Prompt::setBackground(const QString& newBackground)
 {
-	if (m_backgroundPath == newBackgroundPath)
+	if (m_background == newBackground)
 		return;
-	m_backgroundPath = newBackgroundPath;
-	emit backgroundPathChanged();
+	m_background = newBackground;
+	emit backgroundChanged();
 }
 
 QList<Reply*>& Prompt::replies()
