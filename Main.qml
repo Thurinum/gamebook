@@ -260,6 +260,9 @@ Window {
 
 				MenuItem {
 					text: "Add reply..."
+					onTriggered: {
+						dialog_addReply.open()
+					}
 				}
 				MenuItem {
 					text: "Edit reply..."
@@ -280,6 +283,7 @@ Window {
 						     repliesEditMenu.selection = repliesView.childAt(
 							     pt.x, pt.y)
 
+						     if (repliesEditMenu.selection)
 						     dialog_editReply.reply = app.currentPrompt.replies[repliesEditMenu.selection.index]
 						     repliesEditMenu.popup()
 					     }
@@ -440,6 +444,47 @@ Window {
 	}
 
 	Dialog {
+		id: dialog_addReply
+		width: 400
+		height: 300
+		title: "Add dialogue reply"
+		standardButtons: Dialog.Ok | Dialog.Cancel
+		anchors.centerIn: Overlay.overlay
+
+		Column {
+			width: parent.width
+			anchors.margins: 10
+
+			Label {
+				text: "Reply text"
+			}
+			TextArea {
+				id: dialog_addReply_text
+				width: parent.width
+				wrapMode: Text.Wrap
+			}
+
+			Label {
+				text: "Reply target"
+			}
+			SpinBox {
+				id: dialog_addReply_target
+				width: parent.width
+			}
+		}
+
+		onAccepted: {
+			// TODO: add validation
+			Game.addReply(app.currentPrompt, dialog_addReply_text.text,
+					  dialog_addReply_target.value)
+			dialog_addReply_text.text = ""
+			dialog_addReply_target.value = 0
+
+			console.log(app.currentPrompt.replies)
+		}
+	}
+
+	Dialog {
 		id: dialog_editReply
 		width: 400
 		height: 300
@@ -460,7 +505,7 @@ Window {
 				id: dialog_editReply_text
 				width: parent.width
 				wrapMode: Text.Wrap
-				text: dialog_editReply.reply.text
+				text: dialog_editReply.reply ? dialog_editReply.reply.text : ""
 			}
 
 			Label {
@@ -469,7 +514,8 @@ Window {
 			SpinBox {
 				id: dialog_editReply_target
 				width: parent.width
-				value: dialog_editReply.reply.target
+				from: -1
+				value: dialog_editReply.reply ? dialog_editReply.reply.target : 0
 			}
 		}
 

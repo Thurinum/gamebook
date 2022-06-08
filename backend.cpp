@@ -101,6 +101,15 @@ Prompt* Game::getPrompt(QString id)
 	return this->scenario->prompts().value(id);
 }
 
+void Game::addReply(Prompt *prompt, QString text, QString target)
+{
+	// todo: find better solution
+	Reply* reply = new Reply;
+	reply->setText(text);
+	reply->setTarget(target);
+	prompt->replies().append(reply);
+}
+
 QString Game::getCharacter(QString name)
 {
 	return this->scenario->characters().value(name)->getSprite();
