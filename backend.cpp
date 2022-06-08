@@ -13,6 +13,16 @@ Game::Game()
 	settings = new QSettings(QDir::currentPath() + "/gamebook.ini", QSettings::IniFormat);
 }
 
+QString Game::getScenarioPath(QString name)
+{
+	return "scenarios/" + name + ".scenario";
+}
+
+QString Game::getProfilePath(QString scnname, QString name)
+{
+	return "scenarios/" + scnname + "-" + name + ".scenario"
+}
+
 QVariant Game::setting(QString key)
 {
 	return this->settings->value(key);
@@ -25,7 +35,35 @@ void Game::setSetting(QString key, QVariant val)
 
 void Game::createScenario(QString name)
 {
-	QFile file("scenarios/" + name + ".scenario");
+	QFile file(Game::getScenarioPath(name));
+	if (!file.open(QIODevice::WriteOnly)) {
+		qCritical() << "Failed to open file for writing";
+		return;
+	}
+
+	QXmlStreamWriter writer(&file);
+	writer.writeStartDocument();
+	writer.writeStartElement("scenario");
+	writer.writeAttribute("name", name);
+		writer.writeStartElement("characters");	writer.writeEndElement();
+		writer.writeStartElement("replytypes");	writer.writeEndElement();
+		writer.writeStartElement("prompts");
+			writer.writeStartElement("prompt");
+			writer.writeAttribute("id", "0");
+			writer.writeAttribute("text", "(Right-click on this prompt to start editing)");
+			writer.writeEndElement();
+		writer.writeEndElement();
+	writer.writeEndElement();
+	writer.writeEndDocument();
+	file.close();
+}
+
+void Game::createScenarioProfile(QString name)
+{
+	if (!this->scenario)
+		return;
+
+	QFile file(Game::getProfilePath(this->scenario->name(), name)); // todo create helper
 	if (!file.open(QIODevice::WriteOnly)) {
 		qCritical() << "Failed to open file for writing";
 		return;
@@ -53,7 +91,7 @@ void Game::loadScenario(QString name)
 	Scenario* scn = new Scenario();
 	scn->setName(name);
 
-	QFile file("scenarios/" + name + ".scenario");
+	QFile file(Game::getScenarioPath(name));
 	if (!file.open(QIODevice::ReadOnly)) {
 		qCritical() << "Failed to open file for reading";
 		return;
@@ -105,7 +143,7 @@ void Game::loadScenarioProfile(QString name)
 		return;
 	}
 
-	QFile file("scenarios/" + this->scenario->name() + "_" + name + ".scenario");
+	QFile file(Game::getProfilePath(this->scenario->name(), name));
 	if (!file.open(QIODevice::ReadOnly)) {
 		qCritical() << "Failed to open file for writing";
 		return;

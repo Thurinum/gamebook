@@ -18,6 +18,7 @@ public:
 
 	Q_INVOKABLE QUrl getScenariosFolder();
 	Q_INVOKABLE void createScenario(QString name);
+	Q_INVOKABLE void createScenarioProfile(QString name);
 	Q_INVOKABLE void loadScenario(QString name);
 	Q_INVOKABLE void loadScenarioProfile(QString name);
 
@@ -25,6 +26,10 @@ public:
 	Q_INVOKABLE void addReply(Prompt* prompt, QString text, QString target);
 	Q_INVOKABLE QString getCharacter(QString name);
 	Q_INVOKABLE QList<QString> getCharacterNames();
+
+	// helpers
+	static inline QString getScenarioPath(QString name);
+	static inline QString getProfilePath(QString scnname, QString name);
 
 	Game();
 
