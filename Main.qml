@@ -240,6 +240,7 @@ Window {
 				spacing: 10
 
 				Repeater {
+					id: repliesRepeater
 					model: app.currentPrompt ? app.currentPrompt.replies : 0
 					delegate: Rectangle {
 						property int index: model.index
@@ -480,7 +481,8 @@ Window {
 			dialog_addReply_text.text = ""
 			dialog_addReply_target.value = 0
 
-			console.log(app.currentPrompt.replies)
+			repliesRepeater.model = []
+			repliesRepeater.model = app.currentPrompt.replies
 		}
 	}
 
