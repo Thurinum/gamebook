@@ -242,13 +242,16 @@ Window {
 				Repeater {
 					id: repliesRepeater
 					model: app.currentPrompt ? app.currentPrompt.replies : 0
-					delegate: Rectangle {
+					delegate: Button {
 						property int index: model.index
-						color: "grey"
-						height: 40
+
 						width: repliesView.width * 0.9
-						Label {
-							text: modelData.text
+						height: 40
+						text: modelData.text
+
+						onClicked: {
+							Utils.displayPrompt(
+										app.currentPrompt.replies[index].target)
 						}
 					}
 				}
@@ -297,6 +300,7 @@ Window {
 			MenuItem {
 				text: "Edit prompt..."
 				onTriggered: {
+					dialog_editPrompt_name.currentIndex = 0 // todo detect
 					dialog_editPrompt_text.text = app.currentPrompt.text
 					dialog_editPrompt.visible = true
 				}

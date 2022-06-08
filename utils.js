@@ -25,7 +25,14 @@ function writePrompt(text) {
 
 // Displays a prompt and its replies on the UI.
 function displayPrompt(id) {
-	app.currentPrompt = Game.getPrompt(id)
-	console.log(app.currentPrompt.characterPath)
-	writePrompt(app.currentPrompt.text)
+	let prompt = Game.getPrompt(id)
+
+	if (prompt.replies.length === 0) {
+		endscreen.text = prompt.text
+		endscreen.scale = 1
+		return
+	}
+
+	app.currentPrompt = prompt
+	writePrompt(prompt.text)
 }
