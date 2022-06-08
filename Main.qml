@@ -22,7 +22,9 @@ Window {
 		x: 0
 		y: 0
 
-		source: app.currentPrompt ? "resources/graphics/" + app.currentPrompt.backgroundPath : Game.setting("Main/sMainMenuBackground");
+		source: app.currentPrompt ? "resources/graphics/"
+						    + app.currentPrompt.background : Game.setting(
+							    "Main/sMainMenuBackground")
 		fillMode: Image.PreserveAspectCrop
 	}
 
@@ -80,7 +82,8 @@ Window {
 						}
 
 						onActivated: {
-							Game.setSetting("Main/sLastScenario", currentText);
+							Game.setSetting("Main/sLastScenario",
+									    currentText)
 						}
 					}
 
@@ -88,10 +91,13 @@ Window {
 						target: cbo_selectScenario
 						property: "currentIndex"
 						value: {
-							cbo_selectScenario.count;
-							let lastScenario = Game.setting("Main/sLastScenario");
+							cbo_selectScenario.count
+							let lastScenario = Game.setting(
+								    "Main/sLastScenario")
 							if (lastScenario)
-								cbo_selectScenario.currentIndex = cbo_selectScenario.find(lastScenario);
+								cbo_selectScenario.currentIndex
+										= cbo_selectScenario.find(
+											lastScenario)
 						}
 					}
 
@@ -125,16 +131,16 @@ Window {
 
 					onClicked: {
 						if (cbo_selectScenario.currentText === "") {
-							dialog_error.msg = "Please select a scenario!";
-							dialog_error.visible = true;
-							return;
+							dialog_error.msg = "Please select a scenario!"
+							dialog_error.visible = true
+							return
 						}
 
-						appmenu.height = 0;
+						appmenu.height = 0
 						app.isEditingAllowed = true
-						Game.loadScenario(cbo_selectScenario.currentText);
+						Game.loadScenario(cbo_selectScenario.currentText)
 						//Game.loadScenarioProfile("_editModeProfile");
-						Utils.displayPrompt("0");
+						Utils.displayPrompt("0")
 					}
 				}
 			}
@@ -198,7 +204,7 @@ Window {
 						i = 0
 						prompter.stop()
 					}
-				}				
+				}
 			}
 		}
 
@@ -221,7 +227,8 @@ Window {
 				height: app.height - 25
 				fillMode: Image.PreserveAspectFit
 
-				source: app.currentPrompt ? "resources/graphics/" + app.currentPrompt.characterPath : ""
+				source: app.currentPrompt ? "resources/graphics/" + Game.getCharacter(
+									    app.currentPrompt.character) : ""
 			}
 
 			Column {
@@ -231,6 +238,18 @@ Window {
 				x: 25
 				anchors.verticalCenter: replies.verticalCenter
 				spacing: 10
+
+				Repeater {
+					model: app.currentPrompt ? app.currentPrompt.replies : 0
+					delegate: Rectangle {
+						color: "grey"
+						height: 40
+						width: repliesView.width * 0.9
+						Label {
+							text: modelData.text
+						}
+					}
+				}
 			}
 
 			Menu {
@@ -245,7 +264,7 @@ Window {
 					text: "Edit reply..."
 					enabled: repliesEditMenu.selection
 					onTriggered: {
-						dialog_editReply.open();
+						dialog_editReply.open()
 					}
 				}
 			}
@@ -253,12 +272,14 @@ Window {
 			MouseArea {
 				anchors.fill: replies
 				acceptedButtons: Qt.RightButton
-				onClicked: (mouse) => {
-					let pt = mapToItem(repliesView, mouse.x, mouse.y)
-					repliesEditMenu.selection = repliesView.childAt(pt.x, pt.y);
-					//dialog_editReply_text.text = story.value(game.currentnode).split("|")[2].split("~")[2]; // :P
-					repliesEditMenu.popup();
-				}
+				onClicked: mouse => {
+						     let pt = mapToItem(repliesView,
+										mouse.x, mouse.y)
+						     repliesEditMenu.selection = repliesView.childAt(
+							     pt.x, pt.y)
+						     //dialog_editReply_text.text = story.value(game.currentnode).split("|")[2].split("~")[2]; // :P
+						     repliesEditMenu.popup()
+					     }
 			}
 		}
 
@@ -269,7 +290,7 @@ Window {
 				text: "Edit prompt..."
 				onTriggered: {
 					dialog_editPrompt_text.text = prompt.text
-					dialog_editPrompt.visible = true;
+					dialog_editPrompt.visible = true
 				}
 			}
 		}
@@ -280,7 +301,7 @@ Window {
 			enabled: app.isEditingAllowed
 
 			onClicked: {
-				promptEditMenu.popup();
+				promptEditMenu.popup()
 			}
 		}
 	}
@@ -315,12 +336,16 @@ Window {
 
 		Label {
 			text: "Scenario name"
-			TextField { id: dialog_addScenario_text; width: dialog_addScenario.availableWidth; anchors.top: parent.bottom }
+			TextField {
+				id: dialog_addScenario_text
+				width: dialog_addScenario.availableWidth
+				anchors.top: parent.bottom
+			}
 		}
 
 		onAccepted: {
 			let name = dialog_addScenario_text.text
-			Game.createScenario(name);
+			Game.createScenario(name)
 		}
 	}
 
@@ -333,12 +358,15 @@ Window {
 
 		Label {
 			text: "Player name"
-			TextField { id: dialog_addScenarioProfileo_text; anchors.top: parent.bottom }
+			TextField {
+				id: dialog_addScenarioProfileo_text
+				anchors.top: parent.bottom
+			}
 		}
 
 		onAccepted: {
 			let name = dialog_addScenarioProfileo_text.text
-			Game.createScenarioProfile(name);
+			Game.createScenarioProfile(name)
 		}
 	}
 
@@ -351,20 +379,23 @@ Window {
 
 		Label {
 			text: "Save profile"
-			ComboBox { id: dialog_loadScenarioProfile_name; anchors.top: parent.bottom }
+			ComboBox {
+				id: dialog_loadScenarioProfile_name
+				anchors.top: parent.bottom
+			}
 		}
 
 		onAccepted: {
-			let name = dialog_loadScenarioProfile_name.currentText;
+			let name = dialog_loadScenarioProfile_name.currentText
 
 			if (name.length === 0) {
-				dialog_error.msg = "No scenario selected!";
-				dialog_error.visible = true;
-				return;
+				dialog_error.msg = "No scenario selected!"
+				dialog_error.visible = true
+				return
 			}
 
-			appmenu.height = 0;
-			Game.loadScenarioProfile(name);
+			appmenu.height = 0
+			Game.loadScenarioProfile(name)
 		}
 	}
 
@@ -380,20 +411,27 @@ Window {
 			width: parent.width
 			anchors.margins: 10
 
-			Label { text: "Character name" }
+			Label {
+				text: "Character name"
+			}
 			ComboBox {
 				id: dialog_editPrompt_name
 			}
 
-			Label { text: "Dialogue contents"; }
-			TextArea { id: dialog_editPrompt_text; width: parent.width; wrapMode: Text.Wrap}
+			Label {
+				text: "Dialogue contents"
+			}
+			TextArea {
+				id: dialog_editPrompt_text
+				width: parent.width
+				wrapMode: Text.Wrap
+			}
 		}
 
-
 		onAccepted: {
-			let text = Utils.parseStr(dialog_editPrompt_text.text);
-			prompt.text = text;
-			Game.currentPrompt.text = text;
+			let text = Utils.parseStr(dialog_editPrompt_text.text)
+			app.currentPrompt.text = text
+			//app.currentPrompt.character =
 		}
 	}
 
