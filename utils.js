@@ -1,17 +1,17 @@
 // Replace all occurences of a string. Found on CodeGrepper.
 function replaceAll(str, find, replace) {
-	let escapedFind = find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-	return str.replace(new RegExp(escapedFind, 'g'), replace);
+	let escapedFind = find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1")
+	return str.replace(new RegExp(escapedFind, 'g'), replace)
 }
 
 // Expand any variables within a string. Variables start with @!
 function parseStr(str) {
-	let newstr = "";
+	let newstr = ""
 
 	// TODO: Add per-scenario expansions directory
-	newstr = replaceAll(str, "@!PLAYER", profile.player);
+	newstr = replaceAll(str, "@!PLAYER", "PLAYERNAME")
 
-	return newstr;
+	return newstr
 }
 
 // Start "typewriting" the prompt
@@ -25,7 +25,7 @@ function writePrompt(text) {
 
 // Displays a prompt and its replies on the UI.
 function displayPrompt(id) {
-	app.currentPrompt = Game.getPrompt(id);
+	app.currentPrompt = Game.getPrompt(id)
 	console.log(app.currentPrompt.characterPath)
-	writePrompt(app.currentPrompt.text);
+	writePrompt(app.currentPrompt.text)
 }

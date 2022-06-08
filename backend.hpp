@@ -24,6 +24,7 @@ public:
 	Q_INVOKABLE Prompt* getPrompt(QString id);
 	Q_INVOKABLE void addReply(Prompt* prompt, QString text, QString target);
 	Q_INVOKABLE QString getCharacter(QString name);
+	Q_INVOKABLE QList<QString> getCharacterNames();
 
 	Game();
 

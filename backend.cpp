@@ -115,6 +115,11 @@ QString Game::getCharacter(QString name)
 	return this->scenario->characters().value(name)->getSprite();
 }
 
+QList<QString> Game::getCharacterNames()
+{
+	return this->scenario->characters().keys();
+}
+
 QUrl Game::getScenariosFolder()
 {
 	return QUrl::fromLocalFile(QDir::currentPath() + "/scenarios");

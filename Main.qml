@@ -176,7 +176,7 @@ Window {
 				font.family: "serif"
 				font.pixelSize: 25
 				padding: 10
-				text: ""
+				text: app.currentPrompt.text
 
 				textFormat: Text.StyledText
 				wrapMode: Text.WordWrap
@@ -297,7 +297,7 @@ Window {
 			MenuItem {
 				text: "Edit prompt..."
 				onTriggered: {
-					dialog_editPrompt_text.text = prompt.text
+					dialog_editPrompt_text.text = app.currentPrompt.text
 					dialog_editPrompt.visible = true
 				}
 			}
@@ -425,6 +425,8 @@ Window {
 			}
 			ComboBox {
 				id: dialog_editPrompt_name
+				model: if (app.currentPrompt)
+						 Game.getCharacterNames()
 			}
 
 			Label {
@@ -438,9 +440,11 @@ Window {
 		}
 
 		onAccepted: {
-			let text = Utils.parseStr(dialog_editPrompt_text.text)
-			app.currentPrompt.text = text
-			//app.currentPrompt.character =
+			//			app.currentPrompt.character = Game.getCharacter(
+			//						dialog_editPrompt_name.currentText)
+			let txt = dialog_editPrompt_text.text
+			app.currentPrompt.text = txt
+			Utils.writePrompt(txt)
 		}
 	}
 
@@ -476,7 +480,8 @@ Window {
 
 		onAccepted: {
 			// TODO: add validation
-			Game.addReply(app.currentPrompt, dialog_addReply_text.text,
+			Game.addReply(app.currentPrompt,
+					  Utils.parseStr(dialog_addReply_text.text),
 					  dialog_addReply_target.value)
 			dialog_addReply_text.text = ""
 			dialog_addReply_target.value = 0
@@ -522,7 +527,7 @@ Window {
 		}
 
 		onAccepted: {
-			reply.text = dialog_editReply_text.text
+			reply.text = Utils.parseStr(dialog_editReply_text.text)
 			reply.target = dialog_editReply_target.value
 		}
 	}
