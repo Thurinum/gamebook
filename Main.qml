@@ -242,6 +242,7 @@ Window {
 				Repeater {
 					model: app.currentPrompt ? app.currentPrompt.replies : 0
 					delegate: Rectangle {
+						property int index: model.index
 						color: "grey"
 						height: 40
 						width: repliesView.width * 0.9
@@ -271,13 +272,15 @@ Window {
 
 			MouseArea {
 				anchors.fill: replies
+				enabled: app.isEditingAllowed
 				acceptedButtons: Qt.RightButton
 				onClicked: mouse => {
 						     let pt = mapToItem(repliesView,
 										mouse.x, mouse.y)
 						     repliesEditMenu.selection = repliesView.childAt(
 							     pt.x, pt.y)
-						     //dialog_editReply_text.text = story.value(game.currentnode).split("|")[2].split("~")[2]; // :P
+
+						     dialog_editReply.reply = app.currentPrompt.replies[repliesEditMenu.selection.index]
 						     repliesEditMenu.popup()
 					     }
 			}
@@ -296,7 +299,8 @@ Window {
 		}
 
 		MouseArea {
-			anchors.fill: parent
+			width: parent.width
+			height: parent.height / 2
 			acceptedButtons: Qt.RightButton
 			enabled: app.isEditingAllowed
 
@@ -432,6 +436,46 @@ Window {
 			let text = Utils.parseStr(dialog_editPrompt_text.text)
 			app.currentPrompt.text = text
 			//app.currentPrompt.character =
+		}
+	}
+
+	Dialog {
+		id: dialog_editReply
+		width: 400
+		height: 300
+		title: "Edit dialogue reply"
+		standardButtons: Dialog.Ok | Dialog.Cancel
+		anchors.centerIn: Overlay.overlay
+
+		property var reply
+
+		Column {
+			width: parent.width
+			anchors.margins: 10
+
+			Label {
+				text: "Reply text"
+			}
+			TextArea {
+				id: dialog_editReply_text
+				width: parent.width
+				wrapMode: Text.Wrap
+				text: dialog_editReply.reply.text
+			}
+
+			Label {
+				text: "Reply target"
+			}
+			SpinBox {
+				id: dialog_editReply_target
+				width: parent.width
+				value: dialog_editReply.reply.target
+			}
+		}
+
+		onAccepted: {
+			reply.text = dialog_editReply_text.text
+			reply.target = dialog_editReply_target.value
 		}
 	}
 
