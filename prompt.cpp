@@ -59,3 +59,15 @@ void Prompt::setReplies(const QList<Reply*>& newReplies)
 	m_replies = newReplies;
 	emit repliesChanged();
 }
+
+bool Prompt::isEnd() const
+{
+	return m_isEnd;
+}
+void Prompt::setIsEnd(bool newIsEnd)
+{
+	if (m_isEnd == newIsEnd)
+		return;
+	m_isEnd = newIsEnd;
+	emit isEndChanged();
+}

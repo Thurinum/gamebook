@@ -176,7 +176,8 @@ Window {
 				font.family: "serif"
 				font.pixelSize: 25
 				padding: 10
-				text: app.currentPrompt.text
+				text: if (app.currentPrompt)
+						app.currentPrompt.text
 
 				textFormat: Text.StyledText
 				wrapMode: Text.WordWrap
@@ -241,7 +242,9 @@ Window {
 
 				Repeater {
 					id: repliesRepeater
-					model: app.currentPrompt ? app.currentPrompt.replies : 0
+					model: app.currentPrompt
+						 && app.currentPrompt.replies.length
+						 > 0 ? app.currentPrompt.replies : 0
 					delegate: Button {
 						property int index: model.index
 

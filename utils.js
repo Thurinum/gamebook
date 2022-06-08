@@ -27,12 +27,12 @@ function writePrompt(text) {
 function displayPrompt(id) {
 	let prompt = Game.getPrompt(id)
 
-	if (prompt.replies.length === 0) {
+	if (prompt.isEnd) {
 		endscreen.text = prompt.text
 		endscreen.scale = 1
 		return
 	}
 
 	app.currentPrompt = prompt
-	writePrompt(prompt.text)
+	//	writePrompt(prompt.text)
 }

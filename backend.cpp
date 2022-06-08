@@ -25,7 +25,27 @@ void Game::setSetting(QString key, QVariant val)
 
 void Game::createScenario(QString name)
 {
-	this->scenario = new Scenario();
+	QFile file("scenarios/" + name + ".scenario");
+	if (!file.open(QIODevice::WriteOnly)) {
+		qCritical() << "Failed to open file for writing";
+		return;
+	}
+
+	QXmlStreamWriter writer(&file);
+	writer.writeStartDocument();
+	writer.writeStartElement("scenario");
+	writer.writeAttribute("name", name);
+		writer.writeStartElement("characters");	writer.writeEndElement();
+		writer.writeStartElement("replytypes");	writer.writeEndElement();
+		writer.writeStartElement("prompts");
+			writer.writeStartElement("prompt");
+			writer.writeAttribute("id", "0");
+			writer.writeAttribute("text", "(Right-click on this prompt to start editing)");
+			writer.writeEndElement();
+		writer.writeEndElement();
+	writer.writeEndElement();
+	writer.writeEndDocument();
+	file.close();
 }
 
 void Game::loadScenario(QString name)
@@ -35,7 +55,7 @@ void Game::loadScenario(QString name)
 
 	QFile file("scenarios/" + name + ".scenario");
 	if (!file.open(QIODevice::ReadOnly)) {
-		qCritical() << "Failed to open file for writing";
+		qCritical() << "Failed to open file for reading";
 		return;
 	}
 
@@ -54,6 +74,7 @@ void Game::loadScenario(QString name)
 			p->setText(reader.attributes().value("text").toString());
 			p->setCharacter(reader.attributes().value("character").toString());
 			p->setBackground(reader.attributes().value("background").toString());
+			p->setIsEnd(reader.attributes().value("isEnd").toString() == "true" ? true : false);
 			scn->prompts().insert(id, p);
 		} else if (p && name == "reply") {
 			Reply* r = new Reply();
@@ -112,7 +133,8 @@ void Game::addReply(Prompt *prompt, QString text, QString target)
 
 QString Game::getCharacter(QString name)
 {
-	return this->scenario->characters().value(name)->getSprite();
+	auto characters = this->scenario->characters();
+	return characters.count() > 0 ? characters.value(name)->getSprite() : "";
 }
 
 QList<QString> Game::getCharacterNames()
