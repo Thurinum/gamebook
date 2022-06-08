@@ -375,14 +375,16 @@ Window {
 		Label {
 			text: "Player name"
 			TextField {
-				id: dialog_addScenarioProfileo_text
+				id: dialog_addScenarioProfile_text
 				anchors.top: parent.bottom
 			}
 		}
 
 		onAccepted: {
-			let name = dialog_addScenarioProfileo_text.text
+			let name = dialog_addScenarioProfile_text.text
+			Game.loadScenario(cbo_selectScenario.currentText)
 			Game.createScenarioProfile(name)
+			appmenu.height = 0
 		}
 	}
 

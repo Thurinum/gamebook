@@ -20,7 +20,7 @@ QString Game::getScenarioPath(QString name)
 
 QString Game::getProfilePath(QString scnname, QString name)
 {
-	return "scenarios/" + scnname + "-" + name + ".scenario"
+	return "scenarios/" + scnname + "-" + name + ".scenario";
 }
 
 QVariant Game::setting(QString key)
@@ -60,8 +60,10 @@ void Game::createScenario(QString name)
 
 void Game::createScenarioProfile(QString name)
 {
-	if (!this->scenario)
+	if (!this->scenario) {
+		qWarning() << "Tried to create profile before scenario";
 		return;
+	}
 
 	QFile file(Game::getProfilePath(this->scenario->name(), name)); // todo create helper
 	if (!file.open(QIODevice::WriteOnly)) {
@@ -71,16 +73,9 @@ void Game::createScenarioProfile(QString name)
 
 	QXmlStreamWriter writer(&file);
 	writer.writeStartDocument();
-	writer.writeStartElement("scenario");
+	writer.writeStartElement("profile");
 	writer.writeAttribute("name", name);
-		writer.writeStartElement("characters");	writer.writeEndElement();
-		writer.writeStartElement("replytypes");	writer.writeEndElement();
-		writer.writeStartElement("prompts");
-			writer.writeStartElement("prompt");
-			writer.writeAttribute("id", "0");
-			writer.writeAttribute("text", "(Right-click on this prompt to start editing)");
-			writer.writeEndElement();
-		writer.writeEndElement();
+	writer.writeAttribute("progress", "0");
 	writer.writeEndElement();
 	writer.writeEndDocument();
 	file.close();
@@ -121,7 +116,7 @@ void Game::loadScenario(QString name)
 			if (reader.isStartElement())
 				p->replies().append(r);
 		} else if (name == "replytype") {
-
+			// todo
 		} else if (name == "character") {
 			Character* c = new Character;
 			c->setName(reader.attributes().value("name").toString());
@@ -139,7 +134,7 @@ void Game::loadScenarioProfile(QString name)
 	Profile* profile = new Profile;
 
 	if (!this->scenario) {
-		qWarning() << "Tried to create profile before scenario";
+		qWarning() << "Tried to load profile before scenario";
 		return;
 	}
 
@@ -151,8 +146,13 @@ void Game::loadScenarioProfile(QString name)
 
 	QXmlStreamReader reader(&file);
 	reader.readNextStartElement(); // profile
-	// TODO load profile
+	profile->setName(name);
+	profile->setPromptid(reader.attributes().value("progress").toString());
+
+	// more will add here
+
 	file.close();
+	this->profile = profile;
 }
 
 Prompt* Game::getPrompt(QString id)
