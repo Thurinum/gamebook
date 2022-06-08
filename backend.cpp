@@ -20,7 +20,7 @@ QString Game::getScenarioPath(QString name)
 
 QString Game::getProfilePath(QString scnname, QString name)
 {
-	return "scenarios/" + scnname + "-" + name + ".scenario";
+	return "scenarios/" + scnname + "-" + name + ".save";
 }
 
 QVariant Game::setting(QString key)
