@@ -397,9 +397,18 @@ Window {
 
 		Label {
 			text: "Save profile"
+
 			ComboBox {
 				id: dialog_loadScenarioProfile_name
+				textRole: "fileBaseName"
+				valueRole: "fileName"
 				anchors.top: parent.bottom
+				model: FolderListModel {
+					// todo remember last profile
+					showDirs: false
+					folder: Game.getScenariosFolder()
+					nameFilters: [cbo_selectScenario.currentText + "*.save"]
+				}
 			}
 		}
 
