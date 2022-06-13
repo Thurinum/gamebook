@@ -160,6 +160,19 @@ Prompt* Game::getPrompt(QString id)
 	return this->scenario->prompts().value(id);
 }
 
+void Game::addPrompt(QString id)
+{
+	if (this->scenario->prompts().contains(id)) {
+		qWarning("Prompt already exists with that key");
+		return;
+	}
+
+	Prompt* p = new Prompt;
+	p->setId(id);
+
+	this->scenario->prompts()[id] = p;
+}
+
 void Game::addReply(Prompt *prompt, QString text, QString target)
 {
 	// todo: find better solution
