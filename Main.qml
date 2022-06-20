@@ -17,10 +17,13 @@ Window {
 	Image {
 		id: background
 
+		property double fac: 0.2
+
 		width: app.width
 		height: app.height
-		x: 0
-		y: 0
+		scale: 1.5
+		x: parallaxOverlay.point.position.x * fac - width / 2 * fac
+		y: parallaxOverlay.point.position.y * fac - height / 2 * fac
 
 		source: app.currentPrompt ? "resources/graphics/"
 						    + app.currentPrompt.background : Game.setting(
@@ -145,6 +148,11 @@ Window {
 				}
 			}
 		}
+	}
+
+	HoverHandler {
+		id: parallaxOverlay
+		target: parent
 	}
 
 	Rectangle {

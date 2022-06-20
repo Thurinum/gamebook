@@ -25,4 +25,5 @@ DISTFILES += \
 	gamebook.ini \
 	gamebook.ini \
 	utils.js \
-	Main.qml
+	Main.qml \
+	resources/graphics/background.jpeg

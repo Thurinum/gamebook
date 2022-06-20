@@ -31,12 +31,12 @@ function displayPrompt(id) {
 	let prompt = Game.getPrompt(id)
 
 	if (prompt.isEnd) {
-		endscreen.text = prompt.text
+		endscreen.text = parseStr(prompt.text)
 		endscreen.scale = 1
 		return
 	}
 
 	app.currentPrompt = prompt
 	repliesRepeater.model = app.currentPrompt.replies
-	writePrompt(prompt.text)
+	writePrompt(parseStr(prompt.text))
 }
