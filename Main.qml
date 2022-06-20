@@ -3,7 +3,7 @@ import QtQuick.Controls
 import Qt.labs.folderlistmodel
 import "utils.js" as Utils
 
-Window {
+ApplicationWindow {
 	id: app
 
 	property var currentPrompt
@@ -13,6 +13,42 @@ Window {
 	height: 480
 	visible: true
 	title: "Gamebook"
+
+	menuBar: MenuBar {
+		visible: app.isEditingAllowed
+		Menu {
+			title: "File"
+			MenuItem {
+				text: "Save scenario"
+				onTriggered: Game.saveScenario()
+			}
+			MenuItem {
+				text: "Quit"
+				onTriggered: Qt.exit(0)
+			}
+		}
+		Menu {
+			title: "Scenario"
+			MenuItem {
+				text: "Edit characters..."
+				onTriggered: {
+
+				}
+			}
+			MenuItem {
+				text: "Edit reply types..."
+				onTriggered: {
+
+				}
+			}
+			MenuItem {
+				text: "Edit variables..."
+				onTriggered: {
+
+				}
+			}
+		}
+	}
 
 	Image {
 		id: background
@@ -35,6 +71,7 @@ Window {
 		id: appmenu
 
 		color: "transparent"
+		clip: true
 
 		width: app.width
 		implicitHeight: app.height
@@ -325,7 +362,7 @@ Window {
 			MenuItem {
 				text: "Edit prompt..."
 				onTriggered: {
-					dialog_editPrompt_name.currentIndex = 0 // todo detect
+					dialog_editPrompt_name.currentIndex = 0
 					dialog_editPrompt_text.text = app.currentPrompt.text
 					dialog_editPrompt.visible = true
 				}
@@ -427,7 +464,7 @@ Window {
 				valueRole: "fileName"
 				anchors.top: parent.bottom
 				model: FolderListModel {
-					// todo remember last profile
+					// TODO: Remember last profile
 					showDirs: false
 					folder: Game.getScenariosFolder()
 					nameFilters: [cbo_selectScenario.currentText + "*.save"]
@@ -520,7 +557,7 @@ Window {
 		}
 
 		onAccepted: {
-			// TODO: add validation
+			// TODO: Add validation for dialogs
 			let target = dialog_addReply_target.value
 			Game.addReply(app.currentPrompt,
 					  Utils.parseStr(dialog_addReply_text.text),

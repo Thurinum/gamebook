@@ -28,7 +28,7 @@ const QHash<QString, ReplyType*>& Scenario::replyTypes() const
 
 Scenario::Scenario()
 {
-	this->id = 0; // TODO: use QUuid
+	this->id = 0; // TODO: Give scenarios a unique QUuid
 }
 
 QHash<QString, Character *> &Scenario::characters()

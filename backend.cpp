@@ -68,7 +68,7 @@ void Game::createScenarioProfile(QString name)
 		return;
 	}
 
-	QFile file(Game::getProfilePath(this->scenario->name(), name)); // todo create helper
+	QFile file(Game::getProfilePath(this->scenario->name(), name));
 	if (!file.open(QIODevice::WriteOnly)) {
 		qCritical() << "Failed to open file for writing";
 		return;
@@ -122,7 +122,7 @@ void Game::loadScenario(QString name)
 			if (reader.isStartElement())
 				p->replies().append(r);
 		} else if (name == "replytype") {
-			// todo
+			// TODO: Implement reply types
 		} else if (name == "character") {
 			Character* c = new Character;
 			c->setName(reader.attributes().value("name").toString());
@@ -155,7 +155,7 @@ void Game::loadScenarioProfile(QString name)
 	profile->setName(name);
 	profile->setPromptid(reader.attributes().value("progress").toString());
 
-	// more will add here
+
 
 	file.close();
 	this->profile = profile;
@@ -209,7 +209,7 @@ void Game::saveScenario()
 				writer.writeStartElement("reply");
 				writer.writeAttribute("text", r->text());
 				writer.writeAttribute("target", r->target());
-				//writer.writeAttribute("type" TODO
+				//writer.writeAttribute("type" TODO: Add reply types
 				writer.writeEndElement();
 			}
 			writer.writeEndElement();
