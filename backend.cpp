@@ -43,7 +43,7 @@ void Game::createScenario(QString name)
 
 	QXmlStreamWriter writer(&file);
 	writer.setAutoFormatting(true);
-	writer.setAutoFormattingIndent(6);
+	writer.setAutoFormattingIndent(setting("Main/iXmlIndent").toInt());
 
 	writer.writeStartDocument();
 	writer.writeStartElement("scenario");
@@ -76,7 +76,7 @@ void Game::createScenarioProfile(QString name)
 
 	QXmlStreamWriter writer(&file);
 	writer.setAutoFormatting(true);
-	writer.setAutoFormattingIndent(6);
+	writer.setAutoFormattingIndent(setting("Main/iXmlIndent").toInt());
 
 	writer.writeStartDocument();
 	writer.writeStartElement("profile");
@@ -176,7 +176,7 @@ void Game::saveScenario()
 
 	QXmlStreamWriter writer(&file);
 	writer.setAutoFormatting(true);
-	writer.setAutoFormattingIndent(6);
+	writer.setAutoFormattingIndent(setting("Main/iXmlIndent").toInt());
 
 	writer.writeStartDocument();
 	writer.writeStartElement("scenario");
