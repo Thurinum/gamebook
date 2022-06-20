@@ -42,6 +42,9 @@ void Game::createScenario(QString name)
 	}
 
 	QXmlStreamWriter writer(&file);
+	writer.setAutoFormatting(true);
+	writer.setAutoFormattingIndent(6);
+
 	writer.writeStartDocument();
 	writer.writeStartElement("scenario");
 	writer.writeAttribute("name", name);
@@ -72,6 +75,9 @@ void Game::createScenarioProfile(QString name)
 	}
 
 	QXmlStreamWriter writer(&file);
+	writer.setAutoFormatting(true);
+	writer.setAutoFormattingIndent(6);
+
 	writer.writeStartDocument();
 	writer.writeStartElement("profile");
 	writer.writeAttribute("name", name);
@@ -155,6 +161,66 @@ void Game::loadScenarioProfile(QString name)
 	this->profile = profile;
 }
 
+void Game::saveScenario()
+{
+	if (!this->scenario) {
+		qWarning() << "Cannot save scenario since no scenario is currently opened!";
+		return;
+	}
+
+	QFile file(Game::getScenarioPath(scenario->name()));
+	if (!file.open(QIODevice::WriteOnly)) {
+		qCritical() << "Failed to open file for reading";
+		return;
+	}
+
+	QXmlStreamWriter writer(&file);
+	writer.setAutoFormatting(true);
+	writer.setAutoFormattingIndent(6);
+
+	writer.writeStartDocument();
+	writer.writeStartElement("scenario");
+	writer.writeAttribute("name", scenario->name());
+		writer.writeStartElement("characters");
+		foreach (Character* c, scenario->characters()) {
+			writer.writeStartElement("character");
+			writer.writeAttribute("name", c->getName());
+			writer.writeAttribute("sprite", c->getSprite());
+			writer.writeEndElement();
+		}
+		writer.writeEndElement();
+		writer.writeStartElement("replytypes");
+		foreach (ReplyType* r, scenario->replyTypes()) {
+			writer.writeStartElement("replytype");
+			writer.writeAttribute("color", r->color());
+			writer.writeAttribute("icon", r->icon());
+			writer.writeEndElement();
+		}
+		writer.writeEndElement();
+		writer.writeStartElement("prompts");
+		foreach (Prompt* p, scenario->prompts()) {
+			writer.writeStartElement("prompt");
+			writer.writeAttribute("id", p->id());
+			writer.writeAttribute("text", p->text());
+			writer.writeAttribute("character", p->character());
+			writer.writeAttribute("background", p->background());
+			writer.writeAttribute("isend", p->isEnd() ? "true" : "false");
+			foreach (Reply* r, p->replies()) {
+				writer.writeStartElement("reply");
+				writer.writeAttribute("text", r->text());
+				writer.writeAttribute("target", r->target());
+				//writer.writeAttribute("type" TODO
+				writer.writeEndElement();
+			}
+			writer.writeEndElement();
+		}
+		writer.writeEndElement();
+	writer.writeEndElement();
+	writer.writeEndDocument();
+
+	file.close();
+}
+
 Prompt* Game::getPrompt(QString id)
 {
 	return this->scenario->prompts().value(id);
@@ -178,7 +244,6 @@ void Game::addPrompt(QString id, Prompt* parent)
 
 void Game::addReply(Prompt *prompt, QString text, QString target)
 {
-	// todo: find better solution
 	Reply* reply = new Reply;
 	reply->setText(text);
 	reply->setTarget(target);

@@ -286,6 +286,12 @@ Window {
 									app.currentPrompt.parent.id)
 					}
 				}
+				MenuItem {
+					text: "Save"
+					onTriggered: {
+						Game.saveScenario()
+					}
+				}
 			}
 
 			MouseArea {
@@ -392,6 +398,7 @@ Window {
 			let name = dialog_addScenarioProfile_text.text
 			Game.loadScenario(cbo_selectScenario.currentText)
 			Game.createScenarioProfile(name)
+			Utils.displayPrompt("0")
 			appmenu.height = 0
 		}
 	}

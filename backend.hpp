@@ -21,6 +21,7 @@ public:
 	Q_INVOKABLE void createScenarioProfile(QString name);
 	Q_INVOKABLE void loadScenario(QString name);
 	Q_INVOKABLE void loadScenarioProfile(QString name);
+	Q_INVOKABLE void saveScenario();
 
 	Q_INVOKABLE Prompt* getPrompt(QString id);
 	Q_INVOKABLE void addPrompt(QString id, Prompt *parent);

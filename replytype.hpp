@@ -8,23 +8,23 @@ class ReplyType : public QObject
 {
 	Q_OBJECT
 	Q_PROPERTY(QString color READ color WRITE setColor NOTIFY colorChanged)
-	Q_PROPERTY(QString iconPath READ iconPath WRITE setIconPath NOTIFY iconPathChanged)
+	Q_PROPERTY(QString icon READ icon WRITE setIcon NOTIFY iconChanged)
 public:
 	ReplyType();
 
 	const QString& color() const;
 	void setColor(const QString& newColor);
 
-	const QString& iconPath() const;
-	void setIconPath(const QString& newIconPath);
+	const QString& icon() const;
+	void setIcon(const QString& newIconPath);
 
 signals:
 	void colorChanged();
-	void iconPathChanged();
+	void iconChanged();
 
 private:
 	QString m_color;
-	QString m_iconPath;
+	QString m_icon;
 };
 
 #endif // REPLYTYPE_HPP

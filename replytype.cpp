@@ -17,14 +17,14 @@ void ReplyType::setColor(const QString& newColor)
 	emit colorChanged();
 }
 
-const QString& ReplyType::iconPath() const
+const QString& ReplyType::icon() const
 {
-	return m_iconPath;
+	return m_icon;
 }
-void ReplyType::setIconPath(const QString& newIconPath)
+void ReplyType::setIcon(const QString& newIconPath)
 {
-	if (m_iconPath == newIconPath)
+	if (m_icon == newIconPath)
 		return;
-	m_iconPath = newIconPath;
-	emit iconPathChanged();
+	m_icon = newIconPath;
+	emit iconChanged();
 }
