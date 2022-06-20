@@ -38,22 +38,27 @@ public:
 	bool isEnd() const;
 	void setIsEnd(bool newIsEnd);
 
+	Prompt *parent() const;
+	void setParent(Prompt *newParent);
+
 signals:
 	void idChanged();
 	void textChanged();
 	void characterChanged();
 	void backgroundChanged();
 	void repliesChanged();
-
-	void isEndChanged();
+	void isEndChanged();	
+	void parentChanged();
 
 private:
 	QString m_id;
+	Prompt* m_parent;
 	QString m_text = "";
 	QString m_character;
 	QString m_background;
 	bool m_isEnd = false;
 	QList<Reply*> m_replies;
+	Q_PROPERTY(Prompt *parent READ parent WRITE setParent NOTIFY parentChanged)
 };
 
 #endif // PROMPT_HPP

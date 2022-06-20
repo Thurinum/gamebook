@@ -25,13 +25,11 @@ function writePrompt(text) {
 
 // Displays a prompt and its replies on the UI.
 function displayPrompt(id) {
+	writePrompt("")
+	repliesRepeater.model = []
+
 	let prompt = Game.getPrompt(id)
 
-	if (!prompt) {
-		Game.addPrompt((parseInt(id) + 1).toString())
-	}
-
-	console.log(prompt.isEnd)
 	if (prompt.isEnd) {
 		endscreen.text = prompt.text
 		endscreen.scale = 1
@@ -39,5 +37,6 @@ function displayPrompt(id) {
 	}
 
 	app.currentPrompt = prompt
+	repliesRepeater.model = app.currentPrompt.replies
 	writePrompt(prompt.text)
 }

@@ -71,3 +71,15 @@ void Prompt::setIsEnd(bool newIsEnd)
 	m_isEnd = newIsEnd;
 	emit isEndChanged();
 }
+
+Prompt *Prompt::parent() const
+{
+	return m_parent;
+}
+void Prompt::setParent(Prompt *newParent)
+{
+	if (m_parent == newParent)
+		return;
+	m_parent = newParent;
+	emit parentChanged();
+}

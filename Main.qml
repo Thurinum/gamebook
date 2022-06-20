@@ -278,6 +278,14 @@ Window {
 						dialog_editReply.open()
 					}
 				}
+				MenuItem {
+					text: "Go back"
+					enabled: app.currentPrompt.parent
+					onTriggered: {
+						Utils.displayPrompt(
+									app.currentPrompt.parent.id)
+					}
+				}
 			}
 
 			MouseArea {
@@ -498,11 +506,11 @@ Window {
 
 		onAccepted: {
 			// TODO: add validation
+			let target = dialog_addReply_target.value
 			Game.addReply(app.currentPrompt,
 					  Utils.parseStr(dialog_addReply_text.text),
-					  dialog_addReply_target.value)
+					  target)
 			dialog_addReply_text.text = ""
-			dialog_addReply_target.value = 0
 
 			repliesRepeater.model = []
 			repliesRepeater.model = app.currentPrompt.replies

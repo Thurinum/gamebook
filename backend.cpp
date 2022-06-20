@@ -160,7 +160,7 @@ Prompt* Game::getPrompt(QString id)
 	return this->scenario->prompts().value(id);
 }
 
-void Game::addPrompt(QString id)
+void Game::addPrompt(QString id, Prompt* parent)
 {
 	if (this->scenario->prompts().contains(id)) {
 		qWarning("Prompt already exists with that key");
@@ -169,6 +169,9 @@ void Game::addPrompt(QString id)
 
 	Prompt* p = new Prompt;
 	p->setId(id);
+	p->setParent(parent);
+	p->setText("");
+	p->setIsEnd(false);
 
 	this->scenario->prompts()[id] = p;
 }
@@ -180,6 +183,8 @@ void Game::addReply(Prompt *prompt, QString text, QString target)
 	reply->setText(text);
 	reply->setTarget(target);
 	prompt->replies().append(reply);
+
+	addPrompt(target, prompt);
 }
 
 QString Game::getCharacter(QString name)
