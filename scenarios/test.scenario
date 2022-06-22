@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scenario name="test">
-      <characters/>
+	<characters>
+		<character name="Sam"  />
+		<character name="Ronan" sprite=""  />
+	</characters>
       <replytypes/>
       <prompts>
             <prompt id="" text="" character="" background="" isend="false"/>

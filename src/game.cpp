@@ -257,8 +257,11 @@ void Game::setSetting(const QString& key, const QVariant& val)
 
 QUrl Game::getPath(QString resourcePath, QString fallbackPath)
 {
-	QString path = "resources/" + resourcePath;
-	return QFile::exists(path) ? path : "resources/" + fallbackPath;
+	QString root = QDir::currentPath() + "/resources/";
+	QString path = root + resourcePath;
+
+	qDebug() << path;
+	return QFile::exists(path) ? QUrl::fromLocalFile(path) : QUrl::fromLocalFile(root + fallbackPath);
 }
 
 QUrl Game::getScenariosFolder()

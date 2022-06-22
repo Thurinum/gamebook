@@ -32,9 +32,7 @@ ApplicationWindow {
 			title: "Scenario"
 			MenuItem {
 				text: "Edit characters..."
-				onTriggered: {
-
-				}
+				onTriggered: dialog_editCharacters.open()
 			}
 			MenuItem {
 				text: "Edit reply types..."
@@ -400,5 +398,6 @@ ApplicationWindow {
 	Dialog.EditPrompt { id: dialog_editPrompt }
 	Dialog.AddReply { id: dialog_addReply }
 	Dialog.EditReply { id: dialog_editReply }
+	Dialog.EditCharacters { id: dialog_editCharacters }
 	Dialog.Error { id: dialog_error }
 }
