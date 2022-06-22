@@ -9,13 +9,13 @@ class Character : public QObject
 	Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameChanged)
 	Q_PROPERTY(QString sprite READ getSprite WRITE setSprite NOTIFY spriteChanged)
 public:
-	explicit Character(QObject *parent = nullptr);
+	explicit Character(QObject* parent = nullptr);
 
 	const QString& getName() const;
-	void setName(const QString& newName);
+	void		   setName(const QString& newName);
 
 	const QString& getSprite() const;
-	void setSprite(const QString& newSprite);
+	void		   setSprite(const QString& newSprite);
 
 signals:
 	void nameChanged();

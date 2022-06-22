@@ -13,10 +13,10 @@ public:
 	ReplyType();
 
 	const QString& color() const;
-	void setColor(const QString& newColor);
+	void		   setColor(const QString& newColor);
 
 	const QString& icon() const;
-	void setIcon(const QString& newIconPath);
+	void		   setIcon(const QString& newIconPath);
 
 signals:
 	void colorChanged();

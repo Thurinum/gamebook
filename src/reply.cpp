@@ -1,6 +1,6 @@
 #include "reply.hpp"
 
-Reply::Reply(QObject *parent) : QObject{parent} {}
+Reply::Reply(QObject* parent) : QObject{parent} {}
 
 const QString& Reply::text() const
 {

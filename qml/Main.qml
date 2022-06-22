@@ -1,7 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 import Qt.labs.folderlistmodel
-import "utils.js" as Utils
+import "../scripts/utils.js" as Utils
+import "./dialogs" as Dialog
 
 ApplicationWindow {
 	id: app
@@ -61,9 +62,7 @@ ApplicationWindow {
 		x: parallaxOverlay.point.position.x * fac - width / 2 * fac
 		y: parallaxOverlay.point.position.y * fac - height / 2 * fac
 
-		source: app.currentPrompt ? "resources/graphics/"
-						    + app.currentPrompt.background : Game.setting(
-							    "Main/sMainMenuBackground")
+		source: Game.getPath(app.currentPrompt.background, Game.setting("Main/sMainMenuBackground"))
 		fillMode: Image.PreserveAspectCrop
 	}
 
@@ -221,8 +220,7 @@ ApplicationWindow {
 				font.family: "serif"
 				font.pixelSize: 25
 				padding: 10
-				text: if (app.currentPrompt)
-						app.currentPrompt.text
+				text: app.currentPrompt ? app.currentPrompt.text : "empty prompt"
 
 				textFormat: Text.StyledText
 				wrapMode: Text.WordWrap
@@ -273,8 +271,7 @@ ApplicationWindow {
 				height: app.height - 25
 				fillMode: Image.PreserveAspectFit
 
-				source: app.currentPrompt ? "resources/graphics/" + Game.getCharacter(
-									    app.currentPrompt.character) : ""
+				source: Game.getPath(Game.getCharacter(app.currentPrompt.character), "")
 			}
 
 			Column {
@@ -326,10 +323,7 @@ ApplicationWindow {
 				MenuItem {
 					text: "Go back"
 					enabled: app.currentPrompt.parent
-					onTriggered: {
-						Utils.displayPrompt(
-									app.currentPrompt.parent.id)
-					}
+					onTriggered: Utils.displayPrompt(app.currentPrompt.parent.id)
 				}
 				MenuItem {
 					text: "Save"
@@ -344,15 +338,13 @@ ApplicationWindow {
 				enabled: app.isEditingAllowed
 				acceptedButtons: Qt.RightButton
 				onClicked: mouse => {
-						     let pt = mapToItem(repliesView,
-										mouse.x, mouse.y)
-						     repliesEditMenu.selection = repliesView.childAt(
-							     pt.x, pt.y)
+							let pt = mapToItem(repliesView, mouse.x, mouse.y)
+							repliesEditMenu.selection = repliesView.childAt(pt.x, pt.y)
 
-						     if (repliesEditMenu.selection)
-						     dialog_editReply.reply = app.currentPrompt.replies[repliesEditMenu.selection.index]
-						     repliesEditMenu.popup()
-					     }
+							if (repliesEditMenu.selection)
+								dialog_editReply.reply = app.currentPrompt.replies[repliesEditMenu.selection.index]
+							repliesEditMenu.popup()
+						}
 			}
 		}
 
@@ -362,8 +354,8 @@ ApplicationWindow {
 			MenuItem {
 				text: "Edit prompt..."
 				onTriggered: {
-					dialog_editPrompt_name.currentIndex = 0
-					dialog_editPrompt_text.text = app.currentPrompt.text
+					dialog_editPrompt.name.currentIndex = 0
+					dialog_editPrompt.text.text = app.currentPrompt.text
 					dialog_editPrompt.visible = true
 				}
 			}
@@ -402,224 +394,11 @@ ApplicationWindow {
 		}
 	}
 
-	Dialog {
-		id: dialog_addScenario
-		title: "New Scenario"
-		standardButtons: Dialog.Ok | Dialog.Cancel
-		anchors.centerIn: Overlay.overlay
-		height: 300
-
-		Label {
-			text: "Scenario name"
-			TextField {
-				id: dialog_addScenario_text
-				width: dialog_addScenario.availableWidth
-				anchors.top: parent.bottom
-			}
-		}
-
-		onAccepted: {
-			let name = dialog_addScenario_text.text
-			Game.createScenario(name)
-		}
-	}
-
-	Dialog {
-		id: dialog_addScenarioProfile
-		title: "New profile"
-		standardButtons: Dialog.Ok | Dialog.Cancel
-		anchors.centerIn: Overlay.overlay
-		height: 300
-
-		Label {
-			text: "Player name"
-			TextField {
-				id: dialog_addScenarioProfile_text
-				anchors.top: parent.bottom
-			}
-		}
-
-		onAccepted: {
-			let name = dialog_addScenarioProfile_text.text
-			Game.loadScenario(cbo_selectScenario.currentText)
-			Game.createScenarioProfile(name)
-			Utils.displayPrompt("0")
-			appmenu.height = 0
-		}
-	}
-
-	Dialog {
-		id: dialog_loadScenarioProfile
-		title: "Load existing save"
-		standardButtons: Dialog.Ok | Dialog.Cancel
-		anchors.centerIn: Overlay.overlay
-		height: 300
-
-		Label {
-			text: "Save profile"
-
-			ComboBox {
-				id: dialog_loadScenarioProfile_name
-				textRole: "fileBaseName"
-				valueRole: "fileName"
-				anchors.top: parent.bottom
-				model: FolderListModel {
-					// TODO: Remember last profile
-					showDirs: false
-					folder: Game.getScenariosFolder()
-					nameFilters: [cbo_selectScenario.currentText + "*.save"]
-				}
-			}
-		}
-
-		onAccepted: {
-			let name = dialog_loadScenarioProfile_name.currentText
-
-			if (name.length === 0) {
-				dialog_error.msg = "No scenario selected!"
-				dialog_error.visible = true
-				return
-			}
-
-			appmenu.height = 0
-			Game.loadScenarioProfile(name)
-		}
-	}
-
-	Dialog {
-		id: dialog_editPrompt
-		width: 400
-		height: 300
-		title: "Edit dialogue prompt"
-		standardButtons: Dialog.Ok | Dialog.Cancel
-		anchors.centerIn: Overlay.overlay
-
-		Column {
-			width: parent.width
-			anchors.margins: 10
-
-			Label {
-				text: "Character name"
-			}
-			ComboBox {
-				id: dialog_editPrompt_name
-				model: if (app.currentPrompt)
-						 Game.getCharacterNames()
-			}
-
-			Label {
-				text: "Dialogue contents"
-			}
-			TextArea {
-				id: dialog_editPrompt_text
-				width: parent.width
-				wrapMode: Text.Wrap
-			}
-		}
-
-		onAccepted: {
-			//			app.currentPrompt.character = Game.getCharacter(
-			//						dialog_editPrompt_name.currentText)
-			let txt = dialog_editPrompt_text.text
-			app.currentPrompt.text = txt
-			Utils.writePrompt(txt)
-		}
-	}
-
-	Dialog {
-		id: dialog_addReply
-		width: 400
-		height: 300
-		title: "Add dialogue reply"
-		standardButtons: Dialog.Ok | Dialog.Cancel
-		anchors.centerIn: Overlay.overlay
-
-		Column {
-			width: parent.width
-			anchors.margins: 10
-
-			Label {
-				text: "Reply text"
-			}
-			TextArea {
-				id: dialog_addReply_text
-				width: parent.width
-				wrapMode: Text.Wrap
-			}
-
-			Label {
-				text: "Reply target"
-			}
-			SpinBox {
-				id: dialog_addReply_target
-				width: parent.width
-			}
-		}
-
-		onAccepted: {
-			// TODO: Add validation for dialogs
-			let target = dialog_addReply_target.value
-			Game.addReply(app.currentPrompt,
-					  Utils.parseStr(dialog_addReply_text.text),
-					  target)
-			dialog_addReply_text.text = ""
-
-			repliesRepeater.model = []
-			repliesRepeater.model = app.currentPrompt.replies
-		}
-	}
-
-	Dialog {
-		id: dialog_editReply
-		width: 400
-		height: 300
-		title: "Edit dialogue reply"
-		standardButtons: Dialog.Ok | Dialog.Cancel
-		anchors.centerIn: Overlay.overlay
-
-		property var reply
-
-		Column {
-			width: parent.width
-			anchors.margins: 10
-
-			Label {
-				text: "Reply text"
-			}
-			TextArea {
-				id: dialog_editReply_text
-				width: parent.width
-				wrapMode: Text.Wrap
-				text: dialog_editReply.reply ? dialog_editReply.reply.text : ""
-			}
-
-			Label {
-				text: "Reply target"
-			}
-			SpinBox {
-				id: dialog_editReply_target
-				width: parent.width
-				from: -1
-				value: dialog_editReply.reply ? dialog_editReply.reply.target : 0
-			}
-		}
-
-		onAccepted: {
-			reply.text = Utils.parseStr(dialog_editReply_text.text)
-			reply.target = dialog_editReply_target.value
-		}
-	}
-
-	Dialog {
-		id: dialog_error
-		title: "Error"
-		standardButtons: Dialog.Ok
-		anchors.centerIn: Overlay.overlay
-
-		property string msg
-
-		Label {
-			text: dialog_error.msg
-		}
-	}
+	Dialog.AddScenario { id: dialog_addScenario }
+	Dialog.AddScenarioProfile { id: dialog_addScenarioProfile }
+	Dialog.LoadScenarioProfile { id: dialog_loadScenarioProfile }
+	Dialog.EditPrompt { id: dialog_editPrompt }
+	Dialog.AddReply { id: dialog_addReply }
+	Dialog.EditReply { id: dialog_editReply }
+	Dialog.Error { id: dialog_error }
 }

@@ -1,9 +1,6 @@
 #include "profile.hpp"
 
-Profile::Profile(QObject *parent) : QObject{parent}
-{
-
-}
+Profile::Profile(QObject* parent) : QObject{parent} {}
 
 const QString& Profile::name() const
 {

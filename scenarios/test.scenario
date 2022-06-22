@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenario name="test">
+      <characters/>
+      <replytypes/>
+      <prompts>
+            <prompt id="" text="" character="" background="" isend="false"/>
+            <prompt id="0" text="(Right-click on thsdfsdis prompt to start editing)" character="" background="" isend="false"/>
+      </prompts>
+</scenario>

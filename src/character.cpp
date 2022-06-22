@@ -1,9 +1,6 @@
 #include "character.hpp"
 
-Character::Character(QObject *parent) : QObject{parent}
-{
-
-}
+Character::Character(QObject* parent) : QObject{parent} {}
 
 const QString& Character::getName() const
 {

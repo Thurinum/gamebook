@@ -1,29 +1,13 @@
 QT += qml quick quickcontrols2 xml
 
 CONFIG += c++17
-
-SOURCES += \
-        backend.cpp \
-        character.cpp \
-        main.cpp \
-        profile.cpp \
-        prompt.cpp \
-        reply.cpp \
-        replytype.cpp \
-        scenario.cpp
-
-HEADERS += \
-	backend.hpp \
-	character.hpp \
-	profile.hpp \
-	prompt.hpp \
-	reply.hpp \
-	replytype.hpp \
-	scenario.hpp
+SOURCES += $$files("src/*.cpp", true)
+HEADERS += $$files("include/*.hpp", true)
+INCLUDEPATH += "include"
 
 DISTFILES += \
 	gamebook.ini \
-	gamebook.ini \
-	utils.js \
-	Main.qml \
-	resources/graphics/background.jpeg
+	$$files("qml/*.qml", true) \
+	$$files("scripts/*.js", true) \
+	$$files("resources/*", true) \
+	$$files("scenarios/*", true)

@@ -1,9 +1,6 @@
 #include "replytype.hpp"
 
-ReplyType::ReplyType()
-{
-
-}
+ReplyType::ReplyType() {}
 
 const QString& ReplyType::color() const
 {

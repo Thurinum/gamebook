@@ -17,18 +17,18 @@ public:
 	explicit Reply(QObject* parent = nullptr);
 
 	const QString& text() const;
-	void setText(const QString& newText);
+	void		   setText(const QString& newText);
 
 	const QString& target() const;
-	void setTarget(const QString& newTarget);
+	void		   setTarget(const QString& newTarget);
 
 signals:
 	void textChanged();
 	void targetChanged();
 
 private:
-	QString m_text;
-	QString m_target;
+	QString   m_text;
+	QString   m_target;
 	ReplyType m_type;
 };
 

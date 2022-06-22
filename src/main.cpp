@@ -1,4 +1,4 @@
-#include "backend.hpp"
+#include "game.hpp"
 #include "prompt.hpp"
 #include "scenario.hpp"
 
@@ -10,8 +10,7 @@
 #include <QQmlContext>
 #include <QQuickStyle>
 
-
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
 	qputenv("QT_QUICK_CONTROLS_CONF", QDir::currentPath().toLocal8Bit() + "/gamebook.ini");
 	qRegisterMetaType<Prompt*>();
@@ -21,21 +20,23 @@ int main(int argc, char *argv[])
 	qRegisterMetaType<QList<Reply*>>();
 
 	QGuiApplication app(argc, argv);
-	app.setOrganizationName("Thurinum");
-	app.setApplicationName("Gamebook");
+	QGuiApplication::setOrganizationName("Thurinum");
+	QGuiApplication::setApplicationName("Gamebook");
 
-	Game backend;
+	Game			    backend;
 	QQmlApplicationEngine engine;
 
 	engine.rootContext()->setContextProperty("Game", &backend);
 
-	const QUrl url("Main.qml");
-	QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-			     &app, [url](QObject *obj, const QUrl &objUrl) {
-		if (!obj && url == objUrl)
-			QCoreApplication::exit(-1);
-	}, Qt::QueuedConnection);
+	const QUrl url("qml/Main.qml");
+	QObject::connect(
+		&engine, &QQmlApplicationEngine::objectCreated, &app,
+		[url](QObject* obj, const QUrl& objUrl) {
+			if ((obj == nullptr) && url == objUrl)
+				QCoreApplication::exit(-1);
+		},
+		Qt::QueuedConnection);
 	engine.load(url);
 
-	return app.exec();
+	return QGuiApplication::exec();
 }

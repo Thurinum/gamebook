@@ -1,5 +1,5 @@
-#include "prompt.hpp"
 #include "scenario.hpp"
+#include "prompt.hpp"
 
 #include <QFile>
 #include <QXmlStreamWriter>
@@ -8,6 +8,7 @@ const QString& Scenario::name() const
 {
 	return m_name;
 }
+
 void Scenario::setName(const QString& newName)
 {
 	if (m_name == newName)
@@ -26,17 +27,12 @@ const QHash<QString, ReplyType*>& Scenario::replyTypes() const
 	return m_replyTypes;
 }
 
-Scenario::Scenario()
-{
-	this->id = 0; // TODO: Give scenarios a unique QUuid
-}
-
-QHash<QString, Character *> &Scenario::characters()
+QHash<QString, Character*>& Scenario::characters()
 {
 	return m_characters;
 }
 
-void Scenario::setCharacters(const QHash<QString, Character *> &newCharacters)
+void Scenario::setCharacters(const QHash<QString, Character*>& newCharacters)
 {
 	if (m_characters == newCharacters)
 		return;

@@ -19,27 +19,27 @@ class Prompt : public QObject
 	Q_PROPERTY(bool isEnd READ isEnd WRITE setIsEnd NOTIFY isEndChanged)
 	Q_PROPERTY(QList<Reply*> replies READ replies WRITE setReplies NOTIFY repliesChanged)
 
-public:	
+public:
 	const QString& id() const;
-	void setId(const QString& newId);
+	void		   setId(const QString& newId);
 
 	const QString& text() const;
-	void setText(const QString& newText);
+	void		   setText(const QString& newText);
 
 	const QString& character() const;
-	void setCharacter(const QString& newCharacter);
+	void		   setCharacter(const QString& newCharacter);
 
 	const QString& background() const;
-	void setBackground(const QString& newBackground);
+	void		   setBackground(const QString& newBackground);
 
 	QList<Reply*>& replies();
-	void setReplies(const QList<Reply*>& newReplies);
+	void		   setReplies(const QList<Reply*>& newReplies);
 
 	bool isEnd() const;
 	void setIsEnd(bool newIsEnd);
 
-	Prompt *parent() const;
-	void setParent(Prompt *newParent);
+	Prompt* parent() const;
+	void	  setParent(Prompt* newParent);
 
 signals:
 	void idChanged();
@@ -47,18 +47,18 @@ signals:
 	void characterChanged();
 	void backgroundChanged();
 	void repliesChanged();
-	void isEndChanged();	
+	void isEndChanged();
 	void parentChanged();
 
 private:
-	QString m_id;
-	Prompt* m_parent;
-	QString m_text = "";
-	QString m_character;
-	QString m_background;
-	bool m_isEnd = false;
+	QString	  m_id;
+	Prompt*	  m_parent;
+	QString	  m_text = "";
+	QString	  m_character;
+	QString	  m_background;
+	bool		  m_isEnd = false;
 	QList<Reply*> m_replies;
-	Q_PROPERTY(Prompt *parent READ parent WRITE setParent NOTIFY parentChanged)
+	Q_PROPERTY(Prompt* parent READ parent WRITE setParent NOTIFY parentChanged)
 };
 
 #endif // PROMPT_HPP

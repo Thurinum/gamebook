@@ -9,20 +9,20 @@ class Profile : public QObject
 	Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
 	Q_PROPERTY(QString promptid READ promptid WRITE setPromptid NOTIFY promptidChanged)
 public:
-	explicit Profile(QObject *parent = nullptr);
+	explicit Profile(QObject* parent = nullptr);
 
 	const QString& name() const;
-	void setName(const QString& newName);
+	void		   setName(const QString& newName);
 
 	const QString& promptid() const;
-	void setPromptid(const QString& newPromptid);
+	void		   setPromptid(const QString& newPromptid);
 
 signals:
 	void nameChanged();
 	void promptidChanged();
 
 private:
-	int id;
+	int	  id;
 	QString m_name;
 	QString m_promptid;
 };
