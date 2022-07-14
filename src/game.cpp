@@ -237,15 +237,17 @@ void Game::addReply(Prompt* prompt, const QString& text, QString target) {
 	addPrompt(target, prompt);
 }
 
-QString Game::getCharacter(const QString& name)
-{
+Character* Game::getCharacter(const QString& name) {
 	auto characters = this->scenario->characters();
-	return characters.count() > 0 ? characters.value(name)->getSprite() : "";
+
+	if (!characters.contains(name))
+		qWarning() << "No character " << name;
+
+	return characters.value(name);
 }
 
-QList<QString> Game::getCharacterNames()
-{
-	return this->scenario->characters().keys();
+QList<Character*> Game::getCharacters() {
+	return this->scenario->characters().values();
 }
 
 QVariant Game::setting(const QString& key)

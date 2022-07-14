@@ -23,8 +23,8 @@ public:
 	Q_INVOKABLE bool	  addPrompt(const QString& id, Prompt* parent);
 	Q_INVOKABLE void	  addReply(Prompt* prompt, const QString& text, QString target = nullptr);
 
-	Q_INVOKABLE QString getCharacter(const QString& name);
-	Q_INVOKABLE QList<QString> getCharacterNames();
+	Q_INVOKABLE Character* getCharacter(const QString& name);
+	Q_INVOKABLE QList<Character*> getCharacters();
 
 	Q_INVOKABLE QVariant setting(const QString& key);
 	Q_INVOKABLE void	   setSetting(const QString& key, const QVariant& val);
