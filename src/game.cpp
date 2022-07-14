@@ -5,6 +5,7 @@
 
 #include <QDir>
 #include <QGuiApplication>
+#include <QHash>
 #include <QUrl>
 #include <QUuid>
 #include <QXmlStreamReader>
@@ -108,7 +109,12 @@ void Game::loadScenario(const QString& name)
 			// TODO: Implement reply types
 		} else if (name == "character") {
 			Character* c = new Character;
-			c->setName(reader.attributes().value("name").toString());
+			QString    name = reader.attributes().value("name").toString();
+
+			if (name == "")
+				continue;
+
+			c->setName(name);
 			c->setSprite(reader.attributes().value("sprite").toString());
 			scn->characters().insert(c->getName(), c);
 		}
@@ -238,12 +244,32 @@ void Game::addReply(Prompt* prompt, const QString& text, QString target) {
 }
 
 Character* Game::getCharacter(const QString& name) {
-	auto characters = this->scenario->characters();
+	auto characters = &this->scenario->characters();
 
-	if (!characters.contains(name))
+	if (!characters->contains(name))
 		qWarning() << "No character " << name;
 
-	return characters.value(name);
+	return characters->value(name);
+}
+
+void Game::addCharacter(const QString& name, const QString& sprite) {
+	auto	     characters = &this->scenario->characters();
+	Character* c	    = new Character();
+
+	c->setName(name);
+	c->setSprite(sprite);
+	characters->insert(name, c);
+}
+
+void Game::removeCharacter(const QString& name) {
+	auto characters = &this->scenario->characters();
+
+	if (!characters->contains(name)) {
+		qWarning() << "No character " << name;
+		return;
+	}
+
+	characters->remove(name);
 }
 
 QList<Character*> Game::getCharacters() {
@@ -265,8 +291,26 @@ QUrl Game::getPath(QString resourcePath, QString fallbackPath)
 	QString root = QDir::currentPath() + "/resources/";
 	QString path = root + resourcePath;
 
-	qDebug() << path;
-	return QFile::exists(path) ? QUrl::fromLocalFile(path) : QUrl::fromLocalFile(root + fallbackPath);
+	QFileInfo info(path);
+
+	if (info.exists() && info.isFile())
+		return QUrl::fromLocalFile(path);
+
+	if (fallbackPath == "")
+		return QUrl::fromLocalFile(root + setting("Main/sFallbackImage").toString());
+
+	QString fallback = root + fallbackPath;
+
+	if (!setting("Debug/bValidateFallbackPaths").toBool())
+		return QUrl::fromLocalFile(fallback);
+
+	info.setFile(fallback);
+
+	if (info.exists() && info.isFile())
+		return QUrl::fromLocalFile(fallback);
+
+	qWarning() << "Fallback path " + fallback + " is invalid!";
+	return QUrl::fromLocalFile(root + setting("Main/sFallbackImage").toString());
 }
 
 QUrl Game::getScenariosFolder()

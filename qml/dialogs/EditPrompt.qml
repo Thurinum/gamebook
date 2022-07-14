@@ -22,7 +22,8 @@ Dialog {
 		}
 		ComboBox {
 			id: name
-			model: if (app.currentPrompt) Game.getCharacterNames()
+			model: if (app.currentPrompt) Game.getCharacters()
+			textRole: "name"
 		}
 
 		Label {
@@ -37,15 +38,14 @@ Dialog {
 		CheckBox {
 			id: bIsEnd
 			text: "Ends story"
-			checked: app.currentPrompt.isEnd
+			checked: app.currentPrompt ? app.currentPrompt.isEnd : false
 		}
 	}
 
 	onAccepted: {
-		//			app.currentPrompt.character = Game.getCharacter(
-		//						dialog_editPrompt_name.currentText)
 		let txt = text.text;
 		app.currentPrompt.text = txt;
+		app.currentPrompt.character = name.currentText
 		app.currentPrompt.isEnd = bIsEnd.checked;
 		prompt.text = txt;
 	}

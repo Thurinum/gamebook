@@ -24,6 +24,8 @@ public:
 	Q_INVOKABLE void	  addReply(Prompt* prompt, const QString& text, QString target = nullptr);
 
 	Q_INVOKABLE Character* getCharacter(const QString& name);
+	Q_INVOKABLE void	     addCharacter(const QString& name, const QString& sprite);
+	Q_INVOKABLE void	     removeCharacter(const QString& name);
 	Q_INVOKABLE QList<Character*> getCharacters();
 
 	Q_INVOKABLE QVariant setting(const QString& key);

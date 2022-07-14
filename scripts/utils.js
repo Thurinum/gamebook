@@ -43,5 +43,7 @@ function displayPrompt(id) {
 		app.currentPrompt.parent = parent;
 
 	repliesRepeater.model = app.currentPrompt.replies
-	writePrompt(parseStr(prompt.text))
+	writePrompt(parseStr(prompt.text));
+	character.source = Game.getPath(Game.getCharacter(app.currentPrompt.character).sprite, "");
+	background.source = Game.getPath(app.currentPrompt.background)
 }

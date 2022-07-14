@@ -59,9 +59,9 @@ ApplicationWindow {
 		scale: 1.5
 		x: parallaxOverlay.point.position.x * fac - width / 2 * fac
 		y: parallaxOverlay.point.position.y * fac - height / 2 * fac
-
-		source: Game.getPath(app.currentPrompt.background, Game.setting("Main/sMainMenuBackground"))
 		fillMode: Image.PreserveAspectCrop
+
+		source: Game.getPath(Game.setting("Main/sMainMenuBackground"))
 	}
 
 	Rectangle {
@@ -268,8 +268,6 @@ ApplicationWindow {
 
 				height: app.height - 25
 				fillMode: Image.PreserveAspectFit
-
-				source: Game.getPath(Game.getCharacter(app.currentPrompt.character), "")
 			}
 
 			Column {
@@ -307,7 +305,7 @@ ApplicationWindow {
 
 				MenuItem {
 					text: "Add reply..."
-					enabled: !app.currentPrompt.isEnd
+					enabled: app.currentPrompt ? !app.currentPrompt.isEnd : false
 					onTriggered: {
 						dialog_addReply.open()
 					}
@@ -321,7 +319,7 @@ ApplicationWindow {
 				}
 				MenuItem {
 					text: "Go back"
-					enabled: app.currentPrompt.parent
+					enabled: app.currentPrompt ? app.currentPrompt.parent : false
 					onTriggered: Utils.displayPrompt(app.currentPrompt.parent.id)
 				}
 				MenuItem {

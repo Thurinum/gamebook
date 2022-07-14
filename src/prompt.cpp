@@ -24,8 +24,7 @@ void Prompt::setText(const QString& newText)
 	emit textChanged();
 }
 
-const QString& Prompt::character() const
-{
+const QString& Prompt::character() const {
 	return m_character;
 }
 void Prompt::setCharacter(const QString& newCharacter)

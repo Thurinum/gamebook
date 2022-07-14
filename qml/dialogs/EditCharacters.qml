@@ -12,10 +12,19 @@ Dialog {
 	standardButtons: Dialog.Ok | Dialog.Cancel
 	anchors.centerIn: Overlay.overlay
 
+
+
 	ListView {
-		id: view
+		id: lview
 		anchors.fill: parent
 		spacing: 10
+
+		header: Button {
+			text: "+"
+			onClicked: {
+				edit_dialog.open()
+			}
+		}
 
 		delegate: Row {
 			height: 50
@@ -29,13 +38,14 @@ Dialog {
 
 				onClicked: {
 					edit_dialog.character = Game.getCharacter(name.text)
+					edit_dialog.isEdit = true
 					edit_dialog.open();
 				}
 
 				Image {
 					id: thumbnail
 					anchors.fill: thumbnail_mousearea
-					source: Game.getPath(view.model[index].sprite, "background.jpeg")
+					source: Game.getPath(lview.model[index].sprite, "background.jpeg")
 					fillMode: Image.PreserveAspectCrop
 				}
 
@@ -48,14 +58,31 @@ Dialog {
 			}
 
 			TextEdit {
-				width: 150
+				width: 250
 				id: name
-				text: view.model[index].name
+				text: lview.model[index].name
+			}
+
+			MouseArea {
+				width: 50
+				height: 50
+
+				Rectangle {
+					anchors.fill: parent
+					color: "red"
+				}
+
+				onClicked: {
+					confirm_dialog.character = lview.model[index].name
+					confirm_dialog.open()
+				}
 			}
 		}
 	}
 
-	onOpened: view.model = Game.getCharacters()
+	onOpened: lview.model = Game.getCharacters()
+
+	onAccepted: Utils.displayPrompt(app.currentPrompt.id)
 
 //	FileDialog {
 //		id: file_dialog
@@ -66,11 +93,12 @@ Dialog {
 		id: edit_dialog
 		width: 400
 		height: 300
-		title: "Character " + character.name
+		title: "Character " + (character ? character.name : "")
 		standardButtons: Dialog.Ok | Dialog.Cancel
 		anchors.centerIn: Overlay.overlay
 
 		property var character
+		property bool isEdit
 
 		Column {
 			Label {
@@ -79,7 +107,7 @@ Dialog {
 			TextField {
 				width: 150
 				id: character_name
-				text: edit_dialog.character.name
+				text: edit_dialog.character ? edit_dialog.character.name : ""
 			}
 
 			Label {
@@ -88,15 +116,44 @@ Dialog {
 			TextField {
 				id: character_image
 				width: 150
-				text: edit_dialog.character.sprite
+				text: edit_dialog.character ? edit_dialog.character.sprite : ""
 			}
 		}
 
 		onAccepted:  {
-			character.name = character_name.text
-			character.sprite = character_image.text;
-			view.model = []
-			view.model = view.model = Game.getCharacters();
+			let name = character_name.text;
+			let sprite = character_image.text;
+
+			if (isEdit) {
+				character.name = character_name.text;
+				character.sprite = character_image.text;
+			} else {
+				Game.addCharacter(name, sprite);
+			}
+
+			lview.model = []
+			lview.model = lview.model = Game.getCharacters();
+		}
+	}
+
+	Dialog {
+		id: confirm_dialog
+		width: 400
+		height: 300
+		title: "Confirm deletion"
+		standardButtons: Dialog.Yes | Dialog.No
+		anchors.centerIn: Overlay.overlay
+
+		property string character
+
+		Label {
+			text: "Are you sure you want to delete '" + confirm_dialog.character + "'?"
+		}
+
+		onAccepted:  {
+			Game.removeCharacter(character);
+			lview.model = []
+			lview.model = Game.getCharacters();
 		}
 	}
 }
