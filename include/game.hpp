@@ -20,7 +20,7 @@ public:
 	Q_INVOKABLE void saveScenario();
 
 	Q_INVOKABLE Prompt* getPrompt(const QString& id);
-	Q_INVOKABLE void	  addPrompt(const QString& id, Prompt* parent);
+	Q_INVOKABLE bool	  addPrompt(const QString& id, Prompt* parent);
 	Q_INVOKABLE void	  addReply(Prompt* prompt, const QString& text, QString target = nullptr);
 
 	Q_INVOKABLE QString getCharacter(const QString& name);

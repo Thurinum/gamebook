@@ -36,7 +36,12 @@ function displayPrompt(id) {
 		return
 	}
 
-	app.currentPrompt = prompt
+	let parent = app.currentPrompt
+	app.currentPrompt = prompt;
+
+	if (parent)
+		app.currentPrompt.parent = parent;
+
 	repliesRepeater.model = app.currentPrompt.replies
 	writePrompt(parseStr(prompt.text))
 }
