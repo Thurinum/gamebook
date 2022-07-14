@@ -27,19 +27,20 @@ Dialog {
 			text: dialog_editReply.reply ? dialog_editReply.reply.text : ""
 		}
 
-		Label {
-			text: "Reply target"
+		CheckBox {
+			id: checkbox
+			text: "Use custom target"
 		}
-		SpinBox {
+		TextArea {
 			id: dialog_editReply_target
 			width: parent.width
-			from: -1
-			value: dialog_editReply.reply ? dialog_editReply.reply.target : 0
+			enabled: checkbox.checked
+			text: dialog_editReply.reply ? dialog_editReply.reply.target : ""
 		}
 	}
 
 	onAccepted: {
 		reply.text = Utils.parseStr(dialog_editReply_text.text)
-		reply.target = dialog_editReply_target.value
+		reply.target = checkbox.checked ? dialog_editReply_target.value : null
 	}
 }

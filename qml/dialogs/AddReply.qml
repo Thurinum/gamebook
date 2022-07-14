@@ -24,18 +24,21 @@ Dialog {
 			wrapMode: Text.Wrap
 		}
 
-		Label {
-			text: "Reply target"
+		CheckBox {
+			id: checkbox
+			text: "Use custom target"
 		}
-		SpinBox {
+		TextArea {
 			id: dialog_addReply_target
 			width: parent.width
+			enabled: checkbox.checked
+			text: dialog_editReply.reply ? dialog_editReply.reply.target : ""
 		}
 	}
 
 	onAccepted: {
 		// TODO: Add validation for dialogs
-		let target = dialog_addReply_target.value
+		let target = checkbox.checked ? dialog_addReply_target.value : null
 		Game.addReply(app.currentPrompt,
 				  Utils.parseStr(dialog_addReply_text.text),
 				  target)

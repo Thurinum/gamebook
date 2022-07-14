@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QGuiApplication>
 #include <QUrl>
+#include <QUuid>
 #include <QXmlStreamReader>
 
 Game::Game() : scenario(new Scenario), profile(new Profile)
@@ -211,7 +212,7 @@ Prompt* Game::getPrompt(const QString& id)
 void Game::addPrompt(const QString& id, Prompt* parent)
 {
 	if (this->scenario->prompts().contains(id)) {
-		qWarning("Prompt already exists with that key");
+		qWarning() << "Prompt already exists with key '" << id << "'.";
 		return;
 	}
 
@@ -224,8 +225,10 @@ void Game::addPrompt(const QString& id, Prompt* parent)
 	this->scenario->prompts()[id] = p;
 }
 
-void Game::addReply(Prompt* prompt, const QString& text, const QString& target)
-{
+void Game::addReply(Prompt* prompt, const QString& text, QString target) {
+	if (target == nullptr)
+		target = QUuid::createUuid().toString();
+
 	Reply* reply = new Reply;
 	reply->setText(text);
 	reply->setTarget(target);
