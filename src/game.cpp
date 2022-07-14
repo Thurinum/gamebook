@@ -96,7 +96,7 @@ void Game::loadScenario(const QString& name)
 			p->setText(reader.attributes().value("text").toString());
 			p->setCharacter(reader.attributes().value("character").toString());
 			p->setBackground(reader.attributes().value("background").toString());
-			p->setIsEnd(reader.attributes().value("isEnd").toString() == "true");
+			p->setIsEnd(reader.attributes().value("isend").toString() == "true");
 			scn->prompts().insert(id, p);
 		} else if (p && name == "reply") {
 			Reply* r = new Reply();

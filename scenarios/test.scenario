@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scenario name="test">
       <characters>
-            <character name="Sam" sprite=""/>
             <character name="" sprite=""/>
             <character name="Ronan" sprite=""/>
+            <character name="Sam" sprite=""/>
       </characters>
       <replytypes/>
       <prompts>
-            <prompt id="{6ddabf4d-8643-4fba-859f-ee04fee25c30}" text="CUSTOM ID" character="" background="" isend="false"/>
             <prompt id="" text="" character="" background="" isend="false"/>
             <prompt id="{8fea9f13-8497-4062-88ea-dcb09c411564}" text="TESTTESTTEST" character="" background="" isend="false"/>
+            <prompt id="{6ddabf4d-8643-4fba-859f-ee04fee25c30}" text="THE ENDD REKT" character="" background="" isend="true"/>
             <prompt id="0" text="Allo" character="" background="" isend="false">
                   <reply text="test" target="{8fea9f13-8497-4062-88ea-dcb09c411564}"/>
                   <reply text="test 2" target="{6ddabf4d-8643-4fba-859f-ee04fee25c30}"/>

@@ -33,13 +33,20 @@ Dialog {
 			width: parent.width
 			wrapMode: Text.Wrap
 		}
+
+		CheckBox {
+			id: bIsEnd
+			text: "Ends story"
+			checked: app.currentPrompt.isEnd
+		}
 	}
 
 	onAccepted: {
 		//			app.currentPrompt.character = Game.getCharacter(
 		//						dialog_editPrompt_name.currentText)
-		let txt = text.text // TODO: refactor those names lol
-		app.currentPrompt.text = txt
-		prompt.text = txt
+		let txt = text.text;
+		app.currentPrompt.text = txt;
+		app.currentPrompt.isEnd = bIsEnd.checked;
+		prompt.text = txt;
 	}
 }

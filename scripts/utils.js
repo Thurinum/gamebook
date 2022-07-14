@@ -30,7 +30,7 @@ function displayPrompt(id) {
 
 	let prompt = Game.getPrompt(id)
 
-	if (prompt.isEnd) {
+	if (prompt.isEnd && !app.isEditingAllowed) {
 		endscreen.text = parseStr(prompt.text)
 		endscreen.scale = 1
 		return

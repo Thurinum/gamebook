@@ -307,6 +307,7 @@ ApplicationWindow {
 
 				MenuItem {
 					text: "Add reply..."
+					enabled: !app.currentPrompt.isEnd
 					onTriggered: {
 						dialog_addReply.open()
 					}
