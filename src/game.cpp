@@ -286,6 +286,10 @@ void Game::setSetting(const QString& key, const QVariant& val)
 	settings->setValue(key, val);
 }
 
+QUrl Game::getAbsolutePath() {
+	return QUrl::fromLocalFile(QDir::currentPath());
+}
+
 QUrl Game::getPath(QString resourcePath, QString fallbackPath)
 {
 	QString root = QDir::currentPath() + "/resources/";

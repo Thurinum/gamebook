@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
+import Qt.labs.folderlistmodel
 import "../../scripts/utils.js" as Utils
 
 Dialog {
@@ -84,11 +85,6 @@ Dialog {
 
 	onAccepted: Utils.displayPrompt(app.currentPrompt.id)
 
-//	FileDialog {
-//		id: file_dialog
-//		folder: Game.getScenariosFolder() + "/" + app.
-//	}
-
 	Dialog {
 		id: edit_dialog
 		width: 400
@@ -113,10 +109,18 @@ Dialog {
 			Label {
 				text: "Image path"
 			}
-			TextField {
+			ComboBox {
 				id: character_image
-				width: 150
-				text: edit_dialog.character ? edit_dialog.character.sprite : ""
+				width: 200
+				textRole: "fileName"
+				valueRole: "fileName"
+
+				model: FolderListModel {
+					id: character_image_model
+					showDirs: false
+					folder: Game.getAbsolutePath() + "/resources/"
+					nameFilters: ["*.png", "*.jp*g", "*.gif", "*.tif*", "*.webp"]
+				}
 			}
 		}
 
@@ -126,13 +130,19 @@ Dialog {
 
 			if (isEdit) {
 				character.name = character_name.text;
-				character.sprite = character_image.text;
+				character.sprite = character_image.currentText;
 			} else {
 				Game.addCharacter(name, sprite);
 			}
 
 			lview.model = []
 			lview.model = lview.model = Game.getCharacters();
+		}
+
+		onOpened: {
+			character_image.currentIndex = character.sprite
+					? character_image.find(character.sprite)
+					: -1;
 		}
 	}
 

@@ -61,7 +61,7 @@ ApplicationWindow {
 		y: parallaxOverlay.point.position.y * fac - height / 2 * fac
 		fillMode: Image.PreserveAspectCrop
 
-		source: Game.getPath(Game.setting("Main/sMainMenuBackground"))
+		source: app.currentPrompt && app.currentPrompt.background ? Game.getAbsolutePath() + "/resources/" + app.currentPrompt.background : Game.getPath(Game.setting("Main/sMainMenuBackground"))
 	}
 
 	Rectangle {
@@ -268,6 +268,9 @@ ApplicationWindow {
 
 				height: app.height - 25
 				fillMode: Image.PreserveAspectFit
+				source: app.currentPrompt && app.currentPrompt.character
+					  ? Game.getAbsolutePath() + "/resources/" + Game.getCharacter(app.currentPrompt.character).sprite
+					  : Game.getAbsolutePath() + "/resources/" + Game.setting("Main/sFallbackImage");
 			}
 
 			Column {
@@ -335,13 +338,13 @@ ApplicationWindow {
 				enabled: app.isEditingAllowed
 				acceptedButtons: Qt.RightButton
 				onClicked: mouse => {
-							let pt = mapToItem(repliesView, mouse.x, mouse.y)
-							repliesEditMenu.selection = repliesView.childAt(pt.x, pt.y)
+						     let pt = mapToItem(repliesView, mouse.x, mouse.y)
+						     repliesEditMenu.selection = repliesView.childAt(pt.x, pt.y)
 
-							if (repliesEditMenu.selection)
-								dialog_editReply.reply = app.currentPrompt.replies[repliesEditMenu.selection.index]
-							repliesEditMenu.popup()
-						}
+						     if (repliesEditMenu.selection)
+						     dialog_editReply.reply = app.currentPrompt.replies[repliesEditMenu.selection.index]
+						     repliesEditMenu.popup()
+					     }
 			}
 		}
 

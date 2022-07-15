@@ -32,6 +32,7 @@ public:
 	Q_INVOKABLE void	   setSetting(const QString& key, const QVariant& val);
 
 	// helpers
+	Q_INVOKABLE QUrl	    getAbsolutePath();
 	Q_INVOKABLE QUrl	    getPath(QString resourcePath, QString fallbackPath = "");
 	Q_INVOKABLE QUrl	    getScenariosFolder();
 	static inline QString getScenarioPath(const QString& name);
