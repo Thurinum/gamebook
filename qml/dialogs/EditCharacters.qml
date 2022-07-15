@@ -132,7 +132,7 @@ Dialog {
 
 		onAccepted:  {
 			let name = character_name.text;
-			let sprite = character_image.text;
+			let sprite = character_image.currentText;
 
 			if (character) {
 				character.name = character_name.text;
