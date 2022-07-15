@@ -24,6 +24,10 @@ ApplicationWindow {
 				onTriggered: Game.saveScenario()
 			}
 			MenuItem {
+				text: "Back to menu"
+				onTriggered: appmenu.height = app.height
+			}
+			MenuItem {
 				text: "Quit"
 				onTriggered: Qt.exit(0)
 			}
