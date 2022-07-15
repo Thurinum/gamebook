@@ -10,13 +10,11 @@
 #include <QUuid>
 #include <QXmlStreamReader>
 
-Game::Game() : scenario(new Scenario), profile(new Profile)
-{
+Game::Game() : scenario(new Scenario), profile(new Profile) {
 	settings = new QSettings(QDir::currentPath() + "/gamebook.ini", QSettings::IniFormat);
 }
 
-void Game::createScenario(const QString& name)
-{
+void Game::createScenario(const QString& name) {
 	QFile file(Game::getScenarioPath(name));
 	if (!file.open(QIODevice::WriteOnly)) {
 		qCritical() << "Failed to open file for writing";
@@ -45,8 +43,7 @@ void Game::createScenario(const QString& name)
 	file.close();
 }
 
-void Game::createScenarioProfile(const QString& name)
-{
+void Game::createScenarioProfile(const QString& name) {
 	if (this->scenario == nullptr) {
 		qWarning() << "Tried to create profile before scenario";
 		return;
@@ -71,8 +68,7 @@ void Game::createScenarioProfile(const QString& name)
 	file.close();
 }
 
-void Game::loadScenario(const QString& name)
-{
+void Game::loadScenario(const QString& name) {
 	Scenario* scn = new Scenario();
 	scn->setName(name);
 
@@ -91,7 +87,7 @@ void Game::loadScenario(const QString& name)
 		QString name = reader.name().toString();
 
 		if (name == "prompt") {
-			p = new Prompt();
+			p	     = new Prompt();
 			QString id = reader.attributes().value("id").toString();
 			p->setId(id);
 			p->setText(reader.attributes().value("text").toString());
@@ -108,7 +104,7 @@ void Game::loadScenario(const QString& name)
 		} else if (name == "replytype") {
 			// TODO: Implement reply types
 		} else if (name == "character") {
-			Character* c = new Character;
+			Character* c    = new Character;
 			QString    name = reader.attributes().value("name").toString();
 
 			if (name == "")
@@ -124,8 +120,7 @@ void Game::loadScenario(const QString& name)
 	this->scenario = scn;
 }
 
-void Game::loadScenarioProfile(const QString& name)
-{
+void Game::loadScenarioProfile(const QString& name) {
 	Profile* profile = new Profile;
 
 	if (!this->scenario) {
@@ -150,8 +145,7 @@ void Game::loadScenarioProfile(const QString& name)
 	this->profile = profile;
 }
 
-void Game::saveScenario()
-{
+void Game::saveScenario() {
 	if (!this->scenario) {
 		qWarning() << "Cannot save scenario since no scenario is currently opened!";
 		return;
@@ -210,8 +204,18 @@ void Game::saveScenario()
 	file.close();
 }
 
-Prompt* Game::getPrompt(const QString& id)
-{
+void Game::deleteScenario(const QString& name) {
+	QString path = getScenarioPath(name);
+
+	if (!QFile::exists(path)) {
+		qWarning() << "Cannot delete non-existing scenario " + name + ".";
+		return;
+	}
+
+	QFile::remove(path);
+}
+
+Prompt* Game::getPrompt(const QString& id) {
 	return this->scenario->prompts().value(id);
 }
 
@@ -276,13 +280,11 @@ QList<Character*> Game::getCharacters() {
 	return this->scenario->characters().values();
 }
 
-QVariant Game::setting(const QString& key)
-{
+QVariant Game::setting(const QString& key) {
 	return this->settings->value(key);
 }
 
-void Game::setSetting(const QString& key, const QVariant& val)
-{
+void Game::setSetting(const QString& key, const QVariant& val) {
 	settings->setValue(key, val);
 }
 
@@ -290,8 +292,7 @@ QUrl Game::getAbsolutePath() {
 	return QUrl::fromLocalFile(QDir::currentPath());
 }
 
-QUrl Game::getPath(QString resourcePath, QString fallbackPath)
-{
+QUrl Game::getPath(QString resourcePath, QString fallbackPath) {
 	QString root = QDir::currentPath() + "/resources/";
 	QString path = root + resourcePath;
 
@@ -317,17 +318,14 @@ QUrl Game::getPath(QString resourcePath, QString fallbackPath)
 	return QUrl::fromLocalFile(root + setting("Main/sFallbackImage").toString());
 }
 
-QUrl Game::getScenariosFolder()
-{
+QUrl Game::getScenariosFolder() {
 	return QUrl::fromLocalFile(QDir::currentPath() + "/scenarios");
 }
 
-QString Game::getScenarioPath(const QString& name)
-{
+QString Game::getScenarioPath(const QString& name) {
 	return "scenarios/" + name + ".scenario";
 }
 
-QString Game::getProfilePath(const QString& scnname, const QString& name)
-{
+QString Game::getProfilePath(const QString& scnname, const QString& name) {
 	return "scenarios/" + scnname + "-" + name + ".save";
 }

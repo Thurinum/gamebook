@@ -142,6 +142,10 @@ ApplicationWindow {
 						text: "+"
 						onClicked: dialog_addScenario.visible = true
 					}
+					Button {
+						text: "-"
+						onClicked: dialog_removeScenario.visible = true
+					}
 				}
 
 				Button {
@@ -395,6 +399,7 @@ ApplicationWindow {
 	}
 
 	Dialog.AddScenario { id: dialog_addScenario }
+	Dialog.DeleteScenario { id: dialog_removeScenario }
 	Dialog.AddScenarioProfile { id: dialog_addScenarioProfile }
 	Dialog.LoadScenarioProfile { id: dialog_loadScenarioProfile }
 	Dialog.EditPrompt { id: dialog_editPrompt }

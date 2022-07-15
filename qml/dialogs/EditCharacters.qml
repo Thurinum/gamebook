@@ -39,7 +39,6 @@ Dialog {
 
 				onClicked: {
 					edit_dialog.character = Game.getCharacter(name.text)
-					edit_dialog.isEdit = true
 					edit_dialog.open();
 				}
 
@@ -55,6 +54,10 @@ Dialog {
 					anchors.fill: thumbnail
 					color: "#222222AA"
 					visible: thumbnail_mousearea.containsMouse
+
+					Text {
+						text: "edit me"
+					}
 				}
 			}
 
@@ -71,6 +74,10 @@ Dialog {
 				Rectangle {
 					anchors.fill: parent
 					color: "red"
+
+					Text {
+						text: "nuke me"
+					}
 				}
 
 				onClicked: {
@@ -94,7 +101,6 @@ Dialog {
 		anchors.centerIn: Overlay.overlay
 
 		property var character
-		property bool isEdit
 
 		Column {
 			Label {
@@ -128,7 +134,7 @@ Dialog {
 			let name = character_name.text;
 			let sprite = character_image.text;
 
-			if (isEdit) {
+			if (character) {
 				character.name = character_name.text;
 				character.sprite = character_image.currentText;
 			} else {
@@ -136,11 +142,11 @@ Dialog {
 			}
 
 			lview.model = []
-			lview.model = lview.model = Game.getCharacters();
+			lview.model = Game.getCharacters();
 		}
 
 		onOpened: {
-			character_image.currentIndex = character.sprite
+			character_image.currentIndex = character && character.sprite
 					? character_image.find(character.sprite)
 					: -1;
 		}
