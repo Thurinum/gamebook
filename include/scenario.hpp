@@ -5,6 +5,7 @@
 #include "prompt.hpp"
 #include "replytype.hpp"
 
+#include <QDebug>
 #include <QHash>
 
 class Scenario : public QObject
@@ -16,6 +17,17 @@ class Scenario : public QObject
 	Q_PROPERTY(QHash<QString, ReplyType*> replyTypes READ replyTypes NOTIFY replyTypesChanged)
 
 public:
+	Scenario();
+	explicit Scenario(QString name);
+
+	void create() const;
+	void load();
+	void save();
+	void nuke();
+
+	inline QString	    path() const;
+	inline static QString path(const QString& name);
+
 	QHash<QString, Prompt*>&	    prompts();
 	const QHash<QString, ReplyType*>& replyTypes() const;
 
@@ -25,6 +37,8 @@ public:
 	const QString& name() const;
 	void		   setName(const QString& newName);
 
+	static const int XML_INDENT = 6;
+
 signals:
 	void nameChanged();
 	void promptsChanged();
@@ -32,7 +46,7 @@ signals:
 	void charactersChanged();
 
 private:
-	int				   id = 0;
+	QString			   m_id;
 	QString			   m_name;
 	QHash<QString, Prompt*>	   m_prompts;
 	QHash<QString, Character*> m_characters;

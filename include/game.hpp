@@ -16,13 +16,14 @@ class Game : public QObject
 	Q_PROPERTY(Prompt* currentPrompt READ currentPrompt NOTIFY currentPromptChanged)
 public:
 	Q_INVOKABLE void createScenario(const QString& name);
-	Q_INVOKABLE void createScenarioProfile(const QString& name);
+	Q_INVOKABLE void saveScenario();
 	Q_INVOKABLE void loadScenario(const QString& name);
-	Q_INVOKABLE Profile* getScenarioProfile();
+	Q_INVOKABLE void deleteScenario(const QString& name);
+
 	Q_INVOKABLE void	   loadScenarioProfile(const QString& name);
+	Q_INVOKABLE Profile* getScenarioProfile();
 	Q_INVOKABLE void	   saveScenarioProfile();
-	Q_INVOKABLE void	   saveScenario();
-	Q_INVOKABLE void	   deleteScenario(const QString& name);
+	Q_INVOKABLE void	   createScenarioProfile(const QString& name);
 
 	Q_INVOKABLE Prompt* parentPromptOf(Prompt* prompt);
 	Q_INVOKABLE bool	  addPrompt(const QString& id, Prompt* parent);
@@ -40,11 +41,10 @@ public:
 	Q_INVOKABLE QUrl	    getAbsolutePath();
 	Q_INVOKABLE QUrl	    getPath(const QString& resourcePath, const QString& fallbackPath = "");
 	Q_INVOKABLE QUrl	    getScenariosFolder();
-	static inline QString getScenarioPath(const QString& name);
 	static inline QString getProfilePath(const QString& scnname, const QString& name);
 
 	explicit Game()
-		: scenario(new Scenario), profile(new Profile),
+		: m_scenario(new Scenario), profile(new Profile),
 		  m_settings(new QSettings(QDir::currentPath() + "/gamebook.ini", QSettings::IniFormat)),
 		  m_currentPrompt(new Prompt(this)){};
 
@@ -55,7 +55,7 @@ signals:
 	void currentPromptChanged();
 
 private:
-	Scenario*  scenario{};
+	Scenario*  m_scenario;
 	Profile*   profile{};
 	QSettings* m_settings;
 	Prompt*    m_currentPrompt;
