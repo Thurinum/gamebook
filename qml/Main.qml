@@ -1,13 +1,12 @@
 import QtQuick
 import QtQuick.Controls
 import Qt.labs.folderlistmodel
-import "../scripts/utils.js" as Utils
+import "../scripts/gamescript.js" as GameScript
 import "./dialogs" as Dialog
 
 ApplicationWindow {
 	id: app
 
-	property var currentPrompt
 	property bool isEditingAllowed
 
 	width: 640
@@ -65,7 +64,7 @@ ApplicationWindow {
 		y: parallaxOverlay.point.position.y * fac - height / 2 * fac
 		fillMode: Image.PreserveAspectCrop
 
-		source: app.currentPrompt && app.currentPrompt.background ? Game.getAbsolutePath() + "/resources/" + app.currentPrompt.background : Game.getPath(Game.setting("Main/sMainMenuBackground"))
+		source: Game.currentPrompt && Game.currentPrompt.background ? Game.getAbsolutePath() + "/resources/" + Game.currentPrompt.background : Game.getPath(Game.setting("Main/sMainMenuBackground"))
 	}
 
 	Rectangle {
@@ -183,7 +182,7 @@ ApplicationWindow {
 						app.isEditingAllowed = true
 						Game.loadScenario(cbo_selectScenario.currentText)
 						//Game.loadScenarioProfile("_editModeProfile");
-						Utils.displayPrompt("0")
+						GameScript.displayPrompt("0")
 					}
 				}
 			}
@@ -224,7 +223,7 @@ ApplicationWindow {
 				font.family: "serif"
 				font.pixelSize: 25
 				padding: 10
-				text: app.currentPrompt ? app.currentPrompt.text : "empty prompt"
+				text: Game.currentPrompt ? Game.currentPrompt.text : "empty prompt"
 
 				textFormat: Text.StyledText
 				wrapMode: Text.WordWrap
@@ -274,8 +273,8 @@ ApplicationWindow {
 
 				height: app.height - 25
 				fillMode: Image.PreserveAspectFit
-				source: app.currentPrompt && app.currentPrompt.character
-					  ? Game.getAbsolutePath() + "/resources/" + Game.getCharacter(app.currentPrompt.character).sprite
+				source: Game.currentPrompt && Game.currentPrompt.character
+					  ? Game.getAbsolutePath() + "/resources/" + Game.getCharacter(Game.currentPrompt.character).sprite
 					  : "";
 			}
 
@@ -289,9 +288,9 @@ ApplicationWindow {
 
 				Repeater {
 					id: repliesRepeater
-					model: app.currentPrompt
-						 && app.currentPrompt.replies.length
-						 > 0 ? app.currentPrompt.replies : 0
+					model: Game.currentPrompt
+						 && Game.currentPrompt.replies.length
+						 > 0 ? Game.currentPrompt.replies : 0
 					delegate: Button {
 						property int index: model.index
 
@@ -300,8 +299,8 @@ ApplicationWindow {
 						text: modelData.text
 
 						onClicked: {
-							Utils.displayPrompt(
-										app.currentPrompt.replies[index].target)
+							GameScript.displayPrompt(
+										Game.currentPrompt.replies[index].target)
 						}
 					}
 				}
@@ -314,7 +313,7 @@ ApplicationWindow {
 
 				MenuItem {
 					text: "Add reply..."
-					enabled: app.currentPrompt ? !app.currentPrompt.isEnd : false
+					enabled: Game.currentPrompt ? !Game.currentPrompt.isEnd : false
 					onTriggered: {
 						dialog_addReply.open()
 					}
@@ -328,10 +327,8 @@ ApplicationWindow {
 				}
 				MenuItem {
 					text: "Go back"
-					enabled: app.currentPrompt && app.currentPrompt.parent ? app.currentPrompt.parent : false
-					onTriggered: {
-						Utils.displayPrompt(app.currentPrompt.parent.id)
-					}
+					enabled: Game.currentPrompt.parentPromptId !== ""
+					onTriggered: GameScript.displayPrompt(Game.currentPrompt.parentId)
 				}
 				MenuItem {
 					text: "Save"
@@ -350,7 +347,7 @@ ApplicationWindow {
 						     repliesEditMenu.selection = repliesView.childAt(pt.x, pt.y)
 
 						     if (repliesEditMenu.selection)
-						     dialog_editReply.reply = app.currentPrompt.replies[repliesEditMenu.selection.index]
+						     dialog_editReply.reply = Game.currentPrompt.replies[repliesEditMenu.selection.index]
 						     repliesEditMenu.popup()
 					     }
 			}
@@ -363,7 +360,7 @@ ApplicationWindow {
 				text: "Edit prompt..."
 				onTriggered: {
 					dialog_editPrompt.name.currentIndex = 0
-					dialog_editPrompt.text.text = app.currentPrompt.text
+					dialog_editPrompt.text.text = Game.currentPrompt.text
 					dialog_editPrompt.visible = true
 				}
 			}

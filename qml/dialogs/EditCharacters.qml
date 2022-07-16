@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
 import Qt.labs.folderlistmodel
-import "../../scripts/utils.js" as Utils
+import "../../scripts/gamescript.js" as GameScript
 
 Dialog {
 	id: dialog
@@ -90,7 +90,7 @@ Dialog {
 
 	onOpened: lview.model = Game.getCharacters()
 
-	onAccepted: Utils.displayPrompt(app.currentPrompt.id)
+	onAccepted: GameScript.displayPrompt(Game.currentPrompt.id)
 
 	Dialog {
 		id: edit_dialog

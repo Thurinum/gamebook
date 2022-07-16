@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import Qt.labs.folderlistmodel
-import "../../scripts/utils.js" as Utils
+import "../../scripts/gamescript.js" as GameScript
 
 Dialog {
 	id: dialog_addReply
@@ -38,13 +38,11 @@ Dialog {
 
 	onAccepted: {
 		// TODO: Add validation for dialogs
-		console.log(currentPrompt)
 		let target = checkbox.checked ? dialog_addReply_target.value : null
-		Game.addReply(currentPrompt,
-				  Utils.parseStr(dialog_addReply_text.text),
-				  target)
+		Game.addReply(Game.currentPrompt,
+				  GameScript.parseStr(dialog_addReply_text.text), target)
 		dialog_addReply_text.text = ""
 		repliesRepeater.model = []
-		repliesRepeater.model = currentPrompt.replies
+		repliesRepeater.model = Game.currentPrompt.replies
 	}
 }

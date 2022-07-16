@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import Qt.labs.folderlistmodel
-import "../../scripts/utils.js" as Utils
+import "../../scripts/gamescript.js" as GameScript
 
 Dialog {
 	id: dialog_editReply
@@ -40,7 +40,7 @@ Dialog {
 	}
 
 	onAccepted: {
-		reply.text = Utils.parseStr(dialog_editReply_text.text)
+		reply.text = GameScript.parseStr(dialog_editReply_text.text)
 		reply.target = checkbox.checked ? dialog_editReply_target.value : null
 	}
 }

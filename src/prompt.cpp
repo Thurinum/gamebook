@@ -71,12 +71,13 @@ void Prompt::setIsEnd(bool newIsEnd)
 	emit isEndChanged();
 }
 
-//Prompt* Prompt::parent() const {
-//	return m_parent;
-//}
-//void Prompt::setParent(Prompt* newParent) {
-//	if (m_parent == newParent)
-//		return;
-//	m_parent = newParent;
-//	emit parentChanged();
-//}
+const QString& Prompt::parentId() const {
+	return m_parentId;
+}
+
+void Prompt::setParentId(const QString& newParentId) {
+	if (m_parentId == newParentId)
+		return;
+	m_parentId = newParentId;
+	emit parentIdChanged();
+}

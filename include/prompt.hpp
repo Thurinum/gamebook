@@ -13,6 +13,7 @@ class Prompt : public QObject
 {
 	Q_OBJECT
 	Q_PROPERTY(QString id READ id WRITE setId NOTIFY idChanged)
+	Q_PROPERTY(QString parentId READ parentId WRITE setParentId NOTIFY parentIdChanged)
 	Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
 	Q_PROPERTY(QString character READ character WRITE setCharacter NOTIFY characterChanged)
 	Q_PROPERTY(QString background READ background WRITE setBackground NOTIFY backgroundChanged)
@@ -20,7 +21,7 @@ class Prompt : public QObject
 	Q_PROPERTY(QList<Reply*> replies READ replies WRITE setReplies NOTIFY repliesChanged)
 
 public:
-	Prompt(QObject* parent = 0) : QObject(parent) {}
+	Prompt(QObject* parent = nullptr) : QObject(parent) {}
 
 	const QString& id() const;
 	void		   setId(const QString& newId);
@@ -40,8 +41,8 @@ public:
 	bool isEnd() const;
 	void setIsEnd(bool newIsEnd);
 
-	//	Prompt* parent() const;
-	//	void	  setParent(Prompt* newParent);
+	const QString& parentId() const;
+	void		   setParentId(const QString& newParentId);
 
 signals:
 	void idChanged();
@@ -50,9 +51,11 @@ signals:
 	void backgroundChanged();
 	void repliesChanged();
 	void isEndChanged();
+	void parentIdChanged();
 
 private:
 	QString	  m_id;
+	QString	  m_parentId;
 	QString	  m_text = "";
 	QString	  m_character;
 	QString	  m_background;

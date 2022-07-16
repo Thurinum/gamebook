@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import Qt.labs.folderlistmodel
-import "../../scripts/utils.js" as Utils
+import "../../scripts/gamescript.js" as GameScript
 
 Dialog {
 	width: 400
@@ -22,7 +22,7 @@ Dialog {
 		}
 		ComboBox {
 			id: name
-			model: if (app.currentPrompt) Game.getCharacters()
+			model: if (Game.currentPrompt) Game.getCharacters()
 			textRole: "name"
 		}
 
@@ -56,25 +56,25 @@ Dialog {
 		CheckBox {
 			id: bIsEnd
 			text: "Ends story"
-			checked: app.currentPrompt ? app.currentPrompt.isEnd : false
+			checked: Game.currentPrompt ? Game.currentPrompt.isEnd : false
 		}
 	}
 
 	onAccepted: {
 		let txt = text.text;
-		app.currentPrompt.text = txt;
-		app.currentPrompt.character = name.currentText
-		app.currentPrompt.background = background.currentText
-		app.currentPrompt.isEnd = bIsEnd.checked;
+		Game.currentPrompt.text = txt;
+		Game.currentPrompt.character = name.currentText
+		Game.currentPrompt.background = background.currentText
+		Game.currentPrompt.isEnd = bIsEnd.checked;
 		prompt.text = txt;
-		Utils.displayPrompt(app.currentPrompt.id)
+		GameScript.displayPrompt(Game.currentPrompt.id)
 	}
 
 	onOpened: {
-		name.currentIndex = name.find(app.currentPrompt.character)
+		name.currentIndex = name.find(Game.currentPrompt.character)
 
-		background.currentIndex = app.currentPrompt.background
-				? background.find(app.currentPrompt.background)
+		background.currentIndex = Game.currentPrompt.background
+				? background.find(Game.currentPrompt.background)
 				: -1;
 	}
 }

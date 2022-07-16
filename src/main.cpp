@@ -24,8 +24,8 @@ int main(int argc, char* argv[])
 	QGuiApplication::setOrganizationName("Thurinum");
 	QGuiApplication::setApplicationName("Gamebook");
 
+	Game			    backend;
 	QQmlApplicationEngine engine;
-	Game			    backend(&engine);
 
 	engine.rootContext()->setContextProperty("Game", &backend);
 

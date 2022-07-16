@@ -12,19 +12,17 @@
 #include <QUuid>
 #include <QXmlStreamReader>
 
-Game::Game(QQmlApplicationEngine* engine) : scenario(new Scenario), profile(new Profile), engine(engine) {
-	settings = new QSettings(QDir::currentPath() + "/gamebook.ini", QSettings::IniFormat);
-	engine->setObjectOwnership(this->currentPrompt, QQmlApplicationEngine::CppOwnership);
+Prompt* Game::currentPrompt() const {
+	return m_currentPrompt;
 }
 
-Prompt* Game::getCurrentPrompt() const {
-	return currentPrompt;
-}
+void Game::setCurrentPrompt(const QString& id) {
+	Prompt* newCurrentPrompt = this->scenario->prompts().value(id);
 
-void Game::setCurrentPrompt(Prompt* newCurrentPrompt) {
-	if (currentPrompt == newCurrentPrompt)
+	if (m_currentPrompt == newCurrentPrompt)
 		return;
-	currentPrompt = newCurrentPrompt;
+
+	m_currentPrompt = newCurrentPrompt;
 	emit currentPromptChanged();
 }
 
@@ -109,6 +107,7 @@ void Game::loadScenario(const QString& name) {
 			Prompt* p = new Prompt(this);
 
 			p->setId(id);
+			p->setParentId(reader.attributes().value("parentid").toString());
 			p->setText(reader.attributes().value("text").toString());
 			p->setCharacter(reader.attributes().value("character").toString());
 			p->setBackground(reader.attributes().value("background").toString());
@@ -251,6 +250,7 @@ void Game::saveScenario() {
 			continue;
 		writer.writeStartElement("prompt");
 		writer.writeAttribute("id", p->id());
+		writer.writeAttribute("parentid", p->parentId());
 		writer.writeAttribute("text", p->text());
 		writer.writeAttribute("character", p->character());
 		writer.writeAttribute("background", p->background());
@@ -259,7 +259,7 @@ void Game::saveScenario() {
 			writer.writeStartElement("reply");
 			writer.writeAttribute("text", r->text());
 			writer.writeAttribute("target", r->target());
-			// writer.writeAttribute("type" TODO: Add reply types
+			// writer.writeAttribute("type", )
 			writer.writeEndElement();
 		}
 		writer.writeEndElement();
@@ -282,8 +282,8 @@ void Game::deleteScenario(const QString& name) {
 	QFile::remove(path);
 }
 
-Prompt* Game::getPrompt(const QString& id) {
-	return this->scenario->prompts().value(id);
+Prompt* Game::parentPromptOf(Prompt* prompt) {
+	return this->scenario->prompts().value(prompt->parentId());
 }
 
 bool Game::addPrompt(const QString& id, Prompt* parent) {
@@ -294,7 +294,7 @@ bool Game::addPrompt(const QString& id, Prompt* parent) {
 
 	Prompt* p = new Prompt(this);
 	p->setId(id);
-	p->setParent(parent);
+	p->setParentId(parent->id());
 	p->setText("(NEW PROMPT)");
 	p->setCharacter("");
 	p->setBackground("");
@@ -351,11 +351,11 @@ QList<Character*> Game::getCharacters() {
 }
 
 QVariant Game::setting(const QString& key) {
-	return this->settings->value(key);
+	return m_settings->value(key);
 }
 
 void Game::setSetting(const QString& key, const QVariant& val) {
-	settings->setValue(key, val);
+	m_settings->setValue(key, val);
 }
 
 QUrl Game::getAbsolutePath() {

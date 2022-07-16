@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Controls
-import "../../scripts/utils.js" as Utils
+import "../../scripts/gamescript.js" as GameScript
 
 Dialog {
 	id: dialog_addScenarioProfile
@@ -21,7 +21,7 @@ Dialog {
 		let name = dialog_addScenarioProfile_text.text
 		Game.loadScenario(cbo_selectScenario.currentText)
 		Game.createScenarioProfile(name)
-		Utils.displayPrompt("0")
+		GameScript.displayPrompt("0")
 		appmenu.height = 0
 	}
 }

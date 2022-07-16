@@ -4,9 +4,8 @@
 #include "profile.hpp"
 #include "scenario.hpp"
 
+#include <QDir>
 #include <QObject>
-#include <QQmlApplicationEngine>
-#include <QQmlEngine>
 #include <QSettings>
 #include <QUrl>
 #include <QVariant>
@@ -14,7 +13,7 @@
 class Game : public QObject
 {
 	Q_OBJECT
-	Q_PROPERTY(Prompt* currentPrompt READ getCurrentPrompt WRITE setCurrentPrompt NOTIFY currentPromptChanged)
+	Q_PROPERTY(Prompt* currentPrompt READ currentPrompt NOTIFY currentPromptChanged)
 public:
 	Q_INVOKABLE void createScenario(const QString& name);
 	Q_INVOKABLE void createScenarioProfile(const QString& name);
@@ -25,7 +24,7 @@ public:
 	Q_INVOKABLE void	   saveScenario();
 	Q_INVOKABLE void	   deleteScenario(const QString& name);
 
-	Q_INVOKABLE Prompt* getPrompt(const QString& id);
+	Q_INVOKABLE Prompt* parentPromptOf(Prompt* prompt);
 	Q_INVOKABLE bool	  addPrompt(const QString& id, Prompt* parent);
 	Q_INVOKABLE void	  addReply(Prompt* prompt, const QString& text, QString target = nullptr);
 
@@ -44,10 +43,13 @@ public:
 	static inline QString getScenarioPath(const QString& name);
 	static inline QString getProfilePath(const QString& scnname, const QString& name);
 
-	explicit Game(QQmlApplicationEngine* engine);
+	explicit Game()
+		: scenario(new Scenario), profile(new Profile),
+		  m_settings(new QSettings(QDir::currentPath() + "/gamebook.ini", QSettings::IniFormat)),
+		  m_currentPrompt(new Prompt(this)){};
 
-	Prompt* getCurrentPrompt() const;
-	void	  setCurrentPrompt(Prompt* newCurrentPrompt);
+	Prompt*	     currentPrompt() const;
+	Q_INVOKABLE void setCurrentPrompt(const QString& id);
 
 signals:
 	void currentPromptChanged();
@@ -55,9 +57,8 @@ signals:
 private:
 	Scenario*  scenario{};
 	Profile*   profile{};
-	QSettings* settings;
-	QQmlApplicationEngine* engine;
-	Prompt*		     currentPrompt{};
+	QSettings* m_settings;
+	Prompt*    m_currentPrompt;
 };
 
 #endif // BACKEND_HPP
