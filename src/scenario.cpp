@@ -17,7 +17,7 @@ void Scenario::setName(const QString& newName)
 	emit nameChanged();
 }
 
-QHash<QString, QSharedPointer<Prompt>>& Scenario::prompts() {
+QHash<QString, Prompt*>& Scenario::prompts() {
 	return m_prompts;
 }
 

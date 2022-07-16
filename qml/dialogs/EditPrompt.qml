@@ -22,7 +22,7 @@ Dialog {
 		}
 		ComboBox {
 			id: name
-			//model: if (Game.currentPrompt) Game.getCharacters()
+			model: if (app.currentPrompt) Game.getCharacters()
 			textRole: "name"
 		}
 
@@ -48,7 +48,7 @@ Dialog {
 			model: FolderListModel {
 				id: background_model
 				showDirs: false
-				//folder: Game.getAbsolutePath() + "/resources/"
+				folder: Game.getAbsolutePath() + "/resources/"
 				nameFilters: ["*.png", "*.jp*g", "*.gif", "*.tif*", "*.webp"]
 			}
 		}
@@ -56,26 +56,25 @@ Dialog {
 		CheckBox {
 			id: bIsEnd
 			text: "Ends story"
-			//checked: Game.currentPrompt ? Game.currentPrompt.isEnd : false
+			checked: app.currentPrompt ? app.currentPrompt.isEnd : false
 		}
 	}
 
 	onAccepted: {
-//		let txt = text.text;
-//		console.log()
-//		Game.currentPrompt.text = txt;
-//		//Game.currentPrompt.character = name.currentText
-//		Game.currentPrompt.background = background.currentText
-//		Game.currentPrompt.isEnd = bIsEnd.checked;
-//		prompt.text = txt;
-//		Utils.displayPrompt(Game.currentPrompt.id)
+		let txt = text.text;
+		app.currentPrompt.text = txt;
+		app.currentPrompt.character = name.currentText
+		app.currentPrompt.background = background.currentText
+		app.currentPrompt.isEnd = bIsEnd.checked;
+		prompt.text = txt;
+		Utils.displayPrompt(app.currentPrompt.id)
 	}
 
 	onOpened: {
-		//name.currentIndex = name.find(Game.currentPrompt.character)
+		name.currentIndex = name.find(app.currentPrompt.character)
 
-//		background.currentIndex = Game.currentPrompt.background
-//				? background.find(Game.currentPrompt.background)
-//				: -1;
+		background.currentIndex = app.currentPrompt.background
+				? background.find(app.currentPrompt.background)
+				: -1;
 	}
 }

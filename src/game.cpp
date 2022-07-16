@@ -83,7 +83,7 @@ void Game::createScenarioProfile(const QString& name) {
 }
 
 void Game::loadScenario(const QString& name) {
-	Scenario* scn = new Scenario();
+	Scenario* scn = new Scenario;
 	scn->setName(name);
 
 	QFile file(Game::getScenarioPath(name));
@@ -93,8 +93,7 @@ void Game::loadScenario(const QString& name) {
 	}
 
 	QXmlStreamReader reader(&file);
-	QSharedPointer<Prompt> current = nullptr;
-	auto*			     prompts = &scn->prompts();
+	Prompt*	     current = nullptr;
 	reader.readNextStartElement(); // scenario
 
 	while (!reader.atEnd()) {
@@ -107,7 +106,7 @@ void Game::loadScenario(const QString& name) {
 			if (id == "")
 				continue;
 
-			QSharedPointer<Prompt> p(new Prompt);
+			Prompt* p = new Prompt(this);
 
 			p->setId(id);
 			p->setText(reader.attributes().value("text").toString());
@@ -115,10 +114,10 @@ void Game::loadScenario(const QString& name) {
 			p->setBackground(reader.attributes().value("background").toString());
 			p->setIsEnd(reader.attributes().value("isend").toString() == "true");
 
-			prompts->insert(id, p);
+			scn->prompts().insert(id, p);
 			current = p;
 		} else if (current && name == "reply") {
-			Reply* r = new Reply();
+			Reply* r = new Reply(this);
 			r->setTarget(reader.attributes().value("target").toString());
 			r->setText(reader.attributes().value("text").toString());
 			if (reader.isStartElement())
@@ -126,7 +125,7 @@ void Game::loadScenario(const QString& name) {
 		} else if (name == "replytype") {
 			// TODO: Implement reply types
 		} else if (name == "character") {
-			Character* c    = new Character;
+			Character* c    = new Character(this);
 			QString    name = reader.attributes().value("name").toString();
 
 			if (name == "")
@@ -247,14 +246,9 @@ void Game::saveScenario() {
 	}
 	writer.writeEndElement();
 	writer.writeStartElement("prompts");
-	foreach (QSharedPointer<Prompt> p, scenario->prompts()) {
-		if (p->id() == "") {
-			qWarning() << "Skipping an empty prompt.";
+	foreach (Prompt* p, scenario->prompts()) {
+		if (p->id() == "")
 			continue;
-		}
-
-		qDebug() << "TEXT:";
-		qDebug() << p->text();
 		writer.writeStartElement("prompt");
 		writer.writeAttribute("id", p->id());
 		writer.writeAttribute("text", p->text());
@@ -289,7 +283,7 @@ void Game::deleteScenario(const QString& name) {
 }
 
 Prompt* Game::getPrompt(const QString& id) {
-	return this->scenario->prompts().value(id).get();
+	return this->scenario->prompts().value(id);
 }
 
 bool Game::addPrompt(const QString& id, Prompt* parent) {
@@ -298,8 +292,9 @@ bool Game::addPrompt(const QString& id, Prompt* parent) {
 		return false;
 	}
 
-	QSharedPointer<Prompt> p;
+	Prompt* p = new Prompt(this);
 	p->setId(id);
+	p->setParent(parent);
 	p->setText("(NEW PROMPT)");
 	p->setCharacter("");
 	p->setBackground("");

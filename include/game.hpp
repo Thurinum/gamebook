@@ -60,29 +60,4 @@ private:
 	Prompt*		     currentPrompt{};
 };
 
-/*
-fix: Crash on scenario saving
-
-The seemingly random crashes were caused by a headcrab
-			who snuck into the scenario's ventilation system.
-				
-				
-				.^!~:....:^~^:.                  
-						 ..:7YYJY~        :YP57~~~~^^^7J55YJ?                
-	~GB#&#BG#&G:     .5Y7^^^~~~::::^JYYG&:   7YJ!^.      
-					    .....  .Y&&J.   7B7:^^^:^^^::::!5B&#. :P&&&&&#Y^    
-		  ^B@#7. PG!^^~:^::^^^^~!JG&B.J&@#7:~J#&&GJ^ 
-		  !#@#G&G7!!!!~~~~!!!7JJG#&&@B!     .~J&@&!
-	?&@@#5???7??7???J5P#&&@B~       .^7Y!:^
-			:P&#BGP5555555PG#&&&&#^        .      
-		:G&##BBGGPB###G7.Y@&~               
-							 .B&&&##&#&&&?   !P?~               
-						  .BJ^.:::^P#.                      
-					  .        :                       
-			
-				- Remove braces around uuids when saving
-				- Auto-select scenario in dropdown on creation
-				- Skip empty prompts that occur for some reason
-*/
-
 #endif // BACKEND_HPP

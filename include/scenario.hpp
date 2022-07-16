@@ -11,12 +11,12 @@ class Scenario : public QObject
 {
 	Q_OBJECT
 	Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
-	Q_PROPERTY(QHash<QString, QSharedPointer<Prompt>> prompts READ prompts NOTIFY promptsChanged)
+	Q_PROPERTY(QHash<QString, Prompt*> prompts READ prompts NOTIFY promptsChanged)
 	Q_PROPERTY(QHash<QString, Character*> characters READ characters WRITE setCharacters NOTIFY charactersChanged)
 	Q_PROPERTY(QHash<QString, ReplyType*> replyTypes READ replyTypes NOTIFY replyTypesChanged)
 
 public:
-	QHash<QString, QSharedPointer<Prompt>>& prompts();
+	QHash<QString, Prompt*>&	    prompts();
 	const QHash<QString, ReplyType*>& replyTypes() const;
 
 	QHash<QString, Character*>& characters();
@@ -34,7 +34,7 @@ signals:
 private:
 	int				   id = 0;
 	QString			   m_name;
-	QHash<QString, QSharedPointer<Prompt>> m_prompts;
+	QHash<QString, Prompt*>	   m_prompts;
 	QHash<QString, Character*> m_characters;
 	QHash<QString, ReplyType*> m_replyTypes;
 };

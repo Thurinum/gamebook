@@ -20,6 +20,8 @@ class Prompt : public QObject
 	Q_PROPERTY(QList<Reply*> replies READ replies WRITE setReplies NOTIFY repliesChanged)
 
 public:
+	Prompt(QObject* parent = 0) : QObject(parent) {}
+
 	const QString& id() const;
 	void		   setId(const QString& newId);
 
