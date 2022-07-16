@@ -14,6 +14,18 @@
 
 Game::Game(QQmlApplicationEngine* engine) : scenario(new Scenario), profile(new Profile), engine(engine) {
 	settings = new QSettings(QDir::currentPath() + "/gamebook.ini", QSettings::IniFormat);
+	engine->setObjectOwnership(this->currentPrompt, QQmlApplicationEngine::CppOwnership);
+}
+
+Prompt* Game::getCurrentPrompt() const {
+	return currentPrompt;
+}
+
+void Game::setCurrentPrompt(Prompt* newCurrentPrompt) {
+	if (currentPrompt == newCurrentPrompt)
+		return;
+	currentPrompt = newCurrentPrompt;
+	emit currentPromptChanged();
 }
 
 void Game::createScenario(const QString& name) {
@@ -276,10 +288,8 @@ void Game::deleteScenario(const QString& name) {
 	QFile::remove(path);
 }
 
-void Game::setCurrentPrompt(const QString& id) {
-	Prompt* p = this->scenario->prompts().value(id).get();
-	//this->engine->setObjectOwnership(p, QQmlApplicationEngine::CppOwnership);
-	this->engine->rootContext()->setContextProperty("currentPrompt", p);
+Prompt* Game::getPrompt(const QString& id) {
+	return this->scenario->prompts().value(id).get();
 }
 
 bool Game::addPrompt(const QString& id, Prompt* parent) {

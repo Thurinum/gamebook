@@ -90,7 +90,7 @@ Dialog {
 
 	onOpened: lview.model = Game.getCharacters()
 
-	onAccepted: Utils.displayPrompt(currentPrompt.id)
+	onAccepted: Utils.displayPrompt(Game.currentPrompt.id)
 
 	Dialog {
 		id: edit_dialog

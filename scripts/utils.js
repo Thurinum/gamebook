@@ -27,20 +27,20 @@ function writePrompt(text) {
 function displayPrompt(id) {
 	writePrompt("")
 	repliesRepeater.model = []
-	Game.setCurrentPrompt(id);
+	Game.currentPrompt = Game.getPrompt(id);
 
-	if (currentPrompt.isEnd && !app.isEditingAllowed) {
-		endscreen.text = parseStr(currentPrompt.text)
+	if (Game.currentPrompt.isEnd && !app.isEditingAllowed) {
+		endscreen.text = parseStr(Game.currentPrompt.text)
 		endscreen.scale = 1
 		return
 	}
 
-	let parent = currentPrompt
+	let parent = Game.currentPrompt
 
 	if (parent)
-		currentPrompt.parent = parent;
+		Game.currentPrompt.parent = parent;
 
-	repliesRepeater.model = currentPrompt.replies
-	writePrompt(parseStr(currentPrompt.text));
+	repliesRepeater.model = Game.currentPrompt.replies
+	writePrompt(parseStr(Game.currentPrompt.text));
 	//Game.saveScenarioProfile();
 }

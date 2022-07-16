@@ -13,7 +13,8 @@
 int main(int argc, char* argv[])
 {
 	qputenv("QT_QUICK_CONTROLS_CONF", QDir::currentPath().toLocal8Bit() + "/gamebook.ini");
-	qRegisterMetaType<Prompt>();
+	qRegisterMetaType<Prompt*>();
+	qRegisterMetaType<QSharedPointer<Prompt>>();
 	qRegisterMetaType<Reply*>();
 	qRegisterMetaType<Scenario*>();
 	qRegisterMetaType<Profile*>();

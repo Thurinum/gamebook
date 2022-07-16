@@ -14,6 +14,7 @@
 class Game : public QObject
 {
 	Q_OBJECT
+	Q_PROPERTY(Prompt* currentPrompt READ getCurrentPrompt WRITE setCurrentPrompt NOTIFY currentPromptChanged)
 public:
 	Q_INVOKABLE void createScenario(const QString& name);
 	Q_INVOKABLE void createScenarioProfile(const QString& name);
@@ -24,7 +25,7 @@ public:
 	Q_INVOKABLE void	   saveScenario();
 	Q_INVOKABLE void	   deleteScenario(const QString& name);
 
-	Q_INVOKABLE void	  setCurrentPrompt(const QString& id);
+	Q_INVOKABLE Prompt* getPrompt(const QString& id);
 	Q_INVOKABLE bool	  addPrompt(const QString& id, Prompt* parent);
 	Q_INVOKABLE void	  addReply(Prompt* prompt, const QString& text, QString target = nullptr);
 
@@ -45,11 +46,18 @@ public:
 
 	explicit Game(QQmlApplicationEngine* engine);
 
+	Prompt* getCurrentPrompt() const;
+	void	  setCurrentPrompt(Prompt* newCurrentPrompt);
+
+signals:
+	void currentPromptChanged();
+
 private:
 	Scenario*  scenario{};
 	Profile*   profile{};
 	QSettings* settings;
 	QQmlApplicationEngine* engine;
+	Prompt*		     currentPrompt{};
 };
 
 /*

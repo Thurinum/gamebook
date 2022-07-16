@@ -64,7 +64,7 @@ ApplicationWindow {
 		y: parallaxOverlay.point.position.y * fac - height / 2 * fac
 		fillMode: Image.PreserveAspectCrop
 
-		source: currentPrompt && currentPrompt.background ? Game.getAbsolutePath() + "/resources/" + currentPrompt.background : Game.getPath(Game.setting("Main/sMainMenuBackground"))
+		source: Game.currentPrompt && Game.currentPrompt.background ? Game.getAbsolutePath() + "/resources/" + Game.currentPrompt.background : Game.getPath(Game.setting("Main/sMainMenuBackground"))
 	}
 
 	Rectangle {
@@ -223,7 +223,7 @@ ApplicationWindow {
 				font.family: "serif"
 				font.pixelSize: 25
 				padding: 10
-				text: currentPrompt ? currentPrompt.text : "empty prompt"
+				text: Game.currentPrompt ? Game.currentPrompt.text : "empty prompt"
 
 				textFormat: Text.StyledText
 				wrapMode: Text.WordWrap
@@ -273,8 +273,8 @@ ApplicationWindow {
 
 				height: app.height - 25
 				fillMode: Image.PreserveAspectFit
-				source: currentPrompt && currentPrompt.character
-					  ? Game.getAbsolutePath() + "/resources/" + Game.getCharacter(currentPrompt.character).sprite
+				source: Game.currentPrompt && Game.currentPrompt.character
+					  ? Game.getAbsolutePath() + "/resources/" + Game.getCharacter(Game.currentPrompt.character).sprite
 					  : "";
 			}
 
@@ -288,9 +288,9 @@ ApplicationWindow {
 
 				Repeater {
 					id: repliesRepeater
-					model: currentPrompt
-						 && currentPrompt.replies.length
-						 > 0 ? currentPrompt.replies : 0
+					model: Game.currentPrompt
+						 && Game.currentPrompt.replies.length
+						 > 0 ? Game.currentPrompt.replies : 0
 					delegate: Button {
 						property int index: model.index
 
@@ -300,7 +300,7 @@ ApplicationWindow {
 
 						onClicked: {
 							Utils.displayPrompt(
-										currentPrompt.replies[index].target)
+										Game.currentPrompt.replies[index].target)
 						}
 					}
 				}
@@ -313,7 +313,7 @@ ApplicationWindow {
 
 				MenuItem {
 					text: "Add reply..."
-					enabled: currentPrompt ? !currentPrompt.isEnd : false
+					enabled: Game.currentPrompt ? !Game.currentPrompt.isEnd : false
 					onTriggered: {
 						dialog_addReply.open()
 					}
@@ -327,9 +327,9 @@ ApplicationWindow {
 				}
 				MenuItem {
 					text: "Go back"
-					enabled: currentPrompt && currentPrompt.parent ? currentPrompt.parent : false
+					enabled: Game.currentPrompt && Game.currentPrompt.parent ? Game.currentPrompt.parent : false
 					onTriggered: {
-						Utils.displayPrompt(currentPrompt.parent.id)
+						Utils.displayPrompt(Game.currentPrompt.parent.id)
 					}
 				}
 				MenuItem {
@@ -349,7 +349,7 @@ ApplicationWindow {
 						     repliesEditMenu.selection = repliesView.childAt(pt.x, pt.y)
 
 						     if (repliesEditMenu.selection)
-						     dialog_editReply.reply = currentPrompt.replies[repliesEditMenu.selection.index]
+						     dialog_editReply.reply = Game.currentPrompt.replies[repliesEditMenu.selection.index]
 						     repliesEditMenu.popup()
 					     }
 			}
@@ -362,9 +362,7 @@ ApplicationWindow {
 				text: "Edit prompt..."
 				onTriggered: {
 					dialog_editPrompt.name.currentIndex = 0
-					console.log(currentPrompt)
-					Game.setCurrentPrompt(currentPrompt.id)
-					dialog_editPrompt.text.text = currentPrompt.text
+					dialog_editPrompt.text.text = Game.currentPrompt.text
 					dialog_editPrompt.visible = true
 				}
 			}
