@@ -21,5 +21,6 @@ Dialog {
 	onAccepted: {
 		let name = dialog_addScenario_text.text
 		Game.createScenario(name)
+		cbo_selectScenario.currentIndex = cbo_selectScenario.find(name)
 	}
 }

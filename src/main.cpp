@@ -13,7 +13,7 @@
 int main(int argc, char* argv[])
 {
 	qputenv("QT_QUICK_CONTROLS_CONF", QDir::currentPath().toLocal8Bit() + "/gamebook.ini");
-	qRegisterMetaType<Prompt*>();
+	qRegisterMetaType<Prompt>();
 	qRegisterMetaType<Reply*>();
 	qRegisterMetaType<Scenario*>();
 	qRegisterMetaType<Profile*>();
@@ -23,14 +23,16 @@ int main(int argc, char* argv[])
 	QGuiApplication::setOrganizationName("Thurinum");
 	QGuiApplication::setApplicationName("Gamebook");
 
-	Game			    backend;
 	QQmlApplicationEngine engine;
+	Game			    backend(&engine);
 
 	engine.rootContext()->setContextProperty("Game", &backend);
 
 	const QUrl url("qml/Main.qml");
 	QObject::connect(
-		&engine, &QQmlApplicationEngine::objectCreated, &app,
+		&engine,
+		&QQmlApplicationEngine::objectCreated,
+		&app,
 		[url](QObject* obj, const QUrl& objUrl) {
 			if ((obj == nullptr) && url == objUrl)
 				QCoreApplication::exit(-1);

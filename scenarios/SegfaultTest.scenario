@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenario name="SegfaultTest">
+      <characters>
+            <character name="Jasper" sprite="furry.png"/>
+      </characters>
+      <replytypes/>
+      <prompts>
+            <prompt id="0" text="Hello! Many thanks for joining in. My name is Jasper and I shall be your guide today.&lt;br&gt;&lt;br&gt;The experiment you take part in purports to determine the cause of segmentation faults within our program." character="Jasper" background="galaxy.png" isend="false">
+                  <reply text="Why in the world are you a furry?" target="45651c89-cc52-40a7-8f87-9723d0b88ef7"/>
+                  <reply text="Pleased to meet you. My name is PLAYERNAME." target="d6cda6dd-054c-4298-b386-b09326ec508b"/>
+            </prompt>
+            <prompt id="d6cda6dd-054c-4298-b386-b09326ec508b" text="(NEW PROMPT)" character="" background="" isend="false"/>
+            <prompt id="45651c89-cc52-40a7-8f87-9723d0b88ef7" text="(NEW PROMPT)" character="" background="" isend="false"/>
+      </prompts>
+</scenario>

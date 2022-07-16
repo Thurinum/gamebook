@@ -38,13 +38,13 @@ Dialog {
 
 	onAccepted: {
 		// TODO: Add validation for dialogs
+		console.log(currentPrompt)
 		let target = checkbox.checked ? dialog_addReply_target.value : null
-		Game.addReply(app.currentPrompt,
+		Game.addReply(currentPrompt,
 				  Utils.parseStr(dialog_addReply_text.text),
 				  target)
 		dialog_addReply_text.text = ""
-
 		repliesRepeater.model = []
-		repliesRepeater.model = app.currentPrompt.replies
+		repliesRepeater.model = currentPrompt.replies
 	}
 }

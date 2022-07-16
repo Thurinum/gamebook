@@ -2,15 +2,17 @@
 #include "profile.hpp"
 #include "prompt.hpp"
 #include "scenario.hpp"
+#include <QQmlContext>
 
 #include <QDir>
 #include <QGuiApplication>
 #include <QHash>
+#include <QQmlApplicationEngine>
 #include <QUrl>
 #include <QUuid>
 #include <QXmlStreamReader>
 
-Game::Game() : scenario(new Scenario), profile(new Profile) {
+Game::Game(QQmlApplicationEngine* engine) : scenario(new Scenario), profile(new Profile), engine(engine) {
 	settings = new QSettings(QDir::currentPath() + "/gamebook.ini", QSettings::IniFormat);
 }
 
@@ -79,7 +81,8 @@ void Game::loadScenario(const QString& name) {
 	}
 
 	QXmlStreamReader reader(&file);
-	Prompt*	     p = nullptr;
+	QSharedPointer<Prompt> current = nullptr;
+	auto*			     prompts = &scn->prompts();
 	reader.readNextStartElement(); // scenario
 
 	while (!reader.atEnd()) {
@@ -87,20 +90,27 @@ void Game::loadScenario(const QString& name) {
 		QString name = reader.name().toString();
 
 		if (name == "prompt") {
-			p	     = new Prompt();
 			QString id = reader.attributes().value("id").toString();
+
+			if (id == "")
+				continue;
+
+			QSharedPointer<Prompt> p(new Prompt);
+
 			p->setId(id);
 			p->setText(reader.attributes().value("text").toString());
 			p->setCharacter(reader.attributes().value("character").toString());
 			p->setBackground(reader.attributes().value("background").toString());
 			p->setIsEnd(reader.attributes().value("isend").toString() == "true");
-			scn->prompts().insert(id, p);
-		} else if (p && name == "reply") {
+
+			prompts->insert(id, p);
+			current = p;
+		} else if (current && name == "reply") {
 			Reply* r = new Reply();
 			r->setTarget(reader.attributes().value("target").toString());
 			r->setText(reader.attributes().value("text").toString());
 			if (reader.isStartElement())
-				p->replies().append(r);
+				current->replies().append(r);
 		} else if (name == "replytype") {
 			// TODO: Implement reply types
 		} else if (name == "character") {
@@ -120,6 +130,20 @@ void Game::loadScenario(const QString& name) {
 	this->scenario = scn;
 }
 
+Profile* Game::getScenarioProfile() {
+	if (this->scenario == nullptr) {
+		qWarning() << "Tried to access profile before scenario";
+		return nullptr;
+	}
+
+	if (this->profile == nullptr) {
+		qWarning() << "Tried to access profile but none exists.";
+		return nullptr;
+	}
+
+	return this->profile;
+}
+
 void Game::loadScenarioProfile(const QString& name) {
 	Profile* profile = new Profile;
 
@@ -131,18 +155,48 @@ void Game::loadScenarioProfile(const QString& name) {
 
 	QFile file(Game::getProfilePath(this->scenario->name(), name));
 	if (!file.open(QIODevice::ReadOnly)) {
-		qCritical() << "Failed to open file for writing";
+		qCritical() << "Failed to open scenario for writing";
 		delete profile;
 		return;
 	}
 
 	QXmlStreamReader reader(&file);
 	reader.readNextStartElement(); // profile
-	profile->setName(name);
+	profile->setName(reader.attributes().value("name").toString());
 	profile->setPromptid(reader.attributes().value("progress").toString());
 
 	file.close();
 	this->profile = profile;
+}
+
+void Game::saveScenarioProfile() {
+	if (this->scenario == nullptr) {
+		qWarning() << "Tried to save profile before scenario";
+		return;
+	}
+
+	if (this->profile == nullptr) {
+		qWarning() << "There is no current profile! Cannot save.";
+		return;
+	}
+
+	QFile file(Game::getProfilePath(this->scenario->name(), this->profile->name()));
+	if (!file.open(QIODevice::WriteOnly)) {
+		qCritical() << "Failed to open profile for writing.";
+		return;
+	}
+
+	QXmlStreamWriter writer(&file);
+	writer.setAutoFormatting(true);
+	writer.setAutoFormattingIndent(setting("Main/iXmlIndent").toInt());
+
+	writer.writeStartDocument();
+	writer.writeStartElement("profile");
+	writer.writeAttribute("name", this->profile->name());
+	writer.writeAttribute("progress", this->profile->promptid());
+	writer.writeEndElement();
+	writer.writeEndDocument();
+	file.close();
 }
 
 void Game::saveScenario() {
@@ -181,7 +235,14 @@ void Game::saveScenario() {
 	}
 	writer.writeEndElement();
 	writer.writeStartElement("prompts");
-	foreach (Prompt* p, scenario->prompts()) {
+	foreach (QSharedPointer<Prompt> p, scenario->prompts()) {
+		if (p->id() == "") {
+			qWarning() << "Skipping an empty prompt.";
+			continue;
+		}
+
+		qDebug() << "TEXT:";
+		qDebug() << p->text();
 		writer.writeStartElement("prompt");
 		writer.writeAttribute("id", p->id());
 		writer.writeAttribute("text", p->text());
@@ -215,8 +276,10 @@ void Game::deleteScenario(const QString& name) {
 	QFile::remove(path);
 }
 
-Prompt* Game::getPrompt(const QString& id) {
-	return this->scenario->prompts().value(id);
+void Game::setCurrentPrompt(const QString& id) {
+	Prompt* p = this->scenario->prompts().value(id).get();
+	//this->engine->setObjectOwnership(p, QQmlApplicationEngine::CppOwnership);
+	this->engine->rootContext()->setContextProperty("currentPrompt", p);
 }
 
 bool Game::addPrompt(const QString& id, Prompt* parent) {
@@ -225,19 +288,21 @@ bool Game::addPrompt(const QString& id, Prompt* parent) {
 		return false;
 	}
 
-	Prompt* p = new Prompt;
+	QSharedPointer<Prompt> p;
 	p->setId(id);
-	p->setParent(parent);
-	p->setText("");
+	p->setText("(NEW PROMPT)");
+	p->setCharacter("");
+	p->setBackground("");
+	p->setReplies(QList<Reply*>());
 	p->setIsEnd(false);
 
-	this->scenario->prompts()[id] = p;
+	this->scenario->prompts().insert(id, p);
 	return true;
 }
 
 void Game::addReply(Prompt* prompt, const QString& text, QString target) {
 	if (target == nullptr)
-		target = QUuid::createUuid().toString();
+		target = QUuid::createUuid().toString(QUuid::WithoutBraces);
 
 	Reply* reply = new Reply;
 	reply->setText(text);
@@ -248,7 +313,7 @@ void Game::addReply(Prompt* prompt, const QString& text, QString target) {
 }
 
 Character* Game::getCharacter(const QString& name) {
-	auto characters = &this->scenario->characters();
+	auto* characters = &this->scenario->characters();
 
 	if (!characters->contains(name))
 		qWarning() << "No character " << name;
@@ -257,7 +322,7 @@ Character* Game::getCharacter(const QString& name) {
 }
 
 void Game::addCharacter(const QString& name, const QString& sprite) {
-	auto	     characters = &this->scenario->characters();
+	auto*	     characters = &this->scenario->characters();
 	Character* c	    = new Character();
 
 	c->setName(name);
@@ -266,7 +331,7 @@ void Game::addCharacter(const QString& name, const QString& sprite) {
 }
 
 void Game::removeCharacter(const QString& name) {
-	auto characters = &this->scenario->characters();
+	auto* characters = &this->scenario->characters();
 
 	if (!characters->contains(name)) {
 		qWarning() << "No character " << name;
@@ -292,7 +357,7 @@ QUrl Game::getAbsolutePath() {
 	return QUrl::fromLocalFile(QDir::currentPath());
 }
 
-QUrl Game::getPath(QString resourcePath, QString fallbackPath) {
+QUrl Game::getPath(const QString& resourcePath, const QString& fallbackPath) {
 	QString root = QDir::currentPath() + "/resources/";
 	QString path = root + resourcePath;
 

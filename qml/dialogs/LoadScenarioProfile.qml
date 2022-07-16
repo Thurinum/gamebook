@@ -37,5 +37,6 @@ Dialog {
 
 		appmenu.height = 0
 		Game.loadScenarioProfile(name)
+		Utils.displayPrompt(Game.getScenarioProfile().promptid)
 	}
 }

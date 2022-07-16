@@ -17,23 +17,19 @@ void Scenario::setName(const QString& newName)
 	emit nameChanged();
 }
 
-QHash<QString, Prompt*>& Scenario::prompts()
-{
+QHash<QString, QSharedPointer<Prompt>>& Scenario::prompts() {
 	return m_prompts;
 }
 
-const QHash<QString, ReplyType*>& Scenario::replyTypes() const
-{
+const QHash<QString, ReplyType*>& Scenario::replyTypes() const {
 	return m_replyTypes;
 }
 
-QHash<QString, Character*>& Scenario::characters()
-{
+QHash<QString, Character*>& Scenario::characters() {
 	return m_characters;
 }
 
-void Scenario::setCharacters(const QHash<QString, Character*>& newCharacters)
-{
+void Scenario::setCharacters(const QHash<QString, Character*>& newCharacters) {
 	if (m_characters == newCharacters)
 		return;
 	m_characters = newCharacters;
