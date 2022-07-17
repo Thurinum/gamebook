@@ -1,21 +1,27 @@
 #include "profile.hpp"
 #include <QDebug>
 
+#include <QDir>
 #include <QFile>
 #include <QXmlStreamWriter>
 
 Profile::Profile(QString name, Scenario* scenario, QObject* parent)
-	: QObject{parent}, m_name(name), m_scenario(scenario) {}
+	: QObject{parent}, m_name(std::move(name)), m_scenario(scenario) {}
 
-const QString Profile::path() {
-	return "scenarios/" + this->scenario()->name() + "-" + this->name() + ".save";
+QString Profile::path() const {
+	QString root = "scenarios/" + this->scenario()->name() + "/";
+	QDir	  dir;
+	if (!dir.exists(root))
+		dir.mkpath(root);
+
+	return root + this->name() + ".save";
 }
 
-void Profile::create() {
+void Profile::create() const {
 	QFile file(path());
 
 	if (!file.open(QIODevice::WriteOnly)) {
-		qCritical() << "Failed to open profile for writing: " << file.errorString();
+		qCritical() << "Failed to open profile" << this->path() << "for writing:" << file.errorString();
 		return;
 	}
 
@@ -33,12 +39,12 @@ void Profile::create() {
 	file.close();
 }
 
-void Profile::load() {
+bool Profile::load() {
 	QFile file(path());
 
 	if (!file.open(QIODevice::ReadOnly)) {
-		qCritical() << "Failed to open scenario for writing";
-		return;
+		qCritical() << "Failed to open profile" << this->path() << "for reading:" << file.errorString();
+		return false;
 	}
 
 	QXmlStreamReader reader(&file);
@@ -49,19 +55,20 @@ void Profile::load() {
 	if (scenarioName != this->scenario()->name()) {
 		qWarning() << "Cannot load profile " << this->name() << " because it is incompatible with scenario "
 			     << scenarioName << ".";
-		return;
+		return false;
 	}
 
 	this->setName(reader.attributes().value("name").toString());
 	this->setPromptid(reader.attributes().value("progress").toString());
 
 	file.close();
+	return true;
 }
 
 void Profile::save() {
 	QFile file(path());
 	if (!file.open(QIODevice::WriteOnly)) {
-		qCritical() << "Failed to open profile for writing.";
+		qCritical() << "Failed to open profile" << this->path() << "for writing:" << file.errorString();
 		return;
 	}
 
@@ -72,6 +79,7 @@ void Profile::save() {
 	writer.writeStartDocument();
 	writer.writeStartElement("profile");
 	writer.writeAttribute("name", this->name());
+	writer.writeAttribute("scenario", this->scenario()->name());
 	writer.writeAttribute("progress", this->promptid());
 	writer.writeEndElement();
 	writer.writeEndDocument();

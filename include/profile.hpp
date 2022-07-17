@@ -12,10 +12,10 @@ class Profile : public QObject
 public:
 	explicit Profile(QString name, Scenario* scenario, QObject* parent = nullptr);
 
-	const QString path();
+	QString path() const;
 
-	void create();
-	void load();
+	void create() const;
+	bool load();
 	void save();
 	void nuke();
 

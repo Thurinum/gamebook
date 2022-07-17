@@ -9,7 +9,7 @@ function parseStr(str) {
 	let newstr = ""
 
 	// TODO: Add per-scenario expansions directory
-	newstr = replaceAll(str, "@!PLAYER", "PLAYERNAME")
+	newstr = replaceAll(str, "@!PLAYER", Game.playerName())
 
 	return newstr
 }
@@ -37,5 +37,5 @@ function displayPrompt(id) {
 
 	repliesRepeater.model = Game.currentPrompt.replies
 	writePrompt(parseStr(Game.currentPrompt.text));
-	Game.saveScenarioProfile();
+	Game.saveScenarioProfile(id);
 }

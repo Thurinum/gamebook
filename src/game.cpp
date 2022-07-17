@@ -8,6 +8,7 @@
 #include <QGuiApplication>
 #include <QHash>
 #include <QQmlApplicationEngine>
+#include <QStandardPaths>
 #include <QUrl>
 #include <QUuid>
 #include <QXmlStreamReader>
@@ -42,18 +43,32 @@ void Game::deleteScenario(const QString& name) {
 
 // --------------------------------------------------------------------------------------
 
-Profile* Game::getScenarioProfile() {
+QString Game::playerName() {
 	if (m_scenario == nullptr) {
 		qWarning() << "Tried to access profile before scenario";
-		return nullptr;
+		return "Invalid";
 	}
 
 	if (this->m_profile == nullptr) {
 		qWarning() << "Tried to access profile but none exists.";
-		return nullptr;
+		return "Dummy";
 	}
 
-	return this->m_profile;
+	return this->m_profile->name();
+}
+
+QString Game::playerProgress() {
+	if (m_scenario == nullptr) {
+		qWarning() << "Tried to access profile before scenario";
+		return "Invalid";
+	}
+
+	if (this->m_profile == nullptr) {
+		qWarning() << "Tried to access profile but none exists.";
+		return "Dummy";
+	}
+
+	return this->m_profile->promptid();
 }
 
 void Game::createScenarioProfile(const QString& name) {
@@ -76,7 +91,7 @@ void Game::loadScenarioProfile(const QString& name) {
 	m_profile->load();
 }
 
-void Game::saveScenarioProfile() {
+void Game::saveScenarioProfile(const QString& id) {
 	if (m_scenario == nullptr) {
 		qWarning() << "Tried to save profile before scenario";
 		return;
@@ -87,6 +102,7 @@ void Game::saveScenarioProfile() {
 		return;
 	}
 
+	m_profile->setPromptid(id);
 	m_profile->save();
 }
 
@@ -198,12 +214,9 @@ QUrl Game::getPath(const QString& resourcePath, const QString& fallbackPath) {
 	return QUrl::fromLocalFile(root + setting("Main/sFallbackImage").toString());
 }
 
-QString Game::getProfilePath(const QString& scnname, const QString& name) {
-	return "scenarios/" + scnname + "-" + name + ".save";
-}
-
-QUrl Game::getScenariosFolder() {
-	return QUrl::fromLocalFile(QDir::currentPath() + "/scenarios");
+QUrl Game::getAppFolder() {
+	return QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
+					   + setting("Main/sApplicationName").toString());
 }
 
 // accessors

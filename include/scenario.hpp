@@ -21,7 +21,7 @@ public:
 	explicit Scenario(QString name);
 
 	void create() const;
-	void load();
+	bool load();
 	void save();
 	void nuke();
 

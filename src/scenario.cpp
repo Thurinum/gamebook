@@ -8,7 +8,7 @@ void Scenario::create() const {
 	QFile file(path(this->name()));
 
 	if (!file.open(QIODevice::WriteOnly)) {
-		qCritical() << "Failed to open file for writing";
+		qCritical() << "Failed to open scenario" << path() << "for writing:" << file.errorString();
 		return;
 	}
 
@@ -35,11 +35,12 @@ void Scenario::create() const {
 	file.close();
 }
 
-void Scenario::load() {
+bool Scenario::load() {
 	QFile file(path());
+
 	if (!file.open(QIODevice::ReadOnly)) {
-		qCritical() << "Failed to open file for reading";
-		return;
+		qCritical() << "Failed to open scenario" << path() << "for reading:" << file.errorString();
+		return false;
 	}
 
 	QXmlStreamReader reader(&file);
@@ -89,6 +90,7 @@ void Scenario::load() {
 	}
 
 	file.close();
+	return true;
 }
 
 void Scenario::save() {

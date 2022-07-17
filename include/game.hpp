@@ -21,9 +21,10 @@ public:
 	Q_INVOKABLE void	  loadScenario(const QString& name);
 	Q_INVOKABLE void	  deleteScenario(const QString& name);
 
-	Q_INVOKABLE Profile* getScenarioProfile();
+	Q_INVOKABLE QString  playerName();
+	Q_INVOKABLE QString  playerProgress();
 	Q_INVOKABLE void	   loadScenarioProfile(const QString& name);
-	Q_INVOKABLE void	   saveScenarioProfile();
+	Q_INVOKABLE void	   saveScenarioProfile(const QString& id);
 	Q_INVOKABLE void	   createScenarioProfile(const QString& name);
 
 	Q_INVOKABLE Prompt* parentPromptOf(Prompt* prompt);
@@ -41,8 +42,7 @@ public:
 
 	Q_INVOKABLE QUrl	    getAbsolutePath();
 	Q_INVOKABLE QUrl	    getPath(const QString& resourcePath, const QString& fallbackPath = "");
-	static inline QString getProfilePath(const QString& scnname, const QString& name);
-	Q_INVOKABLE QUrl	    getScenariosFolder();
+	Q_INVOKABLE QUrl	    getAppFolder();
 
 	// accessors
 	Prompt*	     currentPrompt();

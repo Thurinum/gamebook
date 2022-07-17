@@ -118,13 +118,11 @@ ApplicationWindow {
 						model: FolderListModel {
 							id: cbo_selectScenario_model
 							showDirs: false
-							folder: Game.getScenariosFolder()
+							folder: Game.dataFolder()
 							nameFilters: ["*.scenario"]
 						}
 
-						onActivated: {
-							Game.setSetting("Main/sLastScenario", currentText)
-						}
+						onActivated: Game.setSetting("Main/sLastScenario", currentText)
 					}
 
 					Binding {
@@ -133,8 +131,12 @@ ApplicationWindow {
 						value: {
 							cbo_selectScenario.count
 							let lastScenario = Game.setting("Main/sLastScenario")
-							if (lastScenario)
+							if (lastScenario && lastScenario !== "")
 								cbo_selectScenario.currentIndex = cbo_selectScenario.find(lastScenario)
+
+							let text = cbo_selectScenario.currentText;
+							if (text !== "")
+								Game.loadScenario(text)
 						}
 					}
 
@@ -177,10 +179,14 @@ ApplicationWindow {
 							return
 						}
 
+						if (Game.loadScenario(cbo_selectScenario.currentText) === false) {
+							dialog_error.msg = "Failed to load scenario!"
+							dialog_error.visible = true
+							return
+						}
+
 						appmenu.height = 0
 						app.isEditingAllowed = true
-						Game.loadScenario(cbo_selectScenario.currentText)
-						//Game.loadScenarioProfile("_editModeProfile");
 						GameScript.displayPrompt("0")
 					}
 				}
@@ -316,6 +322,9 @@ ApplicationWindow {
 							onPressed: mouse => yPos = mouse.y
 							onClicked: GameScript.displayPrompt(Game.currentPrompt.replies[index].target)
 							onPositionChanged: function(mouse) {
+								if (!app.isEditingAllowed)
+									return;
+
 								let offset = mouse.y - yPos;
 								let deadzone = parent.height;
 								let index = parent.index;
