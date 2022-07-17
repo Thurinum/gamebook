@@ -37,5 +37,5 @@ function displayPrompt(id) {
 
 	repliesRepeater.model = Game.currentPrompt.replies
 	writePrompt(parseStr(Game.currentPrompt.text));
-	//Game.saveScenarioProfile();
+	Game.saveScenarioProfile();
 }

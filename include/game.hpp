@@ -49,7 +49,7 @@ public:
 	Q_INVOKABLE void setCurrentPrompt(const QString& id);
 
 	explicit Game()
-		: m_scenario(new Scenario), m_profile(new Profile),
+		: m_scenario(new Scenario), m_profile(new Profile("dummy", m_scenario)),
 		  m_settings(new QSettings(QDir::currentPath() + "/gamebook.ini", QSettings::IniFormat)),
 		  m_currentPrompt(new Prompt(this)){};
 
