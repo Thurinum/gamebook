@@ -55,6 +55,7 @@ void Prompt::setReplies(const QList<Reply*>& newReplies)
 {
 	if (m_replies == newReplies)
 		return;
+
 	m_replies = newReplies;
 	emit repliesChanged();
 }
@@ -80,4 +81,8 @@ void Prompt::setParentId(const QString& newParentId) {
 		return;
 	m_parentId = newParentId;
 	emit parentIdChanged();
+}
+
+void Prompt::moveReply(int index, int newIndex) {
+	this->replies().move(index, newIndex);
 }

@@ -40,7 +40,7 @@ void Game::deleteScenario(const QString& name) {
 	m_scenario->nuke();
 }
 
-Prompt* Game::currentPrompt() const {
+Prompt* Game::currentPrompt() {
 	return m_currentPrompt;
 }
 

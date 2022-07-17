@@ -124,7 +124,7 @@ ApplicationWindow {
 
 						onActivated: {
 							Game.setSetting("Main/sLastScenario", currentText)
-						}				
+						}
 					}
 
 					Binding {
@@ -292,8 +292,8 @@ ApplicationWindow {
 				Repeater {
 					id: repliesRepeater
 					model: Game.currentPrompt && Game.currentPrompt.replies.length > 0
-							? Game.currentPrompt.replies : 0
-					delegate: Button {
+						 ? Game.currentPrompt.replies : 0
+					Button {
 						property int index: model.index
 
 						width: repliesView.width * 0.9
@@ -307,6 +307,41 @@ ApplicationWindow {
 						ToolTip.text: modelData.text
 
 						onClicked: GameScript.displayPrompt(Game.currentPrompt.replies[index].target)
+
+						MouseArea {
+							id: dragArea
+							anchors.fill: parent
+							hoverEnabled: true
+
+							property double yPos: 0
+
+							onPressed: (mouse) => yPos = mouse.y
+
+							onPositionChanged: function(mouse) {
+								let offset = mouse.y - yPos;
+								let deadzone = parent.height;
+								let index = parent.index;
+								let indexOffset = Math.round(Math.abs(offset) / deadzone);
+
+								let dir = null;
+
+								if (offset > deadzone)
+									dir = 1;
+								else if (offset < -deadzone)
+									dir = -1;
+
+								if (!dir)
+									return;
+
+								let newIndex = index + (dir * indexOffset);
+
+								if (newIndex < 0 || newIndex > Game.currentPrompt.replies.length - 1)
+									return;
+
+								Game.currentPrompt.moveReply(index, newIndex);
+								repliesRepeater.model = Game.currentPrompt.replies;
+							}
+						}
 					}
 				}
 			}

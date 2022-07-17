@@ -3,6 +3,7 @@
 
 #include "reply.hpp"
 
+#include <QDebug>
 #include <QList>
 #include <QObject>
 #include <QString>
@@ -43,6 +44,8 @@ public:
 
 	const QString& parentId() const;
 	void		   setParentId(const QString& newParentId);
+
+	Q_INVOKABLE void moveReply(int index, int newIndex);
 
 signals:
 	void idChanged();

@@ -49,7 +49,7 @@ public:
 		  m_settings(new QSettings(QDir::currentPath() + "/gamebook.ini", QSettings::IniFormat)),
 		  m_currentPrompt(new Prompt(this)){};
 
-	Prompt*	     currentPrompt() const;
+	Prompt*	     currentPrompt();
 	Q_INVOKABLE void setCurrentPrompt(const QString& id);
 
 signals:
