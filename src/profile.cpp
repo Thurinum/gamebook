@@ -1,25 +1,107 @@
 #include "profile.hpp"
+#include <QDebug>
 
-Profile::Profile(QObject* parent) : QObject{parent} {}
+#include <QFile>
+#include <QXmlStreamWriter>
 
-const QString& Profile::name() const
-{
+Profile::Profile(QString name, Scenario* scenario, QObject* parent)
+	: QObject{parent}, m_name(name), m_scenario(scenario) {}
+
+const QString Profile::path() {
+	return "scenarios/" + this->scenario()->name() + "-" + this->name() + ".save";
+}
+
+void Profile::create() {
+	QFile file(path());
+
+	if (!file.open(QIODevice::WriteOnly)) {
+		qCritical() << "Failed to open profile for writing: " << file.errorString();
+		return;
+	}
+
+	QXmlStreamWriter writer(&file);
+	writer.setAutoFormatting(true);
+	writer.setAutoFormattingIndent(6);
+
+	writer.writeStartDocument();
+	writer.writeStartElement("profile");
+	writer.writeAttribute("name", name());
+	writer.writeAttribute("scenario", this->scenario()->name());
+	writer.writeAttribute("progress", "0");
+	writer.writeEndElement();
+	writer.writeEndDocument();
+	file.close();
+}
+
+void Profile::load() {
+	QFile file(path());
+
+	if (!file.open(QIODevice::ReadOnly)) {
+		qCritical() << "Failed to open scenario for writing";
+		return;
+	}
+
+	QXmlStreamReader reader(&file);
+	reader.readNextStartElement(); // profile
+
+	QString scenarioName = reader.attributes().value("scenario").toString();
+
+	if (scenarioName != this->scenario()->name()) {
+		qWarning() << "Cannot load profile " << this->name() << " because it is incompatible with scenario "
+			     << scenarioName << ".";
+		return;
+	}
+
+	this->setName(reader.attributes().value("name").toString());
+	this->setPromptid(reader.attributes().value("progress").toString());
+
+	file.close();
+}
+
+void Profile::save() {
+	QFile file(path());
+	if (!file.open(QIODevice::WriteOnly)) {
+		qCritical() << "Failed to open profile for writing.";
+		return;
+	}
+
+	QXmlStreamWriter writer(&file);
+	writer.setAutoFormatting(true);
+	writer.setAutoFormattingIndent(6);
+
+	writer.writeStartDocument();
+	writer.writeStartElement("profile");
+	writer.writeAttribute("name", this->name());
+	writer.writeAttribute("progress", this->promptid());
+	writer.writeEndElement();
+	writer.writeEndDocument();
+	file.close();
+}
+
+void Profile::nuke() {}
+
+const QString& Profile::name() const {
 	return m_name;
 }
-void Profile::setName(const QString& newName)
-{
+void Profile::setName(const QString& newName) {
 	if (m_name == newName)
 		return;
 	m_name = newName;
 	emit nameChanged();
 }
 
-const QString& Profile::promptid() const
-{
+Scenario* Profile::scenario() const {
+	return m_scenario;
+}
+
+void Profile::setScenario(Scenario* newScenario) {
+	m_scenario = newScenario;
+}
+
+const QString& Profile::promptid() const {
 	return m_promptid;
 }
-void Profile::setPromptid(const QString& newPromptid)
-{
+void Profile::setPromptid(const QString& newPromptid) {
 	if (m_promptid == newPromptid)
 		return;
 	m_promptid = newPromptid;

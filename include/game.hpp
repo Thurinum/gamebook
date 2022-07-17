@@ -21,8 +21,8 @@ public:
 	Q_INVOKABLE void	  loadScenario(const QString& name);
 	Q_INVOKABLE void	  deleteScenario(const QString& name);
 
-	Q_INVOKABLE void	   loadScenarioProfile(const QString& name);
 	Q_INVOKABLE Profile* getScenarioProfile();
+	Q_INVOKABLE void	   loadScenarioProfile(const QString& name);
 	Q_INVOKABLE void	   saveScenarioProfile();
 	Q_INVOKABLE void	   createScenarioProfile(const QString& name);
 
@@ -31,33 +31,34 @@ public:
 	Q_INVOKABLE void	  addReply(Prompt* prompt, const QString& text, QString target = nullptr);
 
 	Q_INVOKABLE Character* getCharacter(const QString& name);
-	Q_INVOKABLE void	     addCharacter(const QString& name, const QString& sprite);
-	Q_INVOKABLE void	     removeCharacter(const QString& name);
 	Q_INVOKABLE QList<Character*> getCharacters();
+	Q_INVOKABLE void			addCharacter(const QString& name, const QString& sprite);
+	Q_INVOKABLE void			removeCharacter(const QString& name);
 
+	// helpers
 	Q_INVOKABLE QVariant setting(const QString& key);
 	Q_INVOKABLE void	   setSetting(const QString& key, const QVariant& val);
 
-	// helpers
 	Q_INVOKABLE QUrl	    getAbsolutePath();
 	Q_INVOKABLE QUrl	    getPath(const QString& resourcePath, const QString& fallbackPath = "");
-	Q_INVOKABLE QUrl	    getScenariosFolder();
 	static inline QString getProfilePath(const QString& scnname, const QString& name);
+	Q_INVOKABLE QUrl	    getScenariosFolder();
 
-	explicit Game()
-		: m_scenario(new Scenario), profile(new Profile),
-		  m_settings(new QSettings(QDir::currentPath() + "/gamebook.ini", QSettings::IniFormat)),
-		  m_currentPrompt(new Prompt(this)){};
-
+	// accessors
 	Prompt*	     currentPrompt();
 	Q_INVOKABLE void setCurrentPrompt(const QString& id);
+
+	explicit Game()
+		: m_scenario(new Scenario), m_profile(new Profile),
+		  m_settings(new QSettings(QDir::currentPath() + "/gamebook.ini", QSettings::IniFormat)),
+		  m_currentPrompt(new Prompt(this)){};
 
 signals:
 	void currentPromptChanged();
 
 private:
 	Scenario*  m_scenario;
-	Profile*   profile{};
+	Profile*   m_profile;
 	QSettings* m_settings;
 	Prompt*    m_currentPrompt;
 };

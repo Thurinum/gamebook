@@ -40,18 +40,20 @@ void Game::deleteScenario(const QString& name) {
 	m_scenario->nuke();
 }
 
-Prompt* Game::currentPrompt() {
-	return m_currentPrompt;
-}
+// --------------------------------------------------------------------------------------
 
-void Game::setCurrentPrompt(const QString& id) {
-	Prompt* newCurrentPrompt = m_scenario->prompts().value(id);
+Profile* Game::getScenarioProfile() {
+	if (m_scenario == nullptr) {
+		qWarning() << "Tried to access profile before scenario";
+		return nullptr;
+	}
 
-	if (m_currentPrompt == newCurrentPrompt)
-		return;
+	if (this->m_profile == nullptr) {
+		qWarning() << "Tried to access profile but none exists.";
+		return nullptr;
+	}
 
-	m_currentPrompt = newCurrentPrompt;
-	emit currentPromptChanged();
+	return this->m_profile;
 }
 
 void Game::createScenarioProfile(const QString& name) {
@@ -60,62 +62,18 @@ void Game::createScenarioProfile(const QString& name) {
 		return;
 	}
 
-	QFile file(Game::getProfilePath(m_scenario->name(), name));
-	if (!file.open(QIODevice::WriteOnly)) {
-		qCritical() << "Failed to open file for writing";
-		return;
-	}
-
-	QXmlStreamWriter writer(&file);
-	writer.setAutoFormatting(true);
-	writer.setAutoFormattingIndent(setting("Main/iXmlIndent").toInt());
-
-	writer.writeStartDocument();
-	writer.writeStartElement("profile");
-	writer.writeAttribute("name", name);
-	writer.writeAttribute("progress", "0");
-	writer.writeEndElement();
-	writer.writeEndDocument();
-	file.close();
-}
-
-Profile* Game::getScenarioProfile() {
-	if (m_scenario == nullptr) {
-		qWarning() << "Tried to access profile before scenario";
-		return nullptr;
-	}
-
-	if (this->profile == nullptr) {
-		qWarning() << "Tried to access profile but none exists.";
-		return nullptr;
-	}
-
-	return this->profile;
+	m_profile = new Profile(name, m_scenario);
+	m_profile->create();
 }
 
 void Game::loadScenarioProfile(const QString& name) {
-	Profile* profile = new Profile;
-
 	if (!m_scenario) {
-		qWarning() << "Tried to load profile before scenario";
-		delete profile;
+		qWarning() << "Tried to load profile before scenario.";
 		return;
 	}
 
-	QFile file(Game::getProfilePath(m_scenario->name(), name));
-	if (!file.open(QIODevice::ReadOnly)) {
-		qCritical() << "Failed to open scenario for writing";
-		delete profile;
-		return;
-	}
-
-	QXmlStreamReader reader(&file);
-	reader.readNextStartElement(); // profile
-	profile->setName(reader.attributes().value("name").toString());
-	profile->setPromptid(reader.attributes().value("progress").toString());
-
-	file.close();
-	this->profile = profile;
+	m_profile = new Profile(name, m_scenario);
+	m_profile->load();
 }
 
 void Game::saveScenarioProfile() {
@@ -124,29 +82,15 @@ void Game::saveScenarioProfile() {
 		return;
 	}
 
-	if (this->profile == nullptr) {
+	if (m_profile == nullptr) {
 		qWarning() << "There is no current profile! Cannot save.";
 		return;
 	}
 
-	QFile file(Game::getProfilePath(m_scenario->name(), this->profile->name()));
-	if (!file.open(QIODevice::WriteOnly)) {
-		qCritical() << "Failed to open profile for writing.";
-		return;
-	}
-
-	QXmlStreamWriter writer(&file);
-	writer.setAutoFormatting(true);
-	writer.setAutoFormattingIndent(setting("Main/iXmlIndent").toInt());
-
-	writer.writeStartDocument();
-	writer.writeStartElement("profile");
-	writer.writeAttribute("name", this->profile->name());
-	writer.writeAttribute("progress", this->profile->promptid());
-	writer.writeEndElement();
-	writer.writeEndDocument();
-	file.close();
+	m_profile->save();
 }
+
+// --------------------------------------------------------------------------------------
 
 Prompt* Game::parentPromptOf(Prompt* prompt) {
 	return m_scenario->prompts().value(prompt->parentId());
@@ -176,6 +120,8 @@ void Game::addReply(Prompt* prompt, const QString& text, QString target) {
 	addPrompt(target, prompt);
 }
 
+// --------------------------------------------------------------------------------------
+
 Character* Game::getCharacter(const QString& name) {
 	auto* characters = &m_scenario->characters();
 
@@ -183,6 +129,10 @@ Character* Game::getCharacter(const QString& name) {
 		qWarning() << "No character " << name;
 
 	return characters->value(name);
+}
+
+QList<Character*> Game::getCharacters() {
+	return m_scenario->characters().values();
 }
 
 void Game::addCharacter(const QString& name, const QString& sprite) {
@@ -205,9 +155,8 @@ void Game::removeCharacter(const QString& name) {
 	characters->remove(name);
 }
 
-QList<Character*> Game::getCharacters() {
-	return m_scenario->characters().values();
-}
+// helpers
+// --------------------------------------------------------------------------------------
 
 QVariant Game::setting(const QString& key) {
 	return m_settings->value(key);
@@ -216,6 +165,8 @@ QVariant Game::setting(const QString& key) {
 void Game::setSetting(const QString& key, const QVariant& val) {
 	m_settings->setValue(key, val);
 }
+
+// --------------------------------------------------------------------------------------
 
 QUrl Game::getAbsolutePath() {
 	return QUrl::fromLocalFile(QDir::currentPath());
@@ -247,10 +198,27 @@ QUrl Game::getPath(const QString& resourcePath, const QString& fallbackPath) {
 	return QUrl::fromLocalFile(root + setting("Main/sFallbackImage").toString());
 }
 
+QString Game::getProfilePath(const QString& scnname, const QString& name) {
+	return "scenarios/" + scnname + "-" + name + ".save";
+}
+
 QUrl Game::getScenariosFolder() {
 	return QUrl::fromLocalFile(QDir::currentPath() + "/scenarios");
 }
 
-QString Game::getProfilePath(const QString& scnname, const QString& name) {
-	return "scenarios/" + scnname + "-" + name + ".save";
+// accessors
+// --------------------------------------------------------------------------------------
+
+Prompt* Game::currentPrompt() {
+	return m_currentPrompt;
+}
+
+void Game::setCurrentPrompt(const QString& id) {
+	Prompt* newCurrentPrompt = m_scenario->prompts().value(id);
+
+	if (m_currentPrompt == newCurrentPrompt)
+		return;
+
+	m_currentPrompt = newCurrentPrompt;
+	emit currentPromptChanged();
 }
