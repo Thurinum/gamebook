@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenario name="gag">
+      <characters/>
+      <replytypes/>
+      <prompts>
+            <prompt id="0" text="(Right-click on this prompt to start editing)"/>
+      </prompts>
+</scenario>
