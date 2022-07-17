@@ -1,5 +1,7 @@
 #include "prompt.hpp"
 
+#include <QUuid>
+
 const QString& Prompt::id() const
 {
 	return m_id;
@@ -83,6 +85,20 @@ void Prompt::setParentId(const QString& newParentId) {
 	emit parentIdChanged();
 }
 
+void Prompt::addReply(const QString& text, QString target) {
+	if (target == nullptr)
+		target = QUuid::createUuid().toString(QUuid::WithoutBraces);
+
+	Reply* reply = new Reply;
+	reply->setText(text);
+	reply->setTarget(target);
+	this->replies().append(reply);
+}
+
 void Prompt::moveReply(int index, int newIndex) {
 	this->replies().move(index, newIndex);
+}
+
+void Prompt::nukeReply(int index) {
+	this->replies().removeAt(index);
 }

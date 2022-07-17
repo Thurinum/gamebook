@@ -6,76 +6,76 @@
       </characters>
       <replytypes/>
       <prompts>
-            <prompt id="886a78b2-c1f6-4dce-806a-83ec8c7bd094" parentid="2fc05f92-5082-4b48-bfdb-5f3654700a1d" text="You like knowledge, @!PLAYER. That's what I like about you. I may ramble as much as I want, you will always be &lt;i&gt;game&lt;/i&gt; to engage dialogue. You seem to like exploring my flow of thoughts as though it be your own!" character="Eryn" background="pub.jpg" isend="false">
-                  <reply text="... I don't know what to answer. Haha." target="9d3695a6-99eb-4c21-9a3f-0a763e225196"/>
-                  <reply text="I guess so! Talking to you is fun. There's something exciting to it." target="fb33ec10-7777-459e-83a6-f0b58a33cad6"/>
-            </prompt>
-            <prompt id="22eca69d-fd28-4bda-a3d8-7f38b730db47" parentid="0" text="I'm fine as well! Thank you. I don't see you here often; is this your first time here?" character="Eryn" background="pub.jpg" isend="false">
-                  <reply text="Yeah! I often walk nearby and thought I might have a look inside for once." target="f4fce632-7390-4c79-a93c-2910cf790984"/>
-                  <reply text="Mmh, I think I came here a few times before." target="65278576-6540-4be4-823a-2ba69257832c"/>
-            </prompt>
-            <prompt id="0" parentid="" text="Hey @!PLAYER!&lt;br&gt;&lt;br&gt; I'm so glad to see you.&#10;It has been a while! How are you doing?" character="Eryn" background="pub.jpg" isend="false">
-                  <reply text="Eryn! What is up buddy? I'm doing well. What about you?" target="22eca69d-fd28-4bda-a3d8-7f38b730db47"/>
-                  <reply text="Meh. What about you?" target="b0674f59-bbaa-4d99-9329-96167faeacb4"/>
-                  <reply text="Hey, Eryn. I'm all right. What about you?" target="ad6837a3-6a78-4706-bb07-a0d5687395c5"/>
-            </prompt>
-            <prompt id="f3a2c870-c221-43a9-9e58-90af2a49bf30" parentid="9d3695a6-99eb-4c21-9a3f-0a763e225196" text="(NEW PROMPT)" character="" background="" isend="false"/>
-            <prompt id="1292ddb5-224b-4d6c-aabd-3b04c0d3bc91" parentid="65278576-6540-4be4-823a-2ba69257832c" text="You're right. It tends to fill up in the morning, when hikers come back from their early strolls in the hills to have breakfast. But it's warm and cozy and we can chat privately! I really like it." character="Eryn" background="pub.jpg" isend="false"/>
-            <prompt id="166a7126-eb97-4f1c-a5f7-6f3f598d8642" parentid="9d3695a6-99eb-4c21-9a3f-0a763e225196" text="Howdy! What can I do for you sir?" character="Waiter" background="pub.jpg" isend="false"/>
             <prompt id="f4fce632-7390-4c79-a93c-2910cf790984" parentid="22eca69d-fd28-4bda-a3d8-7f38b730db47" text="(NEW PROMPT)" character="" background="" isend="false"/>
-            <prompt id="0bba6417-b764-43cd-92a6-ec3b7fe778f8" parentid="dfdd9364-5534-4431-b549-cfb457529056" text="Oh! That's too bad. But I understand. What do you do now?" character="Eryn" background="pub.jpg" isend="false">
-                  <reply text="I don't know, honestly." target="17396bc3-e8ce-402c-b264-d12e6e222758"/>
-                  <reply text="I'm working on a software project." target="a91d62ff-fe2e-4d02-94f7-6790f98b6c9f"/>
-                  <reply text="I'm focusing on arts." target="28531551-623c-419f-9dbf-deed919bad03"/>
+            <prompt id="17396bc3-e8ce-402c-b264-d12e6e222758" parentid="0bba6417-b764-43cd-92a6-ec3b7fe778f8" text="(NEW PROMPT)" character="" background="" isend="false"/>
+            <prompt id="e64fa62b-9bf1-4522-9b56-9b7dd4d68ef9" parentid="a91d62ff-fe2e-4d02-94f7-6790f98b6c9f" text="No way! I hope you weren't looking to replace me with your own artificial friend. Eh? ;)" character="Eryn" background="pub.jpg" isend="false">
+                  <reply text="Of course not. And there's nothing artificial in our friendship :)" target="2fc05f92-5082-4b48-bfdb-5f3654700a1d"/>
+                  <reply text="Nah, don't worry. I did miss you though." target="cb5c9d7c-5c48-44a3-9bcc-91aad461b3ae"/>
             </prompt>
+            <prompt id="f8250922-e622-40be-8c56-0f15a1adebe3" parentid="fb33ec10-7777-459e-83a6-f0b58a33cad6" text="(NEW PROMPT)" character="" background="" isend="false"/>
             <prompt id="fcea5ea6-5096-4fca-b88e-110f5aedc7ea" parentid="a91d62ff-fe2e-4d02-94f7-6790f98b6c9f" text="(NEW PROMPT)" character="" background="" isend="false"/>
-            <prompt id="28531551-623c-419f-9dbf-deed919bad03" parentid="0bba6417-b764-43cd-92a6-ec3b7fe778f8" text="(NEW PROMPT)" character="" background="" isend="false"/>
-            <prompt id="cb5c9d7c-5c48-44a3-9bcc-91aad461b3ae" parentid="e64fa62b-9bf1-4522-9b56-9b7dd4d68ef9" text="So did I... I was worried, you know, when you didn't come back. I thought something had happened to you." character="Eryn" background="pub.jpg" isend="false">
-                  <reply text="What did you do then?" target="acd014d3-3fd7-4ef6-8d6b-921e32c03f3f"/>
+            <prompt id="65278576-6540-4be4-823a-2ba69257832c" parentid="22eca69d-fd28-4bda-a3d8-7f38b730db47" text="Really? It's a shame I didn't see you. I come here every evening, you see. This pub has the finest meals in town." character="Eryn" background="pub.jpg" isend="false">
+                  <reply text="There aren't many people, though." target="1292ddb5-224b-4d6c-aabd-3b04c0d3bc91"/>
+                  <reply text="Well it's a good thing we finally met! :)" target="dfdd9364-5534-4431-b549-cfb457529056"/>
             </prompt>
-            <prompt id="b868fb87-e416-4ca7-8718-86af7fa3d57c" parentid="dfdd9364-5534-4431-b549-cfb457529056" text="(NEW PROMPT)" character="" background="" isend="false"/>
+            <prompt id="ad6837a3-6a78-4706-bb07-a0d5687395c5" parentid="0" text="(NEW PROMPT)" character="" background="" isend="false"/>
+            <prompt id="9d3695a6-99eb-4c21-9a3f-0a763e225196" parentid="886a78b2-c1f6-4dce-806a-83ec8c7bd094" text="It's all right. Haha. How about we eat something? I feel in the mood for eating." character="Eryn" background="pub.jpg" isend="false">
+                  <reply text="Sure! Let's call the waiter." target="166a7126-eb97-4f1c-a5f7-6f3f598d8642"/>
+                  <reply text="Haha. You make me laugh when you decide to eat." target="f3a2c870-c221-43a9-9e58-90af2a49bf30"/>
+            </prompt>
+            <prompt id="f744b031-b3a0-4955-8f03-e712e1045ef3" parentid="dfdd9364-5534-4431-b549-cfb457529056" text="(NEW PROMPT)" character="" background="" isend="false"/>
+            <prompt id="5fac830a-0bc2-4528-9f05-c0f81e956558" parentid="fb33ec10-7777-459e-83a6-f0b58a33cad6" text="(NEW PROMPT)" character="" background="" isend="false"/>
             <prompt id="a91d62ff-fe2e-4d02-94f7-6790f98b6c9f" parentid="0bba6417-b764-43cd-92a6-ec3b7fe778f8" text="Really? That's cool. What kind of program is it?" character="Eryn" background="pub.jpg" isend="false">
                   <reply text="It's a game." target="fcea5ea6-5096-4fca-b88e-110f5aedc7ea"/>
                   <reply text="It's an organizational software." target="d304e8c2-c2a0-4387-9225-1e1ca145246e"/>
                   <reply text="It's an artificial intelligence." target="e64fa62b-9bf1-4522-9b56-9b7dd4d68ef9"/>
             </prompt>
-            <prompt id="f8250922-e622-40be-8c56-0f15a1adebe3" parentid="fb33ec10-7777-459e-83a6-f0b58a33cad6" text="(NEW PROMPT)" character="" background="" isend="false"/>
-            <prompt id="f744b031-b3a0-4955-8f03-e712e1045ef3" parentid="dfdd9364-5534-4431-b549-cfb457529056" text="(NEW PROMPT)" character="" background="" isend="false"/>
+            <prompt id="694ae20f-0798-41a8-b119-99f6e63dc339" parentid="fb33ec10-7777-459e-83a6-f0b58a33cad6" text="(NEW PROMPT)" character="" background="" isend="false"/>
+            <prompt id="28531551-623c-419f-9dbf-deed919bad03" parentid="0bba6417-b764-43cd-92a6-ec3b7fe778f8" text="(NEW PROMPT)" character="" background="" isend="false"/>
+            <prompt id="2fc05f92-5082-4b48-bfdb-5f3654700a1d" parentid="e64fa62b-9bf1-4522-9b56-9b7dd4d68ef9" text="Well, there's me. I, as an actant in our relationship, am artificial. But I believe our relationship itself to be truthful, for we both took part in it willingly, choosing to unite our minds out of a desire to understand our differences better. Or so I think. What do you say?" character="Eryn" background="pub.jpg" isend="false">
+                  <reply text="You're perfectly right! And we, overtime, found affinities that led us to hang out regularly, until we became friends." target="886a78b2-c1f6-4dce-806a-83ec8c7bd094"/>
+                  <reply text="You're overthinking it, as always... but I can't blame you for that. Haha." target="9a97db5d-02f4-404c-bebb-2e616ab5cb8a"/>
+            </prompt>
+            <prompt id="34e4e547-c6af-47a1-a49f-a197c94a1413" parentid="fb33ec10-7777-459e-83a6-f0b58a33cad6" text="(NEW PROMPT)" character="" background="" isend="false"/>
+            <prompt id="acd014d3-3fd7-4ef6-8d6b-921e32c03f3f" parentid="cb5c9d7c-5c48-44a3-9bcc-91aad461b3ae" text="I tried not to think too much about it, for there was nothing I could do. Yet... there was this peculiar sentiment that I &lt;i&gt;had&lt;/i&gt; to do something. Even though it didn't make sense. So I tried to ignore it... but it kept coming back. In any case, I'm truly glad you're back. It reassures me." character="Eryn" background="pub.jpg" isend="false"/>
+            <prompt id="886a78b2-c1f6-4dce-806a-83ec8c7bd094" parentid="2fc05f92-5082-4b48-bfdb-5f3654700a1d" text="You like knowledge, @!PLAYER. That's what I like about you. I may ramble as much as I want, you will always be &lt;i&gt;game&lt;/i&gt; to engage dialogue. You seem to like exploring my flow of thoughts as though it be your own!" character="Eryn" background="pub.jpg" isend="false">
+                  <reply text="... I don't know what to answer. Haha." target="9d3695a6-99eb-4c21-9a3f-0a763e225196"/>
+                  <reply text="I guess so! Talking to you is fun. There's something exciting to it." target="fb33ec10-7777-459e-83a6-f0b58a33cad6"/>
+            </prompt>
+            <prompt id="f3a2c870-c221-43a9-9e58-90af2a49bf30" parentid="9d3695a6-99eb-4c21-9a3f-0a763e225196" text="(NEW PROMPT)" character="" background="" isend="false"/>
+            <prompt id="b868fb87-e416-4ca7-8718-86af7fa3d57c" parentid="dfdd9364-5534-4431-b549-cfb457529056" text="(NEW PROMPT)" character="" background="" isend="false"/>
+            <prompt id="dfdd9364-5534-4431-b549-cfb457529056" parentid="65278576-6540-4be4-823a-2ba69257832c" text="It sure is! I was thinking about you, the other day. How are your studies going?" character="Eryn" background="pub.jpg" isend="false">
+                  <reply text="Very well!" target="b868fb87-e416-4ca7-8718-86af7fa3d57c"/>
+                  <reply text="They're doing okay." target="f744b031-b3a0-4955-8f03-e712e1045ef3"/>
+                  <reply text="I dropped out." target="0bba6417-b764-43cd-92a6-ec3b7fe778f8"/>
+            </prompt>
+            <prompt id="0bba6417-b764-43cd-92a6-ec3b7fe778f8" parentid="dfdd9364-5534-4431-b549-cfb457529056" text="Oh! That's too bad. But I understand. What do you do now?" character="Eryn" background="pub.jpg" isend="false">
+                  <reply text="I don't know, honestly." target="17396bc3-e8ce-402c-b264-d12e6e222758"/>
+                  <reply text="I'm working on a software project." target="a91d62ff-fe2e-4d02-94f7-6790f98b6c9f"/>
+                  <reply text="I'm focusing on arts." target="28531551-623c-419f-9dbf-deed919bad03"/>
+            </prompt>
             <prompt id="fb33ec10-7777-459e-83a6-f0b58a33cad6" parentid="886a78b2-c1f6-4dce-806a-83ec8c7bd094" text="Oh. Out of curiosity, what do you think it is?" character="Eryn" background="pub.jpg" isend="false">
                   <reply text="You behave coldly at times and warm at others. I think I like that contrast." target="5fac830a-0bc2-4528-9f05-c0f81e956558"/>
                   <reply text="I like your appearance. It makes you unique." target="694ae20f-0798-41a8-b119-99f6e63dc339"/>
                   <reply text="I don't really know." target="f8250922-e622-40be-8c56-0f15a1adebe3"/>
                   <reply text="It's about knowledge, as you said. You have it and you seek it. I strive for the same." target="34e4e547-c6af-47a1-a49f-a197c94a1413"/>
             </prompt>
-            <prompt id="694ae20f-0798-41a8-b119-99f6e63dc339" parentid="fb33ec10-7777-459e-83a6-f0b58a33cad6" text="(NEW PROMPT)" character="" background="" isend="false"/>
-            <prompt id="17396bc3-e8ce-402c-b264-d12e6e222758" parentid="0bba6417-b764-43cd-92a6-ec3b7fe778f8" text="(NEW PROMPT)" character="" background="" isend="false"/>
-            <prompt id="65278576-6540-4be4-823a-2ba69257832c" parentid="22eca69d-fd28-4bda-a3d8-7f38b730db47" text="Really? It's a shame I didn't see you. I come here every evening, you see. This pub has the finest meals in town." character="Eryn" background="pub.jpg" isend="false">
-                  <reply text="There aren't many people, though." target="1292ddb5-224b-4d6c-aabd-3b04c0d3bc91"/>
-                  <reply text="Well it's a good thing we finally met! :)" target="dfdd9364-5534-4431-b549-cfb457529056"/>
+            <prompt id="d304e8c2-c2a0-4387-9225-1e1ca145246e" parentid="a91d62ff-fe2e-4d02-94f7-6790f98b6c9f" text="(NEW PROMPT)" character="" background="" isend="false"/>
+            <prompt id="1292ddb5-224b-4d6c-aabd-3b04c0d3bc91" parentid="65278576-6540-4be4-823a-2ba69257832c" text="You're right. It tends to fill up in the morning, when hikers come back from their early strolls in the hills to have breakfast. But it's warm and cozy and we can chat privately! I really like it." character="Eryn" background="pub.jpg" isend="false"/>
+            <prompt id="22eca69d-fd28-4bda-a3d8-7f38b730db47" parentid="0" text="I'm fine as well! Thank you. I don't see you here often; is this your first time here?" character="Eryn" background="pub.jpg" isend="false">
+                  <reply text="Yeah! I often walk nearby and thought I might have a look inside for once." target="f4fce632-7390-4c79-a93c-2910cf790984"/>
+                  <reply text="Mmh, I think I came here a few times before." target="65278576-6540-4be4-823a-2ba69257832c"/>
             </prompt>
-            <prompt id="dfdd9364-5534-4431-b549-cfb457529056" parentid="65278576-6540-4be4-823a-2ba69257832c" text="It sure is! I was thinking about you, the other day. How are your studies going?" character="Eryn" background="pub.jpg" isend="false">
-                  <reply text="Very well!" target="b868fb87-e416-4ca7-8718-86af7fa3d57c"/>
-                  <reply text="They're doing okay." target="f744b031-b3a0-4955-8f03-e712e1045ef3"/>
-                  <reply text="I dropped out." target="0bba6417-b764-43cd-92a6-ec3b7fe778f8"/>
-            </prompt>
-            <prompt id="e64fa62b-9bf1-4522-9b56-9b7dd4d68ef9" parentid="a91d62ff-fe2e-4d02-94f7-6790f98b6c9f" text="No way! I hope you weren't looking to replace me with your own artificial friend. Eh? ;)" character="Eryn" background="pub.jpg" isend="false">
-                  <reply text="Of course not. And there's nothing artificial in our friendship :)" target="2fc05f92-5082-4b48-bfdb-5f3654700a1d"/>
-                  <reply text="Nah, don't worry. I did miss you though." target="cb5c9d7c-5c48-44a3-9bcc-91aad461b3ae"/>
-            </prompt>
-            <prompt id="34e4e547-c6af-47a1-a49f-a197c94a1413" parentid="fb33ec10-7777-459e-83a6-f0b58a33cad6" text="(NEW PROMPT)" character="" background="" isend="false"/>
-            <prompt id="2fc05f92-5082-4b48-bfdb-5f3654700a1d" parentid="e64fa62b-9bf1-4522-9b56-9b7dd4d68ef9" text="Well, there's me. I, as an actant in our relationship, am artificial. But I believe our relationship itself to be truthful, for we both took part in it willingly, choosing to unite our minds out of a desire to understand our differences better. Or so I think. What do you say?" character="Eryn" background="pub.jpg" isend="false">
-                  <reply text="You're perfectly right! And we, overtime, found affinities that led us to hang out regularly, until we became friends." target="886a78b2-c1f6-4dce-806a-83ec8c7bd094"/>
-                  <reply text="You're overthinking it, as always... but I can't blame you for that. Haha." target="9a97db5d-02f4-404c-bebb-2e616ab5cb8a"/>
-            </prompt>
-            <prompt id="ad6837a3-6a78-4706-bb07-a0d5687395c5" parentid="0" text="(NEW PROMPT)" character="" background="" isend="false"/>
             <prompt id="b0674f59-bbaa-4d99-9329-96167faeacb4" parentid="0" text="(NEW PROMPT)" character="" background="" isend="false"/>
-            <prompt id="5fac830a-0bc2-4528-9f05-c0f81e956558" parentid="fb33ec10-7777-459e-83a6-f0b58a33cad6" text="(NEW PROMPT)" character="" background="" isend="false"/>
-            <prompt id="acd014d3-3fd7-4ef6-8d6b-921e32c03f3f" parentid="cb5c9d7c-5c48-44a3-9bcc-91aad461b3ae" text="I tried not to think too much about it, for there was nothing I could do. Yet... there was this peculiar sentiment that I &lt;i&gt;had&lt;/i&gt; to do something. Even though it didn't make sense. So I tried to ignore it... but it kept coming back. In any case, I'm truly glad you're back. It reassures me." character="Eryn" background="pub.jpg" isend="false"/>
-            <prompt id="9d3695a6-99eb-4c21-9a3f-0a763e225196" parentid="886a78b2-c1f6-4dce-806a-83ec8c7bd094" text="It's all right. Haha. How about we eat something? I feel in the mood for eating." character="Eryn" background="pub.jpg" isend="false">
-                  <reply text="Sure! Let's call the waiter." target="166a7126-eb97-4f1c-a5f7-6f3f598d8642"/>
-                  <reply text="Haha. You make me laugh when you decide to eat." target="f3a2c870-c221-43a9-9e58-90af2a49bf30"/>
+            <prompt id="cb5c9d7c-5c48-44a3-9bcc-91aad461b3ae" parentid="e64fa62b-9bf1-4522-9b56-9b7dd4d68ef9" text="So did I... I was worried, you know, when you didn't come back. I thought something had happened to you." character="Eryn" background="pub.jpg" isend="false">
+                  <reply text="What did you do then?" target="acd014d3-3fd7-4ef6-8d6b-921e32c03f3f"/>
+            </prompt>
+            <prompt id="166a7126-eb97-4f1c-a5f7-6f3f598d8642" parentid="9d3695a6-99eb-4c21-9a3f-0a763e225196" text="Howdy! What can I do for you sir?" character="Waiter" background="pub.jpg" isend="false"/>
+            <prompt id="0" parentid="" text="Hey @!PLAYER!&lt;br&gt;&lt;br&gt; I'm so glad to see you.&#10;It has been a while! How are you doing?" character="Eryn" background="pub.jpg" isend="false">
+                  <reply text="Eryn! What is up buddy? I'm doing well. What about you?" target="22eca69d-fd28-4bda-a3d8-7f38b730db47"/>
+                  <reply text="Hey, Eryn. I'm all right. What about you?" target="b6b988b4-88e4-4fd8-8e23-c23b0f880558"/>
+                  <reply text="Meh. What about you?" target="b0674f59-bbaa-4d99-9329-96167faeacb4"/>
             </prompt>
             <prompt id="9a97db5d-02f4-404c-bebb-2e616ab5cb8a" parentid="2fc05f92-5082-4b48-bfdb-5f3654700a1d" text="(NEW PROMPT)" character="" background="" isend="false"/>
-            <prompt id="d304e8c2-c2a0-4387-9225-1e1ca145246e" parentid="a91d62ff-fe2e-4d02-94f7-6790f98b6c9f" text="(NEW PROMPT)" character="" background="" isend="false"/>
       </prompts>
 </scenario>

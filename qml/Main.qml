@@ -293,7 +293,7 @@ ApplicationWindow {
 					id: repliesRepeater
 					model: Game.currentPrompt && Game.currentPrompt.replies.length > 0
 						 ? Game.currentPrompt.replies : 0
-					Button {
+					delegate: Button {
 						property int index: model.index
 
 						width: repliesView.width * 0.9
@@ -306,17 +306,15 @@ ApplicationWindow {
 						ToolTip.timeout: 2500
 						ToolTip.text: modelData.text
 
-						onClicked: GameScript.displayPrompt(Game.currentPrompt.replies[index].target)
-
 						MouseArea {
 							id: dragArea
 							anchors.fill: parent
-							hoverEnabled: true
 
 							property double yPos: 0
+							propagateComposedEvents: true
 
-							onPressed: (mouse) => yPos = mouse.y
-
+							onPressed: mouse => yPos = mouse.y
+							onClicked: GameScript.displayPrompt(Game.currentPrompt.replies[index].target)
 							onPositionChanged: function(mouse) {
 								let offset = mouse.y - yPos;
 								let deadzone = parent.height;
@@ -366,6 +364,13 @@ ApplicationWindow {
 					}
 				}
 				MenuItem {
+					text: "Delete reply..."
+					enabled: repliesEditMenu.selection
+					onTriggered: {
+						dialog_deleteReply.open()
+					}
+				}
+				MenuItem {
 					text: "Go back"
 					enabled: Game.currentPrompt.parentId !== ""
 					onTriggered: GameScript.displayPrompt(Game.currentPrompt.parentId)
@@ -383,12 +388,16 @@ ApplicationWindow {
 				enabled: app.isEditingAllowed
 				acceptedButtons: Qt.RightButton
 				onClicked: mouse => {
-						     let pt = mapToItem(repliesView, mouse.x, mouse.y)
-						     repliesEditMenu.selection = repliesView.childAt(pt.x, pt.y)
+						     let pt = mapToItem(repliesView, mouse.x, mouse.y);
+						     repliesEditMenu.selection = repliesView.childAt(pt.x, pt.y);
 
-						     if (repliesEditMenu.selection)
-						     dialog_editReply.reply = Game.currentPrompt.replies[repliesEditMenu.selection.index]
-						     repliesEditMenu.popup()
+						     if (repliesEditMenu.selection) {
+							     let reply = Game.currentPrompt.replies[repliesEditMenu.selection.index];
+							     dialog_editReply.reply = reply;
+							     dialog_deleteReply.index = repliesEditMenu.selection.index;
+						     }
+
+						     repliesEditMenu.popup();
 					     }
 			}
 		}
@@ -446,6 +455,7 @@ ApplicationWindow {
 	Dialog.EditPrompt { id: dialog_editPrompt }
 	Dialog.AddReply { id: dialog_addReply }
 	Dialog.EditReply { id: dialog_editReply }
+	Dialog.DeleteReply { id: dialog_deleteReply }
 	Dialog.EditCharacters { id: dialog_editCharacters }
 	Dialog.Error { id: dialog_error }
 }

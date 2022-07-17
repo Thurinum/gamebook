@@ -45,7 +45,9 @@ public:
 	const QString& parentId() const;
 	void		   setParentId(const QString& newParentId);
 
+	Q_INVOKABLE void addReply(const QString& text, QString target = nullptr);
 	Q_INVOKABLE void moveReply(int index, int newIndex);
+	Q_INVOKABLE void nukeReply(int index);
 
 signals:
 	void idChanged();

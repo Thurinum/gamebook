@@ -172,14 +172,7 @@ bool Game::addPrompt(const QString& id, Prompt* parent) {
 }
 
 void Game::addReply(Prompt* prompt, const QString& text, QString target) {
-	if (target == nullptr)
-		target = QUuid::createUuid().toString(QUuid::WithoutBraces);
-
-	Reply* reply = new Reply;
-	reply->setText(text);
-	reply->setTarget(target);
-	prompt->replies().append(reply);
-
+	prompt->addReply(text, target);
 	addPrompt(target, prompt);
 }
 
