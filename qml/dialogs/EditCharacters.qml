@@ -90,7 +90,11 @@ Dialog {
 
 	onOpened: lview.model = Game.getCharacters()
 
-	onAccepted: GameScript.displayPrompt(Game.currentPrompt.id)
+	onAccepted: {
+		Game.saveScenario()
+		Game.loadScenario(Game.getScenarioName())
+		GameScript.displayPrompt(Game.currentPrompt.id)
+	}
 
 	Dialog {
 		id: edit_dialog

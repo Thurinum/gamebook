@@ -12,6 +12,10 @@
 #include <QUuid>
 #include <QXmlStreamReader>
 
+QString Game::getScenarioName() {
+	return m_scenario ? m_scenario->name() : "none";
+}
+
 void Game::createScenario(const QString& name) {
 	m_scenario = new Scenario(name);
 	m_scenario->create();

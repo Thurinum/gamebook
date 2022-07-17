@@ -15,10 +15,11 @@ class Game : public QObject
 	Q_OBJECT
 	Q_PROPERTY(Prompt* currentPrompt READ currentPrompt NOTIFY currentPromptChanged)
 public:
-	Q_INVOKABLE void createScenario(const QString& name);
-	Q_INVOKABLE void saveScenario();
-	Q_INVOKABLE void loadScenario(const QString& name);
-	Q_INVOKABLE void deleteScenario(const QString& name);
+	Q_INVOKABLE QString getScenarioName();
+	Q_INVOKABLE void	  createScenario(const QString& name);
+	Q_INVOKABLE void	  saveScenario();
+	Q_INVOKABLE void	  loadScenario(const QString& name);
+	Q_INVOKABLE void	  deleteScenario(const QString& name);
 
 	Q_INVOKABLE void	   loadScenarioProfile(const QString& name);
 	Q_INVOKABLE Profile* getScenarioProfile();

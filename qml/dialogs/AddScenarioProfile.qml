@@ -24,4 +24,6 @@ Dialog {
 		GameScript.displayPrompt("0")
 		appmenu.height = 0
 	}
+
+
 }

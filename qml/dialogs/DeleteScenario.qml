@@ -5,8 +5,8 @@ import "../../scripts/gamescript.js" as GameScript
 
 Dialog {
 	id: dialog_removeScenario
-	width: 400
-	height: 350
+	width: 300
+	height: 250
 	title: "Delete scenario?"
 	standardButtons: Dialog.Yes | Dialog.No
 	anchors.centerIn: Overlay.overlay
@@ -15,5 +15,8 @@ Dialog {
 		text: "Are you sure you want to nuke scenario '" + cbo_selectScenario.currentText + "'."
 	}
 
-	onAccepted: Game.deleteScenario(cbo_selectScenario.currentText)
+	onAccepted: {
+		Game.deleteScenario(cbo_selectScenario.currentText)
+		cbo_selectScenario.currentIndex = 0
+	}
 }

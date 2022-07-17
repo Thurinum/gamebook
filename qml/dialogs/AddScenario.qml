@@ -9,6 +9,8 @@ Dialog {
 	anchors.centerIn: Overlay.overlay
 	height: 300
 
+	property alias name: dialog_addScenario_text.text
+
 	Label {
 		text: "Scenario name"
 		TextField {
@@ -19,8 +21,6 @@ Dialog {
 	}
 
 	onAccepted: {
-		let name = dialog_addScenario_text.text
 		Game.createScenario(name)
-		cbo_selectScenario.currentIndex = cbo_selectScenario.find(name)
 	}
 }

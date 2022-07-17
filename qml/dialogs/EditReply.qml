@@ -40,7 +40,10 @@ Dialog {
 	}
 
 	onAccepted: {
-		reply.text = GameScript.parseStr(dialog_editReply_text.text)
-		reply.target = checkbox.checked ? dialog_editReply_target.value : null
+		//reply.text = GameScript.parseStr(dialog_editReply_text.text)
+		reply.text = dialog_editReply_text.text
+
+		if (checkbox.checked)
+			reply.target = dialog_editReply_target.value
 	}
 }

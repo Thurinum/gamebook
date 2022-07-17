@@ -122,9 +122,8 @@ ApplicationWindow {
 						}
 
 						onActivated: {
-							Game.setSetting("Main/sLastScenario",
-									    currentText)
-						}
+							Game.setSetting("Main/sLastScenario", currentText)
+						}				
 					}
 
 					Binding {
@@ -132,8 +131,7 @@ ApplicationWindow {
 						property: "currentIndex"
 						value: {
 							cbo_selectScenario.count
-							let lastScenario = Game.setting(
-								    "Main/sLastScenario")
+							let lastScenario = Game.setting("Main/sLastScenario")
 							if (lastScenario)
 								cbo_selectScenario.currentIndex = cbo_selectScenario.find(lastScenario)
 						}
@@ -221,7 +219,7 @@ ApplicationWindow {
 
 				width: game.width
 				font.family: "serif"
-				font.pixelSize: 25
+				font.pixelSize: promptview.height * 0.15
 				padding: 10
 				text: Game.currentPrompt ? Game.currentPrompt.text : "empty prompt"
 
@@ -268,11 +266,15 @@ ApplicationWindow {
 
 			Image {
 				id: character
-				x: game.width - width - 10
-				y: -game.height / 2
+				anchors.right: parent.right
+				anchors.bottom: parent.bottom
+				anchors.bottomMargin: 50
 
-				height: app.height - 25
+				width: app.width / 2 - 100
+				height: app.height - 50
 				fillMode: Image.PreserveAspectFit
+				horizontalAlignment: Qt.AlignRight
+				verticalAlignment: Qt.AlignBottom
 				source: Game.currentPrompt && Game.currentPrompt.character
 					  ? Game.getAbsolutePath() + "/resources/" + Game.getCharacter(Game.currentPrompt.character).sprite
 					  : "";
@@ -281,7 +283,7 @@ ApplicationWindow {
 			Column {
 				id: repliesView
 
-				width: replies.width - character.width - 25
+				width: replies.width - character.paintedWidth - 25
 				x: 25
 				anchors.verticalCenter: replies.verticalCenter
 				spacing: 10
@@ -295,8 +297,9 @@ ApplicationWindow {
 						property int index: model.index
 
 						width: repliesView.width * 0.9
-						height: 40
+						height: font.pixelSize + 20
 						text: modelData.text
+						font.pixelSize: replies.height * 0.1
 
 						onClicked: {
 							GameScript.displayPrompt(
@@ -327,7 +330,7 @@ ApplicationWindow {
 				}
 				MenuItem {
 					text: "Go back"
-					enabled: Game.currentPrompt.parentPromptId !== ""
+					enabled: Game.currentPrompt.parentId !== ""
 					onTriggered: GameScript.displayPrompt(Game.currentPrompt.parentId)
 				}
 				MenuItem {
