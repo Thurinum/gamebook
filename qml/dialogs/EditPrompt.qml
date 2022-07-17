@@ -33,6 +33,7 @@ Dialog {
 			id: text
 			width: parent.width
 			wrapMode: Text.Wrap
+			selectByMouse: true
 		}
 
 		Label {

@@ -25,6 +25,7 @@ Dialog {
 			width: parent.width
 			wrapMode: Text.Wrap
 			text: dialog_editReply.reply ? dialog_editReply.reply.text : ""
+			selectByMouse: true
 		}
 
 		CheckBox {
@@ -36,6 +37,7 @@ Dialog {
 			width: parent.width
 			enabled: checkbox.checked
 			text: dialog_editReply.reply ? dialog_editReply.reply.target : ""
+			selectByMouse: true
 		}
 	}
 

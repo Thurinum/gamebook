@@ -111,6 +111,7 @@ ApplicationWindow {
 
 					ComboBox {
 						id: cbo_selectScenario
+						width: 250
 						textRole: "fileBaseName"
 						valueRole: "fileName"
 
@@ -218,7 +219,7 @@ ApplicationWindow {
 				id: prompt
 
 				width: game.width
-				font.family: "serif"
+				font.family: "Times New Roman,Linux Libertine,Liberation Serif,Noto Serif,Deja Vu Serif"
 				font.pixelSize: promptview.height * 0.15
 				padding: 10
 				text: Game.currentPrompt ? Game.currentPrompt.text : "empty prompt"
@@ -290,21 +291,22 @@ ApplicationWindow {
 
 				Repeater {
 					id: repliesRepeater
-					model: Game.currentPrompt
-						 && Game.currentPrompt.replies.length
-						 > 0 ? Game.currentPrompt.replies : 0
+					model: Game.currentPrompt && Game.currentPrompt.replies.length > 0
+							? Game.currentPrompt.replies : 0
 					delegate: Button {
 						property int index: model.index
 
 						width: repliesView.width * 0.9
 						height: font.pixelSize + 20
 						text: modelData.text
-						font.pixelSize: replies.height * 0.1
+						font.pixelSize: replies.height * 0.09
 
-						onClicked: {
-							GameScript.displayPrompt(
-										Game.currentPrompt.replies[index].target)
-						}
+						ToolTip.visible: hovered
+						ToolTip.delay: 900
+						ToolTip.timeout: 2500
+						ToolTip.text: modelData.text
+
+						onClicked: GameScript.displayPrompt(Game.currentPrompt.replies[index].target)
 					}
 				}
 			}

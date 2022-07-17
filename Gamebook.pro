@@ -1,4 +1,5 @@
 QT += qml quick quickcontrols2 xml
+QT -= network
 
 CONFIG += c++17
 SOURCES += $$files("src/*.cpp", true)
