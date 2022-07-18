@@ -22,7 +22,13 @@ Dialog {
 
 	onAccepted: {
 		let name = dialog_addScenarioProfile_text.text
-		Game.loadScenario(cbo_selectScenario.currentText)
+
+		if (Game.loadScenario(cbo_selectScenario.currentText) === false) {
+			dialog_error.msg = "Failed to load scenario!"
+			dialog_error.visible = true
+			return
+		}
+
 		Game.createScenarioProfile(name)
 
 		if (Game.loadScenarioProfile(name) === false) {

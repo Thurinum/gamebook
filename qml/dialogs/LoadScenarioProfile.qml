@@ -12,6 +12,8 @@ Dialog {
 	width: 400
 	height: 200
 
+	property alias folder: modellist.folder
+
 	Label {
 		text: "Save profile"
 
@@ -22,9 +24,10 @@ Dialog {
 			valueRole: "fileName"
 			anchors.top: parent.bottom
 			model: FolderListModel {
+				id: modellist
 				// TODO: Remember last profile
 				showDirs: false
-				folder: Game.dataFolder() + "/" + cbo_selectScenario.currentText
+				folder: Game.scenarioSavesFolder()
 				nameFilters: ["*.save"]
 			}
 		}

@@ -23,13 +23,12 @@ void Utils::setSetting(const QString& key, const QVariant& val) {
 }
 
 QString Utils::rootPath() {
-	return QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
+	return QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/"
 		 + Utils::setting("Main/sApplicationName").toString() + " Scenarios/";
 }
 
-QString Utils::scenarioPath(const QString& scenarioName) {
-	// yes the name repeats twice... :3
-	QString path = rootPath() + scenarioName + "/" + scenarioName + ".scenario";
+QString Utils::scenarioFolder(const QString& scenarioName) {
+	QString path = rootPath() + scenarioName + "/";
 	QDir	  dir;
 
 	// if scenario folder not created yet, make all appropriate paths
@@ -44,6 +43,14 @@ QString Utils::scenarioPath(const QString& scenarioName) {
 	return path;
 }
 
+QString Utils::scenarioPath(const QString& scenarioName) {
+	return scenarioFolder(scenarioName) + scenarioName + ".scenario";
+}
+
+QString Utils::scenarioSavesFolder(const QString& scenarioName) {
+	return scenarioFolder(scenarioName) + SAVES_PATH;
+}
+
 QString Utils::scenarioSavePath(const QString& scenarioName, const QString& profileName) {
-	return scenarioPath(scenarioName) + "saves/" + profileName + ".save";
+	return scenarioSavesFolder(scenarioName) + profileName + ".save";
 }

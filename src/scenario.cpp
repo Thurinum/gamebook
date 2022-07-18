@@ -155,15 +155,16 @@ void Scenario::save() {
 	file.close();
 }
 
-void Scenario::nuke() {
-	QString path = Utils::scenarioPath(this->name());
+void Scenario::nuke() const {
+	QString path = Utils::scenarioFolder(this->name());
+	QDir	  dir(path);
 
-	if (!QFile::exists(path)) {
-		qWarning() << "Cannot delete non-existing scenario " + name() + ".";
+	if (!dir.exists()) {
+		qWarning() << "Cannot delete non-existing scenario" << name() << ".\n\tPath:" << path;
 		return;
 	}
 
-	QFile::remove(path);
+	dir.removeRecursively();
 }
 
 const QString& Scenario::name() const {

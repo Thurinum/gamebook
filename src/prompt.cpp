@@ -86,9 +86,6 @@ void Prompt::setParentId(const QString& newParentId) {
 }
 
 void Prompt::addReply(const QString& text, QString target) {
-	if (target == nullptr)
-		target = QUuid::createUuid().toString(QUuid::WithoutBraces);
-
 	Reply* reply = new Reply;
 	reply->setText(text);
 	reply->setTarget(target);

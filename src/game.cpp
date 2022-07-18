@@ -132,6 +132,9 @@ bool Game::addPrompt(const QString& id, Prompt* parent) {
 }
 
 void Game::addReply(Prompt* prompt, const QString& text, QString target) {
+	if (target == nullptr)
+		target = QUuid::createUuid().toString(QUuid::WithoutBraces);
+
 	prompt->addReply(text, target);
 	addPrompt(target, prompt);
 }
@@ -183,27 +186,7 @@ void Game::setSetting(const QString& key, const QVariant& value) {
 
 // --------------------------------------------------------------------------------------
 
-QUrl Game::defaultResourcesFolder() {
-	return QUrl::fromLocalFile(QDir::currentPath() + "/resources/");
-}
-
-QUrl Game::scenariosFolder() {
-	return QUrl::fromLocalFile(Utils::rootPath());
-}
-
-QUrl Game::scenarioSavesFolder() {
-	return QUrl::fromLocalFile(Utils::scenarioPath(m_scenario->name()) + Utils::SAVES_PATH);
-}
-
-QUrl Game::scenarioCharactersFolder() {
-	return QUrl::fromLocalFile(Utils::scenarioPath(m_scenario->name()) + Utils::CHARACTERS_PATH);
-}
-
-QUrl Game::scenarioBackgroundsFolder() {
-	return QUrl::fromLocalFile(Utils::scenarioPath(m_scenario->name()) + Utils::BACKGROUNDS_PATH);
-}
-
-QUrl Game::getAppResource(const QString& resourcePath, const QString& fallbackPath) {
+QUrl Game::resource(const QString& resourcePath, const QString& fallbackPath) {
 	QFileInfo info(resourcePath);
 
 	if (info.exists() && info.isFile())
@@ -223,6 +206,26 @@ QUrl Game::getAppResource(const QString& resourcePath, const QString& fallbackPa
 	qWarning() << "Fallback path " + fallbackPath + " is invalid!";
 
 	return QUrl::fromLocalFile(QDir::currentPath() + Utils::setting("Main/sFallbackImage").toString());
+}
+
+QString Game::defaultResourcesFolder() {
+	return QDir::currentPath() + "/resources/";
+}
+
+QUrl Game::scenariosFolder() {
+	return QUrl::fromLocalFile(Utils::rootPath());
+}
+
+QUrl Game::scenarioSavesFolder() {
+	return QUrl::fromLocalFile(Utils::scenarioSavesFolder(m_scenario->name()));
+}
+
+QString Game::scenarioCharactersFolder() {
+	return Utils::scenarioFolder(m_scenario->name()) + Utils::CHARACTERS_PATH;
+}
+
+QUrl Game::scenarioBackgroundsFolder() {
+	return QUrl::fromLocalFile(Utils::scenarioFolder(m_scenario->name()) + Utils::BACKGROUNDS_PATH);
 }
 
 // accessors

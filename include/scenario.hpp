@@ -23,7 +23,7 @@ public:
 	void create() const;
 	bool load();
 	void save();
-	void nuke();
+	void nuke() const;
 
 	QHash<QString, Prompt*>&	    prompts();
 	const QHash<QString, ReplyType*>& replyTypes() const;

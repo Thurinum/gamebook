@@ -49,7 +49,7 @@ Dialog {
 			model: FolderListModel {
 				id: background_model
 				showDirs: false
-				folder: Game.getAbsolutePath() + "/resources/"
+				folder: Game.scenarioBackgroundsFolder()
 				nameFilters: ["*.png", "*.jp*g", "*.gif", "*.tif*", "*.webp"]
 			}
 		}

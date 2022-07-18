@@ -39,12 +39,12 @@ public:
 	Q_INVOKABLE static QVariant setting(const QString& key, const QVariant& fallback = QVariant());
 	Q_INVOKABLE static void	    setSetting(const QString& key, const QVariant& value);
 
-	Q_INVOKABLE QUrl getAppResource(const QString& resourcePath, const QString& fallbackPath = "");
-	Q_INVOKABLE QUrl defaultResourcesFolder();
-	Q_INVOKABLE QUrl scenariosFolder();
-	Q_INVOKABLE QUrl scenarioSavesFolder();
-	Q_INVOKABLE QUrl scenarioCharactersFolder();
-	Q_INVOKABLE QUrl scenarioBackgroundsFolder();
+	Q_INVOKABLE QUrl	  resource(const QString& resourcePath, const QString& fallbackPath = "");
+	Q_INVOKABLE QString defaultResourcesFolder();
+	Q_INVOKABLE QUrl	  scenariosFolder();
+	Q_INVOKABLE QUrl	  scenarioSavesFolder();
+	Q_INVOKABLE QString scenarioCharactersFolder();
+	Q_INVOKABLE QUrl	  scenarioBackgroundsFolder();
 
 	// accessors
 	Prompt*	     currentPrompt();

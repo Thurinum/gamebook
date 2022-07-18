@@ -13,7 +13,7 @@ Dialog {
 	standardButtons: Dialog.Ok | Dialog.Cancel
 	anchors.centerIn: Overlay.overlay
 
-
+	property alias folder: character_image_model.folder
 
 	ListView {
 		id: lview
@@ -45,7 +45,9 @@ Dialog {
 				Image {
 					id: thumbnail
 					anchors.fill: thumbnail_mousearea
-					source: Game.getPath(lview.model[index].sprite, "background.jpeg")
+					source: Game.resource(
+							  Game.scenarioCharactersFolder() + lview.model[index].sprite,
+							  Game.defaultResourcesFolder() + "background.jpeg")
 					fillMode: Image.PreserveAspectCrop
 				}
 
@@ -128,7 +130,6 @@ Dialog {
 				model: FolderListModel {
 					id: character_image_model
 					showDirs: false
-					folder: Game.getAbsolutePath() + "/resources/"
 					nameFilters: ["*.png", "*.jp*g", "*.gif", "*.tif*", "*.webp"]
 				}
 			}

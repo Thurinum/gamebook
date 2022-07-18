@@ -64,7 +64,10 @@ ApplicationWindow {
 		y: parallaxOverlay.point.position.y * fac - height / 2 * fac
 		fillMode: Image.PreserveAspectCrop
 
-		source: Game.currentPrompt && Game.currentPrompt.background ? Game.getAbsolutePath() + "/resources/" + Game.currentPrompt.background : Game.getPath(Game.setting("Main/sMainMenuBackground"))
+		source: Game.resource(
+					  Game.scenarioCharactersFolder() + Game.currentPrompt.background,
+					  Game.defaultResourcesFolder() + Game.setting("Main/sMainMenuBackground")
+				  )
 	}
 
 	Rectangle {
@@ -117,26 +120,34 @@ ApplicationWindow {
 
 						model: FolderListModel {
 							id: cbo_selectScenario_model
-							showDirs: false
-							folder: Game.dataFolder()
-							nameFilters: ["*.scenario"]
+							showDirs: true
+							showDirsFirst: true
+							folder: Game.scenariosFolder()
 						}
 
-						onActivated: Game.setSetting("Main/sLastScenario", currentText)
+						onActivated: {
+							Game.setSetting("Main/sLastScenario", currentText)
+							let text = cbo_selectScenario.currentText;
+							if (text !== "") {
+								Game.loadScenario(text)
+								dialog_loadScenarioProfile.folder = Game.scenarioSavesFolder()
+								dialog_editCharacters.folder = "file:///" + Game.scenarioCharactersFolder()
+							}
+
+
+						}
 					}
 
 					Binding {
 						target: cbo_selectScenario
 						property: "currentIndex"
 						value: {
-							cbo_selectScenario.count
-							let lastScenario = Game.setting("Main/sLastScenario")
-							if (lastScenario && lastScenario !== "")
-								cbo_selectScenario.currentIndex = cbo_selectScenario.find(lastScenario)
+//							cbo_selectScenario.count
+//							let lastScenario = Game.setting("Main/sLastScenario")
+//							if (lastScenario && lastScenario !== "")
+//								cbo_selectScenario.currentIndex = cbo_selectScenario.find(lastScenario)
 
-							let text = cbo_selectScenario.currentText;
-							if (text !== "")
-								Game.loadScenario(text)
+
 						}
 					}
 
@@ -282,9 +293,10 @@ ApplicationWindow {
 				fillMode: Image.PreserveAspectFit
 				horizontalAlignment: Qt.AlignRight
 				verticalAlignment: Qt.AlignBottom
-				source: Game.currentPrompt && Game.currentPrompt.character
-					  ? Game.getAbsolutePath() + "/resources/" + Game.getCharacter(Game.currentPrompt.character).sprite
-					  : "";
+				source: Game.currentPrompt.character ? Game.resource(
+											   Game.scenarioCharactersFolder() + Game.getCharacter(Game.currentPrompt.character).sprite,
+											   Game.defaultResourcesFolder() + "notfound.png"
+										     ) : "file:///" + Game.defaultResourcesFolder() + "notfound.png"
 			}
 
 			Column {

@@ -17,6 +17,7 @@ Dialog {
 
 	onAccepted: {
 		Game.deleteScenario(cbo_selectScenario.currentText)
+		dialog_loadScenarioProfile.folder = "" // prevent error
 		cbo_selectScenario.currentIndex = 0
 	}
 }
