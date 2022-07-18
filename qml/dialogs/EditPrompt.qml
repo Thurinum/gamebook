@@ -4,6 +4,7 @@ import Qt.labs.folderlistmodel
 import "../../scripts/gamescript.js" as GameScript
 
 Dialog {
+	id: root
 	width: 400
 	height: 350
 	title: "Edit dialogue prompt"
@@ -12,6 +13,7 @@ Dialog {
 
 	property alias name: name
 	property alias text: text
+	property alias folder: background_model.folder
 
 	Column {
 		width: parent.width
@@ -49,7 +51,6 @@ Dialog {
 			model: FolderListModel {
 				id: background_model
 				showDirs: false
-				folder: Game.scenarioBackgroundsFolder()
 				nameFilters: ["*.png", "*.jp*g", "*.gif", "*.tif*", "*.webp"]
 			}
 		}

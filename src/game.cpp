@@ -186,46 +186,29 @@ void Game::setSetting(const QString& key, const QVariant& value) {
 
 // --------------------------------------------------------------------------------------
 
-QUrl Game::resource(const QString& resourcePath, const QString& fallbackPath) {
-	QFileInfo info(resourcePath);
-
-	if (info.exists() && info.isFile())
-		return QUrl::fromLocalFile(resourcePath);
-
-	if (fallbackPath == "")
-		return QUrl::fromLocalFile(QDir::currentPath() + Utils::setting("Main/sFallbackImage").toString());
-
-	if (!Utils::setting("Debug/bValidateFallbackPaths").toBool())
-		return QUrl::fromLocalFile(fallbackPath);
-
-	info.setFile(fallbackPath);
-
-	if (info.exists() && info.isFile())
-		return QUrl::fromLocalFile(fallbackPath);
-
-	qWarning() << "Fallback path " + fallbackPath + " is invalid!";
-
-	return QUrl::fromLocalFile(QDir::currentPath() + Utils::setting("Main/sFallbackImage").toString());
-}
-
-QString Game::defaultResourcesFolder() {
-	return QDir::currentPath() + "/resources/";
-}
-
 QUrl Game::scenariosFolder() {
 	return QUrl::fromLocalFile(Utils::rootPath());
 }
 
-QUrl Game::scenarioSavesFolder() {
-	return QUrl::fromLocalFile(Utils::scenarioSavesFolder(m_scenario->name()));
+QString Game::scenarioFolder(bool asUrl) {
+	return (asUrl ? "file:///" : "") + Utils::scenarioFolder(m_scenario->name());
 }
 
-QString Game::scenarioCharactersFolder() {
-	return Utils::scenarioFolder(m_scenario->name()) + Utils::CHARACTERS_PATH;
+// --------------------------------------------------------------------------------------
+
+QString Game::appResource(const QString& path, bool asUrl) {
+	return (asUrl ? "file:///" : "") + QDir::currentPath() + "/resources/" + path;
 }
 
-QUrl Game::scenarioBackgroundsFolder() {
-	return QUrl::fromLocalFile(Utils::scenarioFolder(m_scenario->name()) + Utils::BACKGROUNDS_PATH);
+QString Game::resource(QString& path, bool asUrl) {
+	path = Utils::scenarioFolder(m_scenario->name()) + "assets/" + path;
+
+	QFileInfo info(path);
+
+	if (info.exists() && info.isFile())
+		return (asUrl ? "file:///" : "") + path;
+
+	return appResource(Utils::setting("Main/sFallbackImage").toString(), asUrl);
 }
 
 // accessors

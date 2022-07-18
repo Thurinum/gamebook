@@ -1,7 +1,23 @@
+// Gets a subfolder relative to the current scenario's folder
+function scenarioSubFolder(path, asUrl = true) {
+	return Game.scenarioFolder(asUrl) + path;
+}
+
 // Replace all occurences of a string. Found on CodeGrepper.
 function replaceAll(str, find, replace) {
 	let escapedFind = find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1")
 	return str.replace(new RegExp(escapedFind, 'g'), replace)
+}
+
+// Loads the scenario, then sets the appropriate paths for folderlist models
+function loadScenario() {
+	let text = scenarioNameField.currentText;
+	if (text !== "") {
+		Game.loadScenario(text)
+		dialog_loadScenarioProfile.folder	= scenarioSubFolder("saves")
+		dialog_editCharacters.folder		= scenarioSubFolder("assets/characters")
+		dialog_editPrompt.folder		= scenarioSubFolder("assets/backgrounds")
+	}
 }
 
 // Expand any variables within a string. Variables start with @!
@@ -16,11 +32,11 @@ function parseStr(str) {
 
 // Start "typewriting" the prompt
 function writePrompt(text) {
-	prompter.stop()
-	prompter.i = 0
+	promptTimer.stop()
+	promptTimer.i = 0
 	prompt.text = ""
-	prompter.text = text
-	prompter.start()
+	promptTimer.text = text
+	promptTimer.start()
 }
 
 // Displays a prompt and its replies on the UI.

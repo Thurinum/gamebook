@@ -5,38 +5,63 @@ import "../../scripts/gamescript.js" as GameScript
 
 
 Dialog {
-	id: dialog_loadScenarioProfile
-	title: "Load existing save"
-	standardButtons: Dialog.Ok | Dialog.Cancel
-	anchors.centerIn: Overlay.overlay
+	id: dialog
 	width: 400
 	height: 200
+	anchors.centerIn: Overlay.overlay
 
-	property alias folder: modellist.folder
+	title: "Load existing save"
+	standardButtons: Dialog.Ok | Dialog.Cancel
+
+	property alias folder: nameFieldModel.folder
 
 	Label {
 		text: "Save profile"
 
 		ComboBox {
-			id: dialog_loadScenarioProfile_name
+			id: nameField
 			width: 300
+			anchors.top: parent.bottom
+
 			textRole: "fileBaseName"
 			valueRole: "fileName"
-			anchors.top: parent.bottom
+
 			model: FolderListModel {
-				id: modellist
-				// TODO: Remember last profile
+				id: nameFieldModel
 				showDirs: false
-				folder: Game.scenarioSavesFolder()
 				nameFilters: ["*.save"]
+			}
+
+			onActivated: {
+				Game.setSetting("Main/sLastProfile", currentText)
+			}
+
+			Binding on currentIndex {
+				value: {
+					// idk what I'm doing wrong, but this statement
+					// is required for the binding to work
+					nameField.count
+
+					let lastProfile = Game.setting("Main/sLastProfile");
+
+					if (!lastProfile || lastProfile === "")
+						return;
+
+					let index = nameField.find(lastProfile);
+
+					if (index === -1)
+						return;
+
+					nameField.currentIndex = index;
+				}
 			}
 		}
 	}
 
 	onAccepted: {
-		let name = dialog_loadScenarioProfile_name.currentText
+		let name = nameField.currentText
 
-		Game.loadScenario(cbo_selectScenario.currentText)
+		Game.loadScenario(scenarioNameField.currentText)
 
 		if (name.length === 0) {
 			dialog_error.msg = "No profile selected!"

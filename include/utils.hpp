@@ -18,7 +18,6 @@ public:
 	static QString rootPath();
 	static QString scenarioFolder(const QString& scenarioName);
 	static QString scenarioPath(const QString& scenarioName);
-	static QString scenarioSavesFolder(const QString& scenarioName);
 	static QString scenarioSavePath(const QString& scenarioName, const QString& profileName);
 };
 

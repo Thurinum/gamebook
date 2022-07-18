@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import Qt.labs.folderlistmodel
+import Qt5Compat.GraphicalEffects
 import "../scripts/gamescript.js" as GameScript
 import "./dialogs" as Dialog
 
@@ -9,10 +10,10 @@ ApplicationWindow {
 
 	property bool isEditingAllowed
 
-	width: 640
-	height: 480
+	width: 1280
+	height: 720
 	visible: true
-	title: "Gamebook"
+	title: "Gamebook Studio"
 
 	menuBar: MenuBar {
 		visible: app.isEditingAllowed
@@ -59,15 +60,22 @@ ApplicationWindow {
 
 		width: app.width
 		height: app.height
-		scale: 1.5
 		x: parallaxOverlay.point.position.x * fac - width / 2 * fac
 		y: parallaxOverlay.point.position.y * fac - height / 2 * fac
+		scale: 1.5
+
 		fillMode: Image.PreserveAspectCrop
 
-		source: Game.resource(
-					  Game.scenarioCharactersFolder() + Game.currentPrompt.background,
-					  Game.defaultResourcesFolder() + Game.setting("Main/sMainMenuBackground")
-				  )
+		source: Game.currentPrompt.background
+				  ? Game.resource("backgrounds/" + Game.currentPrompt.background, true)
+				  : Game.appResource(Game.setting("Main/sMainMenuBackground"), true)
+	}
+
+	FastBlur {
+		source: background
+		anchors.fill: background
+		scale: 1.5
+		radius: 10
 	}
 
 	Rectangle {
@@ -113,13 +121,13 @@ ApplicationWindow {
 					}
 
 					ComboBox {
-						id: cbo_selectScenario
+						id: scenarioNameField
 						width: 250
 						textRole: "fileBaseName"
 						valueRole: "fileName"
 
 						model: FolderListModel {
-							id: cbo_selectScenario_model
+							id: scenarioNameFieldModel
 							showDirs: true
 							showDirsFirst: true
 							folder: Game.scenariosFolder()
@@ -127,29 +135,31 @@ ApplicationWindow {
 
 						onActivated: {
 							Game.setSetting("Main/sLastScenario", currentText)
-							let text = cbo_selectScenario.currentText;
-							if (text !== "") {
-								Game.loadScenario(text)
-								dialog_loadScenarioProfile.folder = Game.scenarioSavesFolder()
-								dialog_editCharacters.folder = "file:///" + Game.scenarioCharactersFolder()
+							GameScript.loadScenario();
+						}
+
+						Binding on currentIndex {
+							value: {
+								// idk what I'm doing wrong, but this statement
+								// is required for the binding to work
+								scenarioNameField.count
+
+								let lastScenario = Game.setting("Main/sLastScenario");
+
+								if (!lastScenario || lastScenario === "")
+									return;
+
+								let index = scenarioNameField.find(lastScenario);
+
+								if (index === -1)
+									return;
+
+								scenarioNameField.currentIndex = index;
+								GameScript.loadScenario();
 							}
-
-
 						}
 					}
 
-					Binding {
-						target: cbo_selectScenario
-						property: "currentIndex"
-						value: {
-//							cbo_selectScenario.count
-//							let lastScenario = Game.setting("Main/sLastScenario")
-//							if (lastScenario && lastScenario !== "")
-//								cbo_selectScenario.currentIndex = cbo_selectScenario.find(lastScenario)
-
-
-						}
-					}
 
 					Button {
 						text: "+"
@@ -184,13 +194,13 @@ ApplicationWindow {
 					text: "Edit scenario"
 
 					onClicked: {
-						if (cbo_selectScenario.currentText === "") {
+						if (scenarioNameField.currentText === "") {
 							dialog_error.msg = "Please select a scenario!"
 							dialog_error.visible = true
 							return
 						}
 
-						if (Game.loadScenario(cbo_selectScenario.currentText) === false) {
+						if (Game.loadScenario(scenarioNameField.currentText) === false) {
 							dialog_error.msg = "Failed to load scenario!"
 							dialog_error.visible = true
 							return
@@ -215,38 +225,38 @@ ApplicationWindow {
 
 		width: app.width
 		height: app.height
-
 		anchors.top: appmenu.bottom
 
-		color: "#CCCCCC44"
-		border.width: 10
-		border.color: "darkred"
+		color: Qt.hsla(0, 0, 0.6, 0.5)
 
 		ScrollView {
-			id: promptview
+			id: promptView
 
 			width: game.width
 			height: game.height / 2
-			clip: true
 
 			x: game.border.width
 			y: game.border.width
+
+			clip: true
 
 			Label {
 				id: prompt
 
 				width: game.width
-				font.family: "Times New Roman,Linux Libertine,Liberation Serif,Noto Serif,Deja Vu Serif"
-				font.pixelSize: promptview.height * 0.15
 				padding: 10
-				text: Game.currentPrompt ? Game.currentPrompt.text : "empty prompt"
 
+				font.family: "Times New Roman,Linux Libertine,Liberation Serif,Noto Serif,Deja Vu Serif"
+				font.pixelSize: promptView.height * 0.15
+
+				text: Game.currentPrompt ? Game.currentPrompt.text : "empty prompt"
 				textFormat: Text.StyledText
 				wrapMode: Text.WordWrap
 			}
 
 			Timer {
-				id: prompter
+				id: promptTimer
+
 				interval: 100
 				repeat: true
 
@@ -255,69 +265,105 @@ ApplicationWindow {
 
 				onTriggered: {
 					if (".:".includes(text[i]))
-						interval = 300
+						interval = 300;
 					else if (",;".includes(text[i]))
-						interval = 150
+						interval = 150;
 					else
-						interval = 50
+						interval = 50;
 
-					prompt.text += text[i]
-					i++
+					prompt.text += text[i];
+					i++;
+
 					if (i >= text.length) {
-						i = 0
-						prompter.stop()
+						i = 0;
+						promptTimer.stop();
 					}
 				}
 			}
 		}
 
 		Rectangle {
-			id: replies
+			id: repliesPanel
 			width: game.width
 			height: game.height / 2 - 15
-			anchors.top: promptview.bottom
+			anchors.bottom: game.bottom
 			y: game.height / 2
 
 			color: Qt.hsla(0, 0, 1, 0.5)
-			border.color: "lightblue"
-			border.width: 10
+			border.color: Universal.accent
+			border.width: 9
+
+			Rectangle {
+				id: characterNameBadge
+
+				width: characterName.implicitWidth + 50
+				height: 80
+
+				anchors.left: repliesPanel.left
+				anchors.top:  repliesPanel.top
+				anchors.leftMargin: 50
+				anchors.topMargin: -(height / 2)
+
+				border.color: Universal.accent
+				border.width: 6
+				radius: 15
+
+				Label {
+					id: characterName
+
+					anchors.centerIn: characterNameBadge
+					horizontalAlignment: Qt.AlignHCenter
+					verticalAlignment: Qt.AlignVCenter
+
+					font.pixelSize: repliesPanel.height * 0.1
+
+					text: Game.currentPrompt.character
+							? Game.getCharacter(Game.currentPrompt.character).name
+							: "Unnamed Character"
+				}
+			}
 
 			Image {
 				id: character
-				anchors.right: parent.right
-				anchors.bottom: parent.bottom
-				anchors.bottomMargin: 50
 
 				width: app.width / 2 - 100
 				height: app.height - 50
-				fillMode: Image.PreserveAspectFit
+
+				anchors.right: repliesPanel.right
+				anchors.bottom: repliesPanel.bottom
+				anchors.bottomMargin: 50
+
 				horizontalAlignment: Qt.AlignRight
 				verticalAlignment: Qt.AlignBottom
-				source: Game.currentPrompt.character ? Game.resource(
-											   Game.scenarioCharactersFolder() + Game.getCharacter(Game.currentPrompt.character).sprite,
-											   Game.defaultResourcesFolder() + "notfound.png"
-										     ) : "file:///" + Game.defaultResourcesFolder() + "notfound.png"
+				fillMode: Image.PreserveAspectFit
+
+				source: Game.currentPrompt.character
+						  ? Game.resource("characters/" + Game.getCharacter(Game.currentPrompt.character).sprite)
+						  : ""
 			}
 
 			Column {
 				id: repliesView
 
-				width: replies.width - character.paintedWidth - 25
+				width: repliesPanel.width - character.paintedWidth - 25
 				x: 25
-				anchors.verticalCenter: replies.verticalCenter
+				anchors.verticalCenter: repliesPanel.verticalCenter
 				spacing: 10
 
 				Repeater {
 					id: repliesRepeater
+
 					model: Game.currentPrompt && Game.currentPrompt.replies.length > 0
-						 ? Game.currentPrompt.replies : 0
+							? Game.currentPrompt.replies : 0
+
 					delegate: Button {
 						property int index: model.index
 
 						width: repliesView.width * 0.9
 						height: font.pixelSize + 20
+
+						font.pixelSize: repliesPanel.height * 0.09
 						text: modelData.text
-						font.pixelSize: replies.height * 0.09
 
 						ToolTip.visible: hovered
 						ToolTip.delay: 900
@@ -325,11 +371,9 @@ ApplicationWindow {
 						ToolTip.text: modelData.text
 
 						MouseArea {
-							id: dragArea
 							anchors.fill: parent
 
 							property double yPos: 0
-							propagateComposedEvents: true
 
 							onPressed: mouse => yPos = mouse.y
 							onClicked: GameScript.displayPrompt(Game.currentPrompt.replies[index].target)
@@ -366,7 +410,7 @@ ApplicationWindow {
 			}
 
 			Menu {
-				id: repliesEditMenu
+				id: repliesContextMenu
 
 				property Item selection
 
@@ -379,14 +423,14 @@ ApplicationWindow {
 				}
 				MenuItem {
 					text: "Edit reply..."
-					enabled: repliesEditMenu.selection
+					enabled: repliesContextMenu.selection
 					onTriggered: {
 						dialog_editReply.open()
 					}
 				}
 				MenuItem {
 					text: "Delete reply..."
-					enabled: repliesEditMenu.selection
+					enabled: repliesContextMenu.selection
 					onTriggered: {
 						dialog_deleteReply.open()
 					}
@@ -405,20 +449,20 @@ ApplicationWindow {
 			}
 
 			MouseArea {
-				anchors.fill: replies
+				anchors.fill: repliesPanel
 				enabled: app.isEditingAllowed
 				acceptedButtons: Qt.RightButton
 				onClicked: mouse => {
 						     let pt = mapToItem(repliesView, mouse.x, mouse.y);
-						     repliesEditMenu.selection = repliesView.childAt(pt.x, pt.y);
+						     repliesContextMenu.selection = repliesView.childAt(pt.x, pt.y);
 
-						     if (repliesEditMenu.selection) {
-							     let reply = Game.currentPrompt.replies[repliesEditMenu.selection.index];
+						     if (repliesContextMenu.selection) {
+							     let reply = Game.currentPrompt.replies[repliesContextMenu.selection.index];
 							     dialog_editReply.reply = reply;
-							     dialog_deleteReply.index = repliesEditMenu.selection.index;
+							     dialog_deleteReply.index = repliesContextMenu.selection.index;
 						     }
 
-						     repliesEditMenu.popup();
+						     repliesContextMenu.popup();
 					     }
 			}
 		}

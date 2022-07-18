@@ -12,12 +12,12 @@ Dialog {
 	anchors.centerIn: Overlay.overlay
 
 	Label {
-		text: "Are you sure you want to nuke scenario '" + cbo_selectScenario.currentText + "'."
+		text: "Are you sure you want to nuke scenario '" + scenarioNameField.currentText + "'."
 	}
 
 	onAccepted: {
-		Game.deleteScenario(cbo_selectScenario.currentText)
+		Game.deleteScenario(scenarioNameField.currentText)
 		dialog_loadScenarioProfile.folder = "" // prevent error
-		cbo_selectScenario.currentIndex = 0
+		scenarioNameField.currentIndex = 0
 	}
 }

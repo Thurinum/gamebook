@@ -47,10 +47,6 @@ QString Utils::scenarioPath(const QString& scenarioName) {
 	return scenarioFolder(scenarioName) + scenarioName + ".scenario";
 }
 
-QString Utils::scenarioSavesFolder(const QString& scenarioName) {
-	return scenarioFolder(scenarioName) + SAVES_PATH;
-}
-
 QString Utils::scenarioSavePath(const QString& scenarioName, const QString& profileName) {
-	return scenarioSavesFolder(scenarioName) + profileName + ".save";
+	return scenarioFolder(scenarioName) + SAVES_PATH + profileName + ".save";
 }

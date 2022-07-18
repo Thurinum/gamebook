@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Dialogs
+import QtQuick.Layouts
 import Qt.labs.folderlistmodel
 import "../../scripts/gamescript.js" as GameScript
 
@@ -15,76 +16,67 @@ Dialog {
 
 	property alias folder: character_image_model.folder
 
-	ListView {
-		id: lview
+	ColumnLayout {
 		anchors.fill: parent
-		spacing: 10
+		spacing: 25
 
-		header: Button {
-			text: "+"
+		Button {
+			width: 35
+			height: 35
+
+			text: "+ Add"
 			onClicked: {
 				edit_dialog.open()
 			}
 		}
 
-		delegate: Row {
-			height: 50
+		ListView {
+			id: lview
 			spacing: 10
+			Layout.fillHeight: true
 
-			MouseArea {
-				id: thumbnail_mousearea
-				width: 50
+			delegate: RowLayout {
+				width: dialog.width - 50
 				height: 50
-				hoverEnabled: true
-
-				onClicked: {
-					edit_dialog.character = Game.getCharacter(name.text)
-					edit_dialog.open();
-				}
+				spacing: 10
 
 				Image {
 					id: thumbnail
-					anchors.fill: thumbnail_mousearea
-					source: Game.resource(
-							  Game.scenarioCharactersFolder() + lview.model[index].sprite,
-							  Game.defaultResourcesFolder() + "background.jpeg")
+					Layout.preferredWidth: 50
+					Layout.preferredHeight: 50
+					source: Game.resource("characters/" + lview.model[index].sprite, true)
 					fillMode: Image.PreserveAspectCrop
+					verticalAlignment: Qt.AlignTop
 				}
 
-				Rectangle {
-					id: thumbnail_overlay
-					anchors.fill: thumbnail
-					color: "#222222AA"
-					visible: thumbnail_mousearea.containsMouse
+				Button {
+					width: 35
+					height: 35
 
-					Text {
-						text: "edit me"
-					}
-				}
-			}
+					text: "Edit"
 
-			TextEdit {
-				width: 250
-				id: name
-				text: lview.model[index].name
-			}
-
-			MouseArea {
-				width: 50
-				height: 50
-
-				Rectangle {
-					anchors.fill: parent
-					color: "red"
-
-					Text {
-						text: "nuke me"
+					onClicked: {
+						edit_dialog.character = Game.getCharacter(name.text)
+						edit_dialog.open();
 					}
 				}
 
-				onClicked: {
-					confirm_dialog.character = lview.model[index].name
-					confirm_dialog.open()
+				Label  {
+					id: name
+					Layout.fillWidth: true
+					text: lview.model[index].name
+				}
+
+				Button {
+					width: 35
+					height: 35
+
+					text: "X"
+
+					onClicked: {
+						confirm_dialog.character = lview.model[index].name
+						confirm_dialog.open()
+					}
 				}
 			}
 		}
