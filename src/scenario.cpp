@@ -1,20 +1,22 @@
 #include "scenario.hpp"
+#include "utils.hpp"
 
 #include <QFile>
 #include <QUuid>
 #include <QXmlStreamWriter>
 
 void Scenario::create() const {
-	QFile file(path(this->name()));
+	QString path = Utils::scenarioPath(this->name());
+	QFile	  file(path);
 
 	if (!file.open(QIODevice::WriteOnly)) {
-		qCritical() << "Failed to open scenario" << path() << "for writing:" << file.errorString();
+		qCritical() << "Failed to open scenario" << path << "for writing:" << file.errorString();
 		return;
 	}
 
 	QXmlStreamWriter writer(&file);
 	writer.setAutoFormatting(true);
-	writer.setAutoFormattingIndent(XML_INDENT);
+	writer.setAutoFormattingIndent(Utils::setting("Main/iXmlIndent").toInt());
 
 	writer.writeStartDocument();
 	writer.writeStartElement("scenario");
@@ -36,10 +38,11 @@ void Scenario::create() const {
 }
 
 bool Scenario::load() {
-	QFile file(path());
+	QString path = Utils::scenarioPath(this->name());
+	QFile	  file(path);
 
 	if (!file.open(QIODevice::ReadOnly)) {
-		qCritical() << "Failed to open scenario" << path() << "for reading:" << file.errorString();
+		qCritical() << "Failed to open scenario" << path << "for reading:" << file.errorString();
 		return false;
 	}
 
@@ -94,7 +97,9 @@ bool Scenario::load() {
 }
 
 void Scenario::save() {
-	QFile file(this->path());
+	QString path = Utils::scenarioPath(this->name());
+	QFile	  file(path);
+
 	if (!file.open(QIODevice::WriteOnly)) {
 		qCritical() << "Failed to open scenario for reading: " << file.errorString() << ".";
 		return;
@@ -102,7 +107,7 @@ void Scenario::save() {
 
 	QXmlStreamWriter writer(&file);
 	writer.setAutoFormatting(true);
-	writer.setAutoFormattingIndent(XML_INDENT);
+	writer.setAutoFormattingIndent(Utils::setting("Main/iXmlIndent").toInt());
 
 	writer.writeStartDocument();
 	writer.writeStartElement("scenario");
@@ -151,7 +156,7 @@ void Scenario::save() {
 }
 
 void Scenario::nuke() {
-	QString path = this->path();
+	QString path = Utils::scenarioPath(this->name());
 
 	if (!QFile::exists(path)) {
 		qWarning() << "Cannot delete non-existing scenario " + name() + ".";
@@ -159,14 +164,6 @@ void Scenario::nuke() {
 	}
 
 	QFile::remove(path);
-}
-
-QString Scenario::path() const {
-	return "scenarios/" + name() + ".scenario";
-}
-
-QString Scenario::path(const QString& name) {
-	return "scenarios/" + name + ".scenario";
 }
 
 const QString& Scenario::name() const {

@@ -9,20 +9,20 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickStyle>
+#include <QUuid>
 
-int main(int argc, char* argv[])
-{
-	qputenv("QT_QUICK_CONTROLS_CONF", QDir::currentPath().toLocal8Bit() + "/gamebook.ini");
-	qRegisterMetaType<Prompt*>();
+int main(int argc, char* argv[]) {
+	// add Qt Quick configuration to the main INI file
+	qputenv("QT_QUICK_CONTROLS_CONF", Utils::INI_FILE_LOCATION.toLocal8Bit());
+
 	qRegisterMetaType<Prompt*>();
 	qRegisterMetaType<Reply*>();
 	qRegisterMetaType<Scenario*>();
 	qRegisterMetaType<Profile*>();
-	qRegisterMetaType<QList<Reply*>>();
 
 	QGuiApplication app(argc, argv);
 	QGuiApplication::setOrganizationName("Thurinum");
-	QGuiApplication::setApplicationName("Gamebook");
+	QGuiApplication::setApplicationName(Utils::setting("Main/sApplicationName").toString());
 
 	Game			    backend;
 	QQmlApplicationEngine engine;

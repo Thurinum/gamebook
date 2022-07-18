@@ -12,11 +12,9 @@ class Profile : public QObject
 public:
 	explicit Profile(QString name, Scenario* scenario, QObject* parent = nullptr);
 
-	QString path() const;
-
 	void create() const;
 	bool load();
-	void save();
+	void save() const;
 	void nuke();
 
 	const QString& name() const;
@@ -33,7 +31,6 @@ signals:
 	void promptidChanged();
 
 private:
-	int	    id;
 	QString   m_name;
 	Scenario* m_scenario;
 	QString   m_promptid;

@@ -25,9 +25,6 @@ public:
 	void save();
 	void nuke();
 
-	inline QString	    path() const;
-	inline static QString path(const QString& name);
-
 	QHash<QString, Prompt*>&	    prompts();
 	const QHash<QString, ReplyType*>& replyTypes() const;
 
@@ -36,8 +33,6 @@ public:
 
 	const QString& name() const;
 	void		   setName(const QString& newName);
-
-	static const int XML_INDENT = 6;
 
 signals:
 	void nameChanged();

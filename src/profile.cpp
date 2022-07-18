@@ -1,4 +1,5 @@
 #include "profile.hpp"
+#include "utils.hpp"
 #include <QDebug>
 
 #include <QDir>
@@ -8,26 +9,18 @@
 Profile::Profile(QString name, Scenario* scenario, QObject* parent)
 	: QObject{parent}, m_name(std::move(name)), m_scenario(scenario) {}
 
-QString Profile::path() const {
-	QString root = "scenarios/" + this->scenario()->name() + "/";
-	QDir	  dir;
-	if (!dir.exists(root))
-		dir.mkpath(root);
-
-	return root + this->name() + ".save";
-}
-
 void Profile::create() const {
-	QFile file(path());
+	QString path = Utils::scenarioSavePath(this->scenario()->name(), this->name());
+	QFile	  file(path);
 
 	if (!file.open(QIODevice::WriteOnly)) {
-		qCritical() << "Failed to open profile" << this->path() << "for writing:" << file.errorString();
+		qCritical() << "Failed to open profile" << path << "for writing:" << file.errorString();
 		return;
 	}
 
 	QXmlStreamWriter writer(&file);
 	writer.setAutoFormatting(true);
-	writer.setAutoFormattingIndent(6);
+	writer.setAutoFormattingIndent(Utils::setting("Main/iXmlIndent").toInt());
 
 	writer.writeStartDocument();
 	writer.writeStartElement("profile");
@@ -40,10 +33,11 @@ void Profile::create() const {
 }
 
 bool Profile::load() {
-	QFile file(path());
+	QString path = Utils::scenarioSavePath(this->scenario()->name(), this->name());
+	QFile	  file(path);
 
 	if (!file.open(QIODevice::ReadOnly)) {
-		qCritical() << "Failed to open profile" << this->path() << "for reading:" << file.errorString();
+		qCritical() << "Failed to open profile" << path << "for reading:" << file.errorString();
 		return false;
 	}
 
@@ -65,16 +59,17 @@ bool Profile::load() {
 	return true;
 }
 
-void Profile::save() {
-	QFile file(path());
+void Profile::save() const {
+	QString path = Utils::scenarioSavePath(this->scenario()->name(), this->name());
+	QFile	  file(path);
 	if (!file.open(QIODevice::WriteOnly)) {
-		qCritical() << "Failed to open profile" << this->path() << "for writing:" << file.errorString();
+		qCritical() << "Failed to open profile" << path << "for writing:" << file.errorString();
 		return;
 	}
 
 	QXmlStreamWriter writer(&file);
 	writer.setAutoFormatting(true);
-	writer.setAutoFormattingIndent(6);
+	writer.setAutoFormattingIndent(Utils::setting("Main/iXmlIndent").toInt());
 
 	writer.writeStartDocument();
 	writer.writeStartElement("profile");

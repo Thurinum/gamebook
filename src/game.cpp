@@ -177,46 +177,52 @@ void Game::removeCharacter(const QString& name) {
 QVariant Game::setting(const QString& key, const QVariant& fallback) {
 	return Utils::setting(key, fallback);
 }
-
 void Game::setSetting(const QString& key, const QVariant& value) {
 	Utils::setSetting(key, value);
 }
 
 // --------------------------------------------------------------------------------------
 
-QUrl Game::getAbsolutePath() {
-	return QUrl::fromLocalFile(QDir::currentPath());
+QUrl Game::defaultResourcesFolder() {
+	return QUrl::fromLocalFile(QDir::currentPath() + "/resources/");
 }
 
-QUrl Game::getPath(const QString& resourcePath, const QString& fallbackPath) {
-	QString root = QDir::currentPath() + "/resources/";
-	QString path = root + resourcePath;
+QUrl Game::scenariosFolder() {
+	return QUrl::fromLocalFile(Utils::rootPath());
+}
 
-	QFileInfo info(path);
+QUrl Game::scenarioSavesFolder() {
+	return QUrl::fromLocalFile(Utils::scenarioPath(m_scenario->name()) + Utils::SAVES_PATH);
+}
+
+QUrl Game::scenarioCharactersFolder() {
+	return QUrl::fromLocalFile(Utils::scenarioPath(m_scenario->name()) + Utils::CHARACTERS_PATH);
+}
+
+QUrl Game::scenarioBackgroundsFolder() {
+	return QUrl::fromLocalFile(Utils::scenarioPath(m_scenario->name()) + Utils::BACKGROUNDS_PATH);
+}
+
+QUrl Game::getAppResource(const QString& resourcePath, const QString& fallbackPath) {
+	QFileInfo info(resourcePath);
 
 	if (info.exists() && info.isFile())
-		return QUrl::fromLocalFile(path);
+		return QUrl::fromLocalFile(resourcePath);
 
 	if (fallbackPath == "")
-		return QUrl::fromLocalFile(root + Utils::setting("Main/sFallbackImage").toString());
-
-	QString fallback = root + fallbackPath;
+		return QUrl::fromLocalFile(QDir::currentPath() + Utils::setting("Main/sFallbackImage").toString());
 
 	if (!Utils::setting("Debug/bValidateFallbackPaths").toBool())
-		return QUrl::fromLocalFile(fallback);
+		return QUrl::fromLocalFile(fallbackPath);
 
-	info.setFile(fallback);
+	info.setFile(fallbackPath);
 
 	if (info.exists() && info.isFile())
-		return QUrl::fromLocalFile(fallback);
+		return QUrl::fromLocalFile(fallbackPath);
 
-	qWarning() << "Fallback path " + fallback + " is invalid!";
-	return QUrl::fromLocalFile(root + Utils::setting("Main/sFallbackImage").toString());
-}
+	qWarning() << "Fallback path " + fallbackPath + " is invalid!";
 
-QUrl Game::getAppFolder() {
-	return QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
-					   + Utils::setting("Main/sApplicationName").toString());
+	return QUrl::fromLocalFile(QDir::currentPath() + Utils::setting("Main/sFallbackImage").toString());
 }
 
 // accessors

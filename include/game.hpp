@@ -36,12 +36,15 @@ public:
 	Q_INVOKABLE void			removeCharacter(const QString& name);
 
 	// helpers
-	Q_INVOKABLE QVariant setting(const QString& key, const QVariant& fallback = QVariant());
-	Q_INVOKABLE void	   setSetting(const QString& key, const QVariant& value);
+	Q_INVOKABLE static QVariant setting(const QString& key, const QVariant& fallback = QVariant());
+	Q_INVOKABLE static void	    setSetting(const QString& key, const QVariant& value);
 
-	Q_INVOKABLE QUrl getAbsolutePath();
-	Q_INVOKABLE QUrl getPath(const QString& resourcePath, const QString& fallbackPath = "");
-	Q_INVOKABLE QUrl getAppFolder();
+	Q_INVOKABLE QUrl getAppResource(const QString& resourcePath, const QString& fallbackPath = "");
+	Q_INVOKABLE QUrl defaultResourcesFolder();
+	Q_INVOKABLE QUrl scenariosFolder();
+	Q_INVOKABLE QUrl scenarioSavesFolder();
+	Q_INVOKABLE QUrl scenarioCharactersFolder();
+	Q_INVOKABLE QUrl scenarioBackgroundsFolder();
 
 	// accessors
 	Prompt*	     currentPrompt();
