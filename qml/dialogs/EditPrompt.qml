@@ -55,7 +55,7 @@ Dialog {
 			}
 		}
 
-		CheckBox {
+		Switch {
 			id: bIsEnd
 			text: "Ends story"
 			checked: Game.currentPrompt ? Game.currentPrompt.isEnd : false

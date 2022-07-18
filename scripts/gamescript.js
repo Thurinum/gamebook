@@ -15,7 +15,7 @@ function loadScenario() {
 	if (text !== "") {
 		Game.loadScenario(text)
 		dialog_loadScenarioProfile.folder	= scenarioSubFolder("saves")
-		dialog_editCharacters.folder		= scenarioSubFolder("assets/characters")
+		edit_dialog.folder			= scenarioSubFolder("assets/characters")
 		dialog_editPrompt.folder		= scenarioSubFolder("assets/backgrounds")
 	}
 }

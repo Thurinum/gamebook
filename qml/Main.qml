@@ -1,9 +1,13 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Dialogs
 import Qt.labs.folderlistmodel
 import Qt5Compat.GraphicalEffects
 import "../scripts/gamescript.js" as GameScript
 import "./dialogs" as Dialog
+import "./interface" as Interface
+import "./reusable" as Reusable
 
 ApplicationWindow {
 	id: app
@@ -67,8 +71,8 @@ ApplicationWindow {
 		fillMode: Image.PreserveAspectCrop
 
 		source: Game.currentPrompt.background
-				  ? Game.resource("backgrounds/" + Game.currentPrompt.background, true)
-				  : Game.appResource(Game.setting("Main/sMainMenuBackground"), true)
+			  ? Game.resource("backgrounds/" + Game.currentPrompt.background, true)
+			  : Game.appResource(Game.setting("Main/sMainMenuBackground"), true)
 	}
 
 	FastBlur {
@@ -259,11 +263,11 @@ ApplicationWindow {
 			Timer {
 				id: promptTimer
 
-				interval: 100
-				repeat: true
-
 				property int i: 0
 				property string text: "Dummy text."
+
+				interval: 100
+				repeat: true
 
 				onTriggered: {
 					if (".:".includes(text[i]))
@@ -321,8 +325,8 @@ ApplicationWindow {
 					font.family: "Times New Roman"
 
 					text: Game.currentPrompt.character
-							? Game.getCharacter(Game.currentPrompt.character).name
-							: "Unnamed Character"
+						? Game.getCharacter(Game.currentPrompt.character).name
+						: "Unnamed Character"
 				}
 			}
 
@@ -353,8 +357,8 @@ ApplicationWindow {
 				fillMode: Image.PreserveAspectFit
 
 				source: Game.currentPrompt.character
-						  ? Game.resource("characters/" + Game.getCharacter(Game.currentPrompt.character).sprite)
-						  : ""
+					  ? Game.resource("characters/" + Game.getCharacter(Game.currentPrompt.character).sprite)
+					  : ""
 			}
 
 			DropShadow {
@@ -379,7 +383,7 @@ ApplicationWindow {
 					id: repliesRepeater
 
 					model: Game.currentPrompt && Game.currentPrompt.replies.length > 0
-							? Game.currentPrompt.replies : 0
+						 ? Game.currentPrompt.replies : 0
 
 					delegate: Button {
 						property int index: model.index
@@ -538,6 +542,32 @@ ApplicationWindow {
 		}
 	}
 
+	Reusable.HorizontalPane {
+		target: appmenu
+		alignment: Qt.AlignRight
+		tabs: [
+			TabButton {
+				text: "Characters"
+			},
+			TabButton {
+				text: "Dummy"
+			}
+		]
+
+		onToggled: {
+			charactersTab.model = Game.getCharacters()
+			Game.saveScenario()
+			Game.loadScenario(Game.getScenarioName())
+			GameScript.displayPrompt(Game.currentPrompt.id)
+		}
+
+		Interface.CharacterEditor {
+			id: charactersTab
+			Layout.fillWidth: true
+			Layout.fillHeight: true
+		}
+	}
+
 	Dialog.AddScenario { id: dialog_addScenario }
 	Dialog.DeleteScenario { id: dialog_removeScenario }
 	Dialog.AddScenarioProfile { id: dialog_addScenarioProfile }
@@ -547,5 +577,7 @@ ApplicationWindow {
 	Dialog.EditReply { id: dialog_editReply }
 	Dialog.DeleteReply { id: dialog_deleteReply }
 	Dialog.EditCharacters { id: dialog_editCharacters }
+	Dialog.ConfirmCharacterDelete { id: confirm_dialog }
+	Dialog.EditCharacter { id: edit_dialog }
 	Dialog.Error { id: dialog_error }
 }
