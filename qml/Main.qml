@@ -251,6 +251,8 @@ ApplicationWindow {
 
 				text: Game.currentPrompt ? Game.currentPrompt.text : "empty prompt"
 				textFormat: Text.StyledText
+				style: Text.Outline
+				styleColor: "#888"
 				wrapMode: Text.WordWrap
 			}
 
@@ -316,11 +318,24 @@ ApplicationWindow {
 					verticalAlignment: Qt.AlignVCenter
 
 					font.pixelSize: repliesPanel.height * 0.1
+					font.family: "Times New Roman"
 
 					text: Game.currentPrompt.character
 							? Game.getCharacter(Game.currentPrompt.character).name
 							: "Unnamed Character"
 				}
+			}
+
+			DropShadow {
+				source: characterNameBadge
+				anchors.fill: characterNameBadge
+
+				horizontalOffset: 0
+				verticalOffset: 10
+
+				color: Qt.hsla(0, 0, 0, 0.5)
+				transparentBorder: true
+				radius: 30
 			}
 
 			Image {
@@ -340,6 +355,16 @@ ApplicationWindow {
 				source: Game.currentPrompt.character
 						  ? Game.resource("characters/" + Game.getCharacter(Game.currentPrompt.character).sprite)
 						  : ""
+			}
+
+			DropShadow {
+				source: character
+				anchors.fill: character
+				horizontalOffset: 0
+				verticalOffset: 0
+
+				color: Qt.hsla(0, 0, 0, 0.5)
+				radius: 30
 			}
 
 			Column {
