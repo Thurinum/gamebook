@@ -206,6 +206,7 @@ ApplicationWindow {
 
 			x: game.border.width
 			y: game.border.width
+			z: 1
 
 			clip: true
 
@@ -249,6 +250,31 @@ ApplicationWindow {
 						i = 0;
 						promptTimer.stop();
 					}
+				}
+			}
+
+			Menu {
+				id: promptEditMenu
+
+				MenuItem {
+					text: "Edit prompt..."
+					onTriggered: {
+						promptDialog.name.currentIndex = 0
+						promptDialog.text.text = Game.currentPrompt.text
+						promptDialog.visible = true
+					}
+				}
+			}
+
+			MouseArea {
+				width: parent.width
+				height: parent.height / 2
+
+				enabled: app.isEditingAllowed
+				acceptedButtons: Qt.RightButton
+
+				onClicked: {
+					promptEditMenu.popup()
 				}
 			}
 		}
@@ -459,31 +485,6 @@ ApplicationWindow {
 						     repliesContextMenu.selection = repliesView.childAt(pt.x, pt.y);
 						     repliesContextMenu.popup();
 					     }
-			}
-		}
-
-		Menu {
-			id: promptEditMenu
-
-			MenuItem {
-				text: "Edit prompt..."
-				onTriggered: {
-					promptDialog.name.currentIndex = 0
-					promptDialog.text.text = Game.currentPrompt.text
-					promptDialog.visible = true
-				}
-			}
-		}
-
-		MouseArea {
-			width: parent.width
-			height: parent.height / 2
-
-			enabled: app.isEditingAllowed
-			acceptedButtons: Qt.RightButton
-
-			onClicked: {
-				promptEditMenu.popup()
 			}
 		}
 	}

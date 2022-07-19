@@ -37,14 +37,12 @@ Dialog {
 
 		CheckBox {
 			id: replyUseTargetField
-			enabled: dialog.reply === undefined
 			text: "Use custom target"
 		}
 		TextArea {
 			id: replyTargetField
 
 			width: parent.width
-			visible: replyUseTargetField.visible
 			enabled: replyUseTargetField.checked
 			text: dialog.reply ? dialog.reply.target : ""
 			selectByMouse: true
