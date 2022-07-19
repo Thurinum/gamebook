@@ -456,13 +456,14 @@ ApplicationWindow {
 
 				MenuItem {
 					text: "Add reply..."
-					enabled: Game.currentPrompt ? !Game.currentPrompt.isEnd : false
+					enabled: Game.currentPrompt ? Game.currentPrompt.target === "" && !Game.currentPrompt.isEnd : false
 					height: enabled ? implicitHeight : 0
 					onTriggered: {
 						replyDialog.reply = undefined
 						replyDialog.open()
 					}
 				}
+
 				MenuItem {
 					text: "Edit reply..."
 					enabled: repliesContextMenu.selection

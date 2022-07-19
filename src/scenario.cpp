@@ -64,6 +64,7 @@ bool Scenario::load() {
 
 			p->setId(id);
 			p->setParentId(reader.attributes().value("parentid").toString());
+			p->setTarget(reader.attributes().value("target").toString());
 			p->setText(reader.attributes().value("text").toString());
 			p->setCharacter(reader.attributes().value("character").toString());
 			p->setBackground(reader.attributes().value("background").toString());
@@ -135,6 +136,7 @@ void Scenario::save() {
 		writer.writeStartElement("prompt");
 		writer.writeAttribute("id", p->id());
 		writer.writeAttribute("parentid", p->parentId());
+		writer.writeAttribute("target", p->target());
 		writer.writeAttribute("text", p->text());
 		writer.writeAttribute("character", p->character());
 		writer.writeAttribute("background", p->background());

@@ -6,14 +6,14 @@ import "../../scripts/gamescript.js" as GameScript
 Dialog {
 	id: root
 	width: 400
-	height: 350
+	height: 450
 	title: "Edit dialogue prompt"
 	standardButtons: Dialog.Ok | Dialog.Cancel
 	anchors.centerIn: Overlay.overlay
 
-	property alias name: name
-	property alias text: text
-	property alias folder: background_model.folder
+	property alias name: characterField
+	property alias text: textField
+	property alias folder: backgroundFieldModel.folder
 
 	Column {
 		width: parent.width
@@ -23,7 +23,7 @@ Dialog {
 			text: "Character name"
 		}
 		ComboBox {
-			id: name
+			id: characterField
 			model: if (Game.currentPrompt) Game.getCharacters()
 			textRole: "name"
 		}
@@ -32,7 +32,7 @@ Dialog {
 			text: "Dialogue contents"
 		}
 		TextArea {
-			id: text
+			id: textField
 			width: parent.width
 			wrapMode: Text.Wrap
 			selectByMouse: true
@@ -43,40 +43,59 @@ Dialog {
 		}
 
 		ComboBox {
-			id: background
+			id: backgroundField
 			width: 200
 			textRole: "fileName"
 			valueRole: "fileName"
 
 			model: FolderListModel {
-				id: background_model
+				id: backgroundFieldModel
 				showDirs: false
 				nameFilters: ["*.png", "*.jp*g", "*.gif", "*.tif*", "*.webp"]
 			}
 		}
 
+		CheckBox {
+			id: hasTargetField
+			text: "Leads to another prompt"
+			checked: Game.currentPrompt ? Game.currentPrompt.target !== "" : false
+		}
+		TextField {
+			id: targetField
+			enabled: hasTargetField.checked
+			width: parent.width
+			wrapMode: Text.Wrap
+			selectByMouse: true
+		}
+
 		Switch {
-			id: bIsEnd
+			id: isEndField
 			text: "Ends story"
 			checked: Game.currentPrompt ? Game.currentPrompt.isEnd : false
 		}
 	}
 
-	onAccepted: {
-		let txt = text.text;
-		Game.currentPrompt.text = txt;
-		Game.currentPrompt.character = name.currentText
-		Game.currentPrompt.background = background.currentText
-		Game.currentPrompt.isEnd = bIsEnd.checked;
-		prompt.text = txt;
-		GameScript.displayPrompt(Game.currentPrompt.id)
-	}
-
 	onOpened: {
-		name.currentIndex = name.find(Game.currentPrompt.character)
-
-		background.currentIndex = Game.currentPrompt.background
-				? background.find(Game.currentPrompt.background)
+		characterField.currentIndex = characterField.find(Game.currentPrompt.character)
+		backgroundField.currentIndex = Game.currentPrompt.background
+				? backgroundField.find(Game.currentPrompt.background)
 				: -1;
 	}
+
+	onAccepted: {
+		if (Game.currentPrompt.replies.length > 0) {
+			errorDialog.msg = "This prompt contains replies.<br />Please delete replies manually to make it a monologue.";
+			errorDialog.open();
+			return;
+		}
+
+		Game.currentPrompt.text = textField.text;
+		Game.currentPrompt.target = hasTargetField.checked ? targetField.text : "";
+		Game.currentPrompt.character = characterField.currentText
+		Game.currentPrompt.background = backgroundField.currentText
+		Game.currentPrompt.isEnd = isEndField.checked;
+
+		GameScript.displayPrompt(Game.currentPrompt.id);
+	}
+
 }
