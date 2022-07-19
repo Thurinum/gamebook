@@ -20,7 +20,7 @@ Item {
 
 			text: "+ Add"
 			onClicked: {
-				edit_dialog.open()
+				characterDialog.open()
 			}
 		}
 
@@ -51,8 +51,8 @@ Item {
 					text: "Edit"
 
 					onClicked: {
-						edit_dialog.character = Game.getCharacter(name.text)
-						edit_dialog.open();
+						characterDialog.character = Game.getCharacter(name.text)
+						characterDialog.open();
 					}
 				}
 
@@ -69,8 +69,9 @@ Item {
 					text: "X"
 
 					onClicked: {
-						confirm_dialog.character = characters.model[index].name
-						confirm_dialog.open()
+						characterDialog.shouldDelete = true
+						characterDialog.character = characters.model[index].name
+						characterDialog.open()
 					}
 				}
 			}

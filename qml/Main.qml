@@ -466,9 +466,9 @@ ApplicationWindow {
 			MenuItem {
 				text: "Edit prompt..."
 				onTriggered: {
-					dialog_editPrompt.name.currentIndex = 0
-					dialog_editPrompt.text.text = Game.currentPrompt.text
-					dialog_editPrompt.visible = true
+					promptDialog.name.currentIndex = 0
+					promptDialog.text.text = Game.currentPrompt.text
+					promptDialog.visible = true
 				}
 			}
 		}
@@ -583,9 +583,8 @@ ApplicationWindow {
 	Dialog.DeleteScenario { id: dialog_removeScenario }
 	Dialog.AddScenarioProfile { id: dialog_addScenarioProfile }
 	Dialog.LoadScenarioProfile { id: dialog_loadScenarioProfile }
-	Dialog.EditPrompt { id: dialog_editPrompt }
+	Dialog.PromptUpdate { id: promptDialog }
 	Dialog.ReplyUpsertDelete { id: replyDialog }
-	Dialog.ConfirmCharacterDelete { id: confirm_dialog }
-	Dialog.EditCharacter { id: edit_dialog }
+	Dialog.CharacterUpsertDelete { id: characterDialog }
 	Dialog.Error { id: dialog_error }
 }
