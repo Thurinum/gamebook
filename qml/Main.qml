@@ -189,7 +189,7 @@ ApplicationWindow {
 	Rectangle {
 		id: game
 
-		width: app.width
+		width: app.width - (rightPane.visible ? rightPane.handleWidth : 0)
 		height: app.height
 		anchors.top: appMenu.bottom
 
@@ -312,7 +312,7 @@ ApplicationWindow {
 
 				anchors.right: repliesPanel.right
 				anchors.bottom: repliesPanel.bottom
-				anchors.bottomMargin: 50
+				anchors.bottomMargin: 30
 
 				horizontalAlignment: Qt.AlignRight
 				verticalAlignment: Qt.AlignBottom
@@ -532,7 +532,7 @@ ApplicationWindow {
 	Menu {
 		id: mainContextMenu
 
-		x: appMenu.width - width
+		x: appMenu.width - width - (rightPane.visible ? rightPane.handleWidth : 0)
 		y: mainContextMenuButton.height
 
 		MenuItem {
@@ -558,15 +558,20 @@ ApplicationWindow {
 		}
 	}
 
-	Button {
+	ToolButton {
 		id: mainContextMenuButton
 
-		anchors.right: appMenu.right
+		anchors.right: rightPane.left
+		anchors.rightMargin: (rightPane.visible ? rightPane.handleWidth : 0)
 
 		text: "☰"
 		font.pointSize: 25
 
 		onClicked: mainContextMenu.open()
+
+		Behavior on anchors.rightMargin {
+			NumberAnimation { duration: 500; easing.type: Easing.OutQuad }
+		}
 	}
 
 	Dialog.AddScenario { id: dialog_addScenario }

@@ -11,6 +11,8 @@ Rectangle {
 
 	required property Item target
 	required property int alignment
+	property real contentWidth: Window.width / 3
+	property int handleWidth: 25
 	default property alias contentItems: paneStackLayout.data
 	property alias tabs: paneTabBar.contentChildren
 
@@ -21,7 +23,7 @@ Rectangle {
 
 	signal toggled
 
-	width: internal.toggled ? Window.width / 3 : 0
+	width: internal.toggled ? contentWidth : 0
 	height: Window.height
 
 	anchors.left:  if (alignment === Qt.AlignLeft)  target.left
@@ -30,7 +32,7 @@ Rectangle {
 	MouseArea {
 		id: paneToggle
 
-		width: 25
+		width: pane.handleWidth
 		height: pane.height
 
 		anchors.left:  if (alignment === Qt.AlignLeft)  pane.right
@@ -68,13 +70,13 @@ Rectangle {
 
 	TabBar {
 		id: paneTabBar
-		width: pane.width
+		width: pane.contentWidth
 	}
 
 	StackLayout {
 		id: paneStackLayout
 
-		width: pane.width
+		width: pane.contentWidth
 		height: pane.height - paneTabBar.implicitHeight
 		anchors.top: paneTabBar.bottom
 		currentIndex: paneTabBar.currentIndex
