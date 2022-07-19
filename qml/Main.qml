@@ -548,6 +548,7 @@ ApplicationWindow {
 			enabled: appMenu.height === 0 //@disable-check M325 (false positive)
 			height: enabled ? implicitHeight : 0
 			onTriggered: {
+				// TODO: UNLOAD PROFILE IN C++ (WILL require REWRITE)
 				app.isEditingAllowed = false
 				appMenu.height = app.height
 			}

@@ -15,7 +15,7 @@ public:
 	void create() const;
 	bool load();
 	void save() const;
-	void nuke();
+	void nuke() const;
 
 	const QString& name() const;
 	void		   setName(const QString& newName);

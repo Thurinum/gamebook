@@ -7,7 +7,7 @@ import "../../scripts/gamescript.js" as GameScript
 Dialog {
 	id: dialog
 	width: 400
-	height: 200
+	height: 300
 	anchors.centerIn: Overlay.overlay
 
 	title: "Load existing save"
@@ -15,47 +15,66 @@ Dialog {
 
 	property alias folder: nameFieldModel.folder
 
-	Label {
-		text: "Save profile"
+	Column {
+		spacing: 6.9
 
-		ComboBox {
-			id: nameField
-			width: 300
-			anchors.top: parent.bottom
+		Label {
+			text: "Save profile"
+		}
 
-			textRole: "fileBaseName"
-			valueRole: "fileName"
+		// TODO: experiment with grid?
+		Row {
+			spacing: 6.9
 
-			model: FolderListModel {
-				id: nameFieldModel
-				showDirs: false
-				nameFilters: ["*.save"]
+			ComboBox {
+				id: nameField
+				width: 300
+
+				textRole: "fileBaseName"
+				valueRole: "fileName"
+
+				model: FolderListModel {
+					id: nameFieldModel
+					showDirs: false
+					nameFilters: ["*.save"]
+				}
+
+				onActivated: {
+					Game.setSetting("Main/sLastProfile", currentText)
+				}
+
+				Binding on currentIndex {
+					value: {
+						// idk what I'm doing wrong, but this statement
+						// is required for the binding to work
+						nameField.count
+
+						let lastProfile = Game.setting("Main/sLastProfile");
+
+						if (!lastProfile || lastProfile === "")
+							return;
+
+						let index = nameField.find(lastProfile);
+
+						if (index === -1)
+							return;
+
+						nameField.currentIndex = index;
+					}
+				}
+
 			}
 
-			onActivated: {
-				Game.setSetting("Main/sLastProfile", currentText)
-			}
-
-			Binding on currentIndex {
-				value: {
-					// idk what I'm doing wrong, but this statement
-					// is required for the binding to work
-					nameField.count
-
-					let lastProfile = Game.setting("Main/sLastProfile");
-
-					if (!lastProfile || lastProfile === "")
-						return;
-
-					let index = nameField.find(lastProfile);
-
-					if (index === -1)
-						return;
-
-					nameField.currentIndex = index;
+			Button {
+				text: "-"
+				onClicked: {
+					// TODO: add confirm dialog (connect signal?)
+					Game.loadScenarioProfile(nameField.currentText)
+					Game.deleteScenarioProfile()
 				}
 			}
 		}
+
 	}
 
 	onAccepted: {

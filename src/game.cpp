@@ -81,6 +81,10 @@ void Game::createScenarioProfile(const QString& name) {
 	m_profile->create();
 }
 
+void Game::deleteScenarioProfile() {
+	m_profile->nuke();
+}
+
 void Game::loadScenarioProfile(const QString& name) {
 	if (!m_scenario) {
 		qWarning() << "Tried to load profile before scenario.";

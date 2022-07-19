@@ -25,6 +25,7 @@ public:
 	Q_INVOKABLE void	  loadScenarioProfile(const QString& name);
 	Q_INVOKABLE void	  saveScenarioProfile(const QString& id);
 	Q_INVOKABLE void	  createScenarioProfile(const QString& name);
+	Q_INVOKABLE void	  deleteScenarioProfile();
 
 	Q_INVOKABLE Prompt* parentPromptOf(Prompt* prompt);
 	Q_INVOKABLE bool	  addPrompt(const QString& id, Prompt* parent);

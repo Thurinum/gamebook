@@ -86,7 +86,17 @@ void Profile::save() const {
 	file.close();
 }
 
-void Profile::nuke() {}
+void Profile::nuke() const {
+	QString path = Utils::scenarioSavePath(this->scenario()->name(), this->name());
+	QFile	  file(path);
+
+	if (!file.exists()) {
+		qWarning() << "Cannot delete non-existing profile" << name() << ".\n\tPath:" << path;
+		return;
+	}
+
+	file.remove();
+}
 
 const QString& Profile::name() const {
 	return m_name;
