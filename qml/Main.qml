@@ -45,7 +45,7 @@ ApplicationWindow {
 	}
 
 	Rectangle {
-		id: appmenu
+		id: appMenu
 
 		color: "transparent"
 		clip: true
@@ -61,9 +61,9 @@ ApplicationWindow {
 		}
 
 		Rectangle {
-			id: appmenu_wrapper
+			id: appMenuPanel
 
-			anchors.fill: appmenu
+			anchors.fill: appMenu
 			anchors.margins: 50
 
 			color: Qt.hsla(0, 0, 1, 0.8)
@@ -72,7 +72,7 @@ ApplicationWindow {
 			border.color: Universal.accent
 
 			Column {
-				anchors.centerIn: appmenu_wrapper
+				anchors.centerIn: appMenuPanel
 				spacing: 10
 
 				Label {
@@ -172,7 +172,7 @@ ApplicationWindow {
 							return
 						}
 
-						appmenu.height = 0
+						appMenu.height = 0
 						app.isEditingAllowed = true
 						GameScript.displayPrompt("0")
 					}
@@ -191,7 +191,7 @@ ApplicationWindow {
 
 		width: app.width
 		height: app.height
-		anchors.top: appmenu.bottom
+		anchors.top: appMenu.bottom
 
 		color: Qt.hsla(0, 0, 0.6, 0.5)
 
@@ -408,6 +408,7 @@ ApplicationWindow {
 				MenuItem {
 					text: "Add reply..."
 					enabled: Game.currentPrompt ? !Game.currentPrompt.isEnd : false
+					height: enabled ? implicitHeight : 0
 					onTriggered: {
 						dialog_addReply.open()
 					}
@@ -415,6 +416,7 @@ ApplicationWindow {
 				MenuItem {
 					text: "Edit reply..."
 					enabled: repliesContextMenu.selection
+					height: enabled ? implicitHeight : 0
 					onTriggered: {
 						dialog_editReply.open()
 					}
@@ -422,6 +424,7 @@ ApplicationWindow {
 				MenuItem {
 					text: "Delete reply..."
 					enabled: repliesContextMenu.selection
+					height: enabled ? implicitHeight : 0
 					onTriggered: {
 						dialog_deleteReply.open()
 					}
@@ -429,21 +432,8 @@ ApplicationWindow {
 				MenuItem {
 					text: "Go back"
 					enabled: Game.currentPrompt.parentId !== ""
+					height: enabled ? implicitHeight : 0
 					onTriggered: GameScript.displayPrompt(Game.currentPrompt.parentId)
-				}
-				MenuItem {
-					text: "Save scenario"
-					onTriggered: {
-						Game.saveScenario()
-					}
-				}
-				MenuItem {
-					text: "Back to menu"
-					onTriggered: appmenu.height = app.height
-				}
-				MenuItem {
-					text: "Quit"
-					onTriggered: Qt.exit(0)
 				}
 			}
 
@@ -482,8 +472,9 @@ ApplicationWindow {
 		MouseArea {
 			width: parent.width
 			height: parent.height / 2
-			acceptedButtons: Qt.RightButton
+
 			enabled: app.isEditingAllowed
+			acceptedButtons: Qt.RightButton
 
 			onClicked: {
 				promptEditMenu.popup()
@@ -499,16 +490,16 @@ ApplicationWindow {
 		anchors.fill: game
 		scale: 0
 
+		Label {
+			anchors.centerIn: endscreen
+			text: "<h1>The End<h1><br /><h2>" + endscreen.text + "</h2>"
+		}
+
 		Behavior on scale {
 			NumberAnimation {
 				duration: 1000
 				easing.type: Easing.InOutQuad
 			}
-		}
-
-		Label {
-			anchors.centerIn: endscreen
-			text: "<h1>The End<h1><br /><h2>" + endscreen.text + "</h2>"
 		}
 	}
 
@@ -516,14 +507,11 @@ ApplicationWindow {
 		id: rightPane
 
 		visible: app.isEditingAllowed
-		target: appmenu
+		target: appMenu
 		alignment: Qt.AlignRight
 		tabs: [
 			TabButton {
 				text: "Characters"
-			},
-			TabButton {
-				text: "Dummy"
 			}
 		]
 
@@ -539,6 +527,46 @@ ApplicationWindow {
 			Layout.fillWidth: true
 			Layout.fillHeight: true
 		}
+	}
+
+	Menu {
+		id: mainContextMenu
+
+		x: appMenu.width - width
+		y: mainContextMenuButton.height
+
+		MenuItem {
+			text: "Save scenario"
+			enabled: app.isEditingAllowed
+			height: enabled ? implicitHeight : 0
+			onTriggered: {
+				Game.saveScenario()
+			}
+		}
+		MenuItem {
+			text: "Back to menu"
+			enabled: appMenu.height === 0 //@disable-check M325 (false positive)
+			height: enabled ? implicitHeight : 0
+			onTriggered: {
+				app.isEditingAllowed = false
+				appMenu.height = app.height
+			}
+		}
+		MenuItem {
+			text: "Quit"
+			onTriggered: Qt.exit(0)
+		}
+	}
+
+	Button {
+		id: mainContextMenuButton
+
+		anchors.right: appMenu.right
+
+		text: "☰"
+		font.pointSize: 25
+
+		onClicked: mainContextMenu.open()
 	}
 
 	Dialog.AddScenario { id: dialog_addScenario }

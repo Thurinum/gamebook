@@ -76,6 +76,6 @@ Dialog {
 		}
 
 		GameScript.displayPrompt(Game.playerProgress())
-		appmenu.height = 0
+		appMenu.height = 0
 	}
 }

@@ -38,7 +38,7 @@ Dialog {
 		}
 
 		GameScript.displayPrompt("0")
-		appmenu.height = 0
+		appMenu.height = 0
 	}
 
 
