@@ -10,6 +10,11 @@ Profile::Profile(QString name, Scenario* scenario, QObject* parent)
 	: QObject{parent}, m_name(std::move(name)), m_scenario(scenario) {}
 
 void Profile::create() const {
+	if (this->name() == "") {
+		qCritical() << "Cannot create a profile with an empty name! Did something go wrong?";
+		return;
+	}
+
 	QString path = Utils::scenarioSavePath(this->scenario()->name(), this->name());
 	QFile	  file(path);
 

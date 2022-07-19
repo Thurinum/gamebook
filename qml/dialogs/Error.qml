@@ -7,6 +7,9 @@ Dialog {
 	standardButtons: Dialog.Ok
 	anchors.centerIn: Overlay.overlay
 
+	width: 400
+	height: 200
+
 	property string msg
 
 	Label {

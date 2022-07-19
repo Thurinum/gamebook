@@ -23,6 +23,13 @@ Dialog {
 	onAccepted: {
 		let name = dialog_addScenarioProfile_text.text
 
+		if (name === "") {
+			dialog_error.msg = "Please enter a profile name!"
+			dialog_error.visible = true
+			return
+		}
+
+
 		if (Game.loadScenario(scenarioNameField.currentText) === false) {
 			dialog_error.msg = "Failed to load scenario!"
 			dialog_error.visible = true
