@@ -116,6 +116,16 @@ Prompt* Game::parentPromptOf(Prompt* prompt) {
 	return m_scenario->prompts().value(prompt->parentId());
 }
 
+Prompt* Game::childPromptOf(const Reply*& reply) {
+	const QString& target = reply->target();
+
+	if (target == "" || !m_scenario->prompts().contains(target)) {
+		return nullptr;
+	}
+
+	return m_scenario->prompts().value(target);
+}
+
 bool Game::addPrompt(const QString& id, Prompt* parent) {
 	if (m_scenario->prompts().contains(id)) {
 		qWarning() << "Prompt already exists with key '" << id << "'.";
@@ -125,7 +135,7 @@ bool Game::addPrompt(const QString& id, Prompt* parent) {
 	Prompt* p = new Prompt(this);
 	p->setId(id);
 	p->setParentId(parent->id());
-	p->setText("(NEW PROMPT)");
+	p->setText(Utils::setting("Main/sPromptTextPlaceholder").toString());
 	p->setCharacter("");
 	p->setBackground("");
 	p->setReplies(QList<Reply*>());

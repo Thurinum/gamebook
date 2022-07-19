@@ -64,8 +64,7 @@ Dialog {
 			reply.text = replyTextField.text;
 
 			if (replyUseTargetField.checked)
-				reply.target = replyTargetField.value;
-
+				reply.target = replyTargetField.text;
 			return;
 		}
 

@@ -28,7 +28,7 @@ void Scenario::create() const {
 	writer.writeStartElement("prompts");
 	writer.writeStartElement("prompt");
 	writer.writeAttribute("id", "0");
-	writer.writeAttribute("text", "(Right-click on this prompt to start editing)");
+	writer.writeAttribute("text", Utils::setting("Main/sPromptTextPlaceholder").toString());
 	writer.writeEndElement();
 	writer.writeEndElement();
 	writer.writeEndElement();

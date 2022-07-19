@@ -376,14 +376,28 @@ ApplicationWindow {
 					model: Game.currentPrompt && Game.currentPrompt.replies.length > 0
 						 ? Game.currentPrompt.replies : 0
 
-					delegate: Button {
+					delegate: RoundButton {
 						property int index: model.index
 
 						width: repliesView.width * 0.9
 						height: font.pixelSize + 20
+						radius: 10
 
 						font.pixelSize: repliesPanel.height * 0.09
-						text: modelData.text
+						text: (app.isEditingAllowed && Game.childPromptOf(modelData) && Game.childPromptOf(modelData).text === Game.setting("Main/sPromptTextPlaceholder") ? "<i><font color=\"red\">* </font></i>" : "") + modelData.text
+
+						contentItem: Rectangle {
+							color: "transparent"
+
+							Label {
+								anchors.fill: parent
+								anchors.margins: 20
+								font: parent.parent.font
+								text: parent.parent.text
+								horizontalAlignment: Text.AlignLeft
+								verticalAlignment: Text.AlignVCenter
+							}
+						}
 
 						ToolTip.visible: hovered
 						ToolTip.delay: 900
