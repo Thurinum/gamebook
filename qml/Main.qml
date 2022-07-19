@@ -532,7 +532,7 @@ ApplicationWindow {
 	Menu {
 		id: mainContextMenu
 
-		x: appMenu.width - width - (rightPane.visible ? rightPane.handleWidth : 0)
+		x: appMenu.width - width - (rightPane.visible ? rightPane.handleWidth + rightPane.width : 0)
 		y: mainContextMenuButton.height
 
 		MenuItem {
