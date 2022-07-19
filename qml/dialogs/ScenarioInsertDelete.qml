@@ -30,11 +30,10 @@ Dialog {
 
 	onAccepted: {
 		if (shouldDelete) {
+			shouldDelete = false;
 			Game.deleteScenario(scenarioNameField.currentText);
-			scenarioNameFieldModel.folder = "";
 			dialog_loadScenarioProfile.folder = ""; // prevent error
 			scenarioNameField.currentIndex = 0;
-			shouldDelete = false;
 			return;
 		}
 
