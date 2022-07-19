@@ -138,7 +138,8 @@ ApplicationWindow {
 					text: "Play scenario from beginning"
 
 					onClicked: {
-						dialog_addScenarioProfile.visible = true
+						scenarioProfileDialog.shouldCreate = true;
+						scenarioProfileDialog.open();
 					}
 				}
 
@@ -146,9 +147,7 @@ ApplicationWindow {
 					anchors.horizontalCenter: parent.horizontalCenter
 					text: "Load existing save"
 
-					onClicked: {
-						dialog_loadScenarioProfile.visible = true
-					}
+					onClicked: scenarioProfileDialog.open()
 				}
 
 				Button {
@@ -157,20 +156,20 @@ ApplicationWindow {
 
 					onClicked: {
 						if (scenarioNameField.currentText === "") {
-							dialog_error.msg = "Please select a scenario!"
-							dialog_error.visible = true
-							return
+							errorDialog.msg = "Please select a scenario!"
+							errorDialog.open();
+							return;
 						}
 
 						if (Game.loadScenario(scenarioNameField.currentText) === false) {
-							dialog_error.msg = "Failed to load scenario!"
-							dialog_error.visible = true
-							return
+							errorDialog.msg = "Failed to load scenario!";
+							errorDialog.open();
+							return;
 						}
 
-						appMenu.height = 0
-						app.isEditingAllowed = true
-						GameScript.displayPrompt("0")
+						appMenu.height = 0;
+						app.isEditingAllowed = true;
+						GameScript.displayPrompt("0");
 					}
 				}
 			}
@@ -582,11 +581,10 @@ ApplicationWindow {
 		}
 	}
 
-	Dialog.ScenarioInsertDelete { id: scenarioDialog }
-	Dialog.AddScenarioProfile { id: dialog_addScenarioProfile }
-	Dialog.LoadScenarioProfile { id: dialog_loadScenarioProfile }
-	Dialog.PromptUpdate { id: promptDialog }
-	Dialog.ReplyUpsertDelete { id: replyDialog }
-	Dialog.CharacterUpsertDelete { id: characterDialog }
-	Dialog.Error { id: dialog_error }
+	Dialog.ScenarioInsertDelete		{ id: scenarioDialog }
+	Dialog.ScenarioProfileInsertDelete	{ id: scenarioProfileDialog }
+	Dialog.PromptUpdate			{ id: promptDialog }
+	Dialog.ReplyUpsertDelete		{ id: replyDialog }
+	Dialog.CharacterUpsertDelete		{ id: characterDialog }
+	Dialog.Error				{ id: errorDialog }
 }

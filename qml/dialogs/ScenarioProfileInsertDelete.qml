@@ -3,23 +3,35 @@ import QtQuick.Controls
 import Qt.labs.folderlistmodel
 import "../../scripts/gamescript.js" as GameScript
 
-
 Dialog {
 	id: dialog
+	title: "New profile"
+	standardButtons: Dialog.Ok | Dialog.Cancel
+	anchors.centerIn: Overlay.overlay
 	width: 400
 	height: 300
-	anchors.centerIn: Overlay.overlay
 
-	title: "Load existing save"
-	standardButtons: Dialog.Ok | Dialog.Cancel
-
+	property bool shouldCreate: false
 	property alias folder: nameFieldModel.folder
 
+	Label {
+		visible: dialog.shouldCreate
+		text: "Player name"
+		padding: 5
+
+		TextField {
+			id: createNameField
+			width: 150
+			anchors.top: parent.bottom
+		}
+	}
+
 	Column {
+		visible: !dialog.shouldCreate
 		spacing: 6.9
 
 		Label {
-			text: "Save profile"
+			text: "Choose save profile"
 		}
 
 		// TODO: experiment with grid?
@@ -78,23 +90,54 @@ Dialog {
 	}
 
 	onAccepted: {
+		// create profile?
+		if (shouldCreate) {
+			let name = createNameField.text
+
+			if (name === "") {
+				errorDialog.msg = "Please enter a profile name!";
+				errorDialog.open();
+				return;
+			}
+
+
+			if (Game.loadScenario(scenarioNameField.currentText) === false) {
+				errorDialog.msg = "Failed to load scenario!";
+				errorDialog.open();
+				return;
+			}
+
+			Game.createScenarioProfile(name)
+
+			if (Game.loadScenarioProfile(name) === false) {
+				errorDialog.msg = "Failed to load profile!";
+				errorDialog.open();
+				return;
+			}
+
+			GameScript.displayPrompt("0");
+			appMenu.height = 0;
+			return;
+		}
+
+		// load profile
 		let name = nameField.currentText
 
 		Game.loadScenario(scenarioNameField.currentText)
 
 		if (name.length === 0) {
-			dialog_error.msg = "No profile selected!"
-			dialog_error.visible = true
-			return
+			errorDialog.msg = "No profile selected!";
+			errorDialog.open();
+			return;
 		}
 
 		if (Game.loadScenarioProfile(name) === false) {
-			dialog_error.msg = "Failed to load profile!"
-			dialog_error.visible = true
-			return
+			errorDialog.msg = "Failed to load profile!";
+			errorDialog.open();
+			return;
 		}
 
-		GameScript.displayPrompt(Game.playerProgress())
-		appMenu.height = 0
+		GameScript.displayPrompt(Game.playerProgress());
+		appMenu.height = 0;
 	}
 }
