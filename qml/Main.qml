@@ -122,11 +122,14 @@ ApplicationWindow {
 
 					Button {
 						text: "+"
-						onClicked: dialog_addScenario.visible = true
+						onClicked: scenarioDialog.open()
 					}
 					Button {
 						text: "-"
-						onClicked: dialog_removeScenario.visible = true
+						onClicked: {
+							scenarioDialog.shouldDelete = true;
+							scenarioDialog.open();
+						}
 					}
 				}
 
@@ -579,8 +582,7 @@ ApplicationWindow {
 		}
 	}
 
-	Dialog.AddScenario { id: dialog_addScenario }
-	Dialog.DeleteScenario { id: dialog_removeScenario }
+	Dialog.ScenarioInsertDelete { id: scenarioDialog }
 	Dialog.AddScenarioProfile { id: dialog_addScenarioProfile }
 	Dialog.LoadScenarioProfile { id: dialog_loadScenarioProfile }
 	Dialog.PromptUpdate { id: promptDialog }
