@@ -47,7 +47,7 @@ public:
 
 	Q_INVOKABLE void addReply(const QString& text, QString target = nullptr);
 	Q_INVOKABLE void moveReply(int index, int newIndex);
-	Q_INVOKABLE void nukeReply(int index);
+	Q_INVOKABLE void nukeReply(Reply* reply);
 
 signals:
 	void idChanged();

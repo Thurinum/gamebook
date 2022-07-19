@@ -96,6 +96,6 @@ void Prompt::moveReply(int index, int newIndex) {
 	this->replies().move(index, newIndex);
 }
 
-void Prompt::nukeReply(int index) {
-	this->replies().removeAt(index);
+void Prompt::nukeReply(Reply* reply) {
+	this->replies().removeOne(reply);
 }

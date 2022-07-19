@@ -47,18 +47,11 @@ ApplicationWindow {
 	Rectangle {
 		id: appMenu
 
-		color: "transparent"
-		clip: true
-
 		width: app.width
 		implicitHeight: app.height
 
-		Behavior on height {
-			NumberAnimation {
-				duration: 1000
-				easing.type: Easing.InOutQuad
-			}
-		}
+		color: "transparent"
+		clip: true
 
 		Rectangle {
 			id: appMenuPanel
@@ -177,6 +170,14 @@ ApplicationWindow {
 						GameScript.displayPrompt("0")
 					}
 				}
+			}
+		}
+
+
+		Behavior on height {
+			NumberAnimation {
+				duration: 1000
+				easing.type: Easing.InOutQuad
 			}
 		}
 	}
@@ -405,12 +406,19 @@ ApplicationWindow {
 
 				property Item selection
 
+				function selectedReply() {
+					if (repliesContextMenu.selection) {
+						return Game.currentPrompt.replies[repliesContextMenu.selection.index];
+					}
+				}
+
 				MenuItem {
 					text: "Add reply..."
 					enabled: Game.currentPrompt ? !Game.currentPrompt.isEnd : false
 					height: enabled ? implicitHeight : 0
 					onTriggered: {
-						dialog_addReply.open()
+						replyDialog.reply = undefined
+						replyDialog.open()
 					}
 				}
 				MenuItem {
@@ -418,7 +426,8 @@ ApplicationWindow {
 					enabled: repliesContextMenu.selection
 					height: enabled ? implicitHeight : 0
 					onTriggered: {
-						dialog_editReply.open()
+						replyDialog.reply = repliesContextMenu.selectedReply();
+						replyDialog.open()
 					}
 				}
 				MenuItem {
@@ -426,7 +435,9 @@ ApplicationWindow {
 					enabled: repliesContextMenu.selection
 					height: enabled ? implicitHeight : 0
 					onTriggered: {
-						dialog_deleteReply.open()
+						replyDialog.reply = repliesContextMenu.selectedReply();
+						replyDialog.shouldDelete = true
+						replyDialog.open()
 					}
 				}
 				MenuItem {
@@ -444,13 +455,6 @@ ApplicationWindow {
 				onClicked: mouse => {
 						     let pt = mapToItem(repliesView, mouse.x, mouse.y);
 						     repliesContextMenu.selection = repliesView.childAt(pt.x, pt.y);
-
-						     if (repliesContextMenu.selection) {
-							     let reply = Game.currentPrompt.replies[repliesContextMenu.selection.index];
-							     dialog_editReply.reply = reply;
-							     dialog_deleteReply.index = repliesContextMenu.selection.index;
-						     }
-
 						     repliesContextMenu.popup();
 					     }
 			}
@@ -580,9 +584,7 @@ ApplicationWindow {
 	Dialog.AddScenarioProfile { id: dialog_addScenarioProfile }
 	Dialog.LoadScenarioProfile { id: dialog_loadScenarioProfile }
 	Dialog.EditPrompt { id: dialog_editPrompt }
-	Dialog.AddReply { id: dialog_addReply }
-	Dialog.EditReply { id: dialog_editReply }
-	Dialog.DeleteReply { id: dialog_deleteReply }
+	Dialog.ReplyUpsertDelete { id: replyDialog }
 	Dialog.ConfirmCharacterDelete { id: confirm_dialog }
 	Dialog.EditCharacter { id: edit_dialog }
 	Dialog.Error { id: dialog_error }
