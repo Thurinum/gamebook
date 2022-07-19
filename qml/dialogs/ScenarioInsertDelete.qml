@@ -32,7 +32,7 @@ Dialog {
 		if (shouldDelete) {
 			shouldDelete = false;
 			Game.deleteScenario(scenarioNameField.currentText);
-			dialog_loadScenarioProfile.folder = ""; // prevent error
+			scenarioProfileDialog.folder = ""; // prevent error
 			scenarioNameField.currentIndex = 0;
 			return;
 		}

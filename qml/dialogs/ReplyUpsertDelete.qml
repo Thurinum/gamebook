@@ -76,7 +76,6 @@ Dialog {
 
 		Game.addReply(Game.currentPrompt,
 				  GameScript.parseStr(replyTextField.text), target);
-		replyTextField.text = "";
 
 		repliesRepeater.model = [];
 		repliesRepeater.model = Game.currentPrompt.replies;

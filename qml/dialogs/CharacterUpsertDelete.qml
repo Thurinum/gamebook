@@ -32,7 +32,7 @@ Dialog {
 		}
 		ComboBox {
 			id: characterImageField
-			width: 200
+			width: 350
 			textRole: "fileName"
 			valueRole: "fileName"
 

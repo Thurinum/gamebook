@@ -69,7 +69,7 @@ ApplicationWindow {
 				spacing: 10
 
 				Label {
-					text: "<h1>Gamebook</h1>"
+					text: "<h1>Gamebook (Alpha)</h1>"
 					anchors.horizontalCenter: parent.horizontalCenter
 				}
 
