@@ -52,8 +52,8 @@ Dialog {
 			Game.addCharacter(name, sprite);
 		}
 
-		lview.model = []
-		lview.model = Game.getCharacters();
+		charactersTab.model = []
+		charactersTab.model = Game.getCharacters();
 	}
 
 	onOpened: {

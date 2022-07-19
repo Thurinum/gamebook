@@ -19,44 +19,6 @@ ApplicationWindow {
 	visible: true
 	title: "Gamebook Studio"
 
-	menuBar: MenuBar {
-		visible: app.isEditingAllowed
-		Menu {
-			title: "File"
-			MenuItem {
-				text: "Save scenario"
-				onTriggered: Game.saveScenario()
-			}
-			MenuItem {
-				text: "Back to menu"
-				onTriggered: appmenu.height = app.height
-			}
-			MenuItem {
-				text: "Quit"
-				onTriggered: Qt.exit(0)
-			}
-		}
-		Menu {
-			title: "Scenario"
-			MenuItem {
-				text: "Edit characters..."
-				onTriggered: dialog_editCharacters.open()
-			}
-			MenuItem {
-				text: "Edit reply types..."
-				onTriggered: {
-
-				}
-			}
-			MenuItem {
-				text: "Edit variables..."
-				onTriggered: {
-
-				}
-			}
-		}
-	}
-
 	Image {
 		id: background
 
@@ -470,10 +432,18 @@ ApplicationWindow {
 					onTriggered: GameScript.displayPrompt(Game.currentPrompt.parentId)
 				}
 				MenuItem {
-					text: "Save"
+					text: "Save scenario"
 					onTriggered: {
 						Game.saveScenario()
 					}
+				}
+				MenuItem {
+					text: "Back to menu"
+					onTriggered: appmenu.height = app.height
+				}
+				MenuItem {
+					text: "Quit"
+					onTriggered: Qt.exit(0)
 				}
 			}
 
@@ -543,6 +513,9 @@ ApplicationWindow {
 	}
 
 	Reusable.HorizontalPane {
+		id: rightPane
+
+		visible: app.isEditingAllowed
 		target: appmenu
 		alignment: Qt.AlignRight
 		tabs: [
@@ -576,7 +549,6 @@ ApplicationWindow {
 	Dialog.AddReply { id: dialog_addReply }
 	Dialog.EditReply { id: dialog_editReply }
 	Dialog.DeleteReply { id: dialog_deleteReply }
-	Dialog.EditCharacters { id: dialog_editCharacters }
 	Dialog.ConfirmCharacterDelete { id: confirm_dialog }
 	Dialog.EditCharacter { id: edit_dialog }
 	Dialog.Error { id: dialog_error }

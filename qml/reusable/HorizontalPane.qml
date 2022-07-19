@@ -42,6 +42,7 @@ Rectangle {
 		}
 
 		Rectangle {
+			id: paneToggleHandle
 			anchors.fill: parent
 			color: "lightgrey"
 
@@ -54,6 +55,14 @@ Rectangle {
 						? internal.toggled ? "<" : ">"
 						: internal.toggled ? ">" : "<"
 			}
+		}
+
+		DropShadow {
+			source: paneToggleHandle
+			anchors.fill: paneToggleHandle
+			radius: 30
+			color: Qt.hsla(0, 0, 0, 0.4)
+			transparentBorder: true
 		}
 	}
 

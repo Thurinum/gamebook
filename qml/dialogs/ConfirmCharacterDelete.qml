@@ -19,7 +19,7 @@ Dialog {
 
 	onAccepted:  {
 		Game.removeCharacter(character);
-		lview.model = []
-		lview.model = Game.getCharacters();
+		charactersTab.model = []
+		charactersTab.model = Game.getCharacters();
 	}
 }
