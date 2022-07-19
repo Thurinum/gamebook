@@ -46,8 +46,8 @@ function displayPrompt(id) {
 	Game.setCurrentPrompt(id);
 
 	if (Game.currentPrompt.isEnd && !app.isEditingAllowed) {
-		endscreen.text = parseStr(Game.currentPrompt.text)
-		endscreen.scale = 1
+		endScreen.text = parseStr(Game.currentPrompt.text)
+		endScreen.scale = 1
 		return
 	}
 
