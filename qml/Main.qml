@@ -237,8 +237,8 @@ ApplicationWindow {
 				repeat: true
 
 				onTriggered: {
-					if (".:".includes(text[i]))
-						interval = 300;
+					if (".:!?".includes(text[i]))
+						interval = 350;
 					else if (",;".includes(text[i]))
 						interval = 150;
 					else
