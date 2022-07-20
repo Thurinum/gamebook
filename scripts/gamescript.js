@@ -17,7 +17,9 @@ function loadScenario() {
 		scenarioProfileDialog.folder	= scenarioSubFolder("saves")
 		characterDialog.folder		= scenarioSubFolder("assets/characters")
 		promptDialog.folder		= scenarioSubFolder("assets/backgrounds")
+		promptDialog.musicFolder	= scenarioSubFolder("assets/music")
 	}
+	app.title = "Gamebook Studio - " + Game.getScenarioName();
 }
 
 // Expand any variables within a string. Variables start with @!
@@ -56,4 +58,9 @@ function displayPrompt(id) {
 
 	if (!app.isEditingAllowed)
 		Game.saveScenarioProfile(id);
+
+	if (Game.currentPrompt.music !== "") { // else play the old music
+		music.source = Game.resource("music/" + Game.currentPrompt.music)
+	}
+	music.play();
 }

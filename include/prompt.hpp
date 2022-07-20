@@ -19,6 +19,7 @@ class Prompt : public QObject
 	Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
 	Q_PROPERTY(QString character READ character WRITE setCharacter NOTIFY characterChanged)
 	Q_PROPERTY(QString background READ background WRITE setBackground NOTIFY backgroundChanged)
+	Q_PROPERTY(QString music READ music WRITE setMusic NOTIFY musicChanged)
 	Q_PROPERTY(bool isEnd READ isEnd WRITE setIsEnd NOTIFY isEndChanged)
 	Q_PROPERTY(QList<Reply*> replies READ replies WRITE setReplies NOTIFY repliesChanged)
 
@@ -53,6 +54,9 @@ public:
 	const QString& target() const;
 	void		   setTarget(const QString& newTarget);
 
+	const QString& music() const;
+	void		   setMusic(const QString& newMusic);
+
 signals:
 	void idChanged();
 	void parentIdChanged();
@@ -63,6 +67,8 @@ signals:
 	void repliesChanged();
 	void isEndChanged();
 
+	void musicChanged();
+
 private:
 	QString	  m_id;
 	QString	  m_parentId;
@@ -70,6 +76,7 @@ private:
 	QString	  m_text = "";
 	QString	  m_character;
 	QString	  m_background;
+	QString	  m_music = "";
 	bool		  m_isEnd = false;
 	QList<Reply*> m_replies;
 };

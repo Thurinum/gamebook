@@ -36,6 +36,17 @@ void Prompt::setTarget(const QString& newTarget) {
 	emit targetChanged();
 }
 
+const QString& Prompt::music() const {
+	return m_music;
+}
+
+void Prompt::setMusic(const QString& newMusic) {
+	if (m_music == newMusic)
+		return;
+	m_music = newMusic;
+	emit musicChanged();
+}
+
 const QString& Prompt::text() const
 {
 	return m_text;

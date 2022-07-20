@@ -63,8 +63,9 @@ Dialog {
 		if (reply) {
 			reply.text = replyTextField.text;
 
-			if (replyUseTargetField.checked)
+			if (replyUseTargetField.checked) {
 				reply.target = replyTargetField.text;
+			}
 			return;
 		}
 

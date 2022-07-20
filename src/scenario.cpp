@@ -68,6 +68,7 @@ bool Scenario::load() {
 			p->setText(reader.attributes().value("text").toString());
 			p->setCharacter(reader.attributes().value("character").toString());
 			p->setBackground(reader.attributes().value("background").toString());
+			p->setMusic(reader.attributes().value("music").toString());
 			p->setIsEnd(reader.attributes().value("isend").toString() == "true");
 
 			this->prompts().insert(id, p);
@@ -140,6 +141,7 @@ void Scenario::save() {
 		writer.writeAttribute("text", p->text());
 		writer.writeAttribute("character", p->character());
 		writer.writeAttribute("background", p->background());
+		writer.writeAttribute("music", p->music());
 		writer.writeAttribute("isend", p->isEnd() ? "true" : "false");
 		foreach (Reply* r, p->replies()) {
 			writer.writeStartElement("reply");

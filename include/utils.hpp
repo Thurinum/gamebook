@@ -11,6 +11,7 @@ public:
 	static const QString SAVES_PATH;
 	static const QString CHARACTERS_PATH;
 	static const QString BACKGROUNDS_PATH;
+	static const QString MUSIC_PATH;
 
 	static QVariant setting(const QString& key, const QVariant& fallback = QVariant());
 	static void	    setSetting(const QString& key, const QVariant& val);

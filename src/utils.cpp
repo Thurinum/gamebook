@@ -6,6 +6,7 @@ const QString Utils::INI_FILE_LOCATION = QDir::currentPath() + "/gamebook.ini";
 const QString Utils::CHARACTERS_PATH   = "assets/characters/";
 const QString Utils::BACKGROUNDS_PATH  = "assets/backgrounds/";
 const QString Utils::SAVES_PATH	   = "saves/";
+const QString Utils::MUSIC_PATH	   = "music/";
 
 QVariant Utils::setting(const QString& key, const QVariant& fallback) {
 	QSettings settings(INI_FILE_LOCATION, QSettings::IniFormat);
@@ -38,6 +39,7 @@ QString Utils::scenarioFolder(const QString& scenarioName) {
 		dir.mkpath(path + SAVES_PATH);
 		dir.mkpath(path + CHARACTERS_PATH);
 		dir.mkpath(path + BACKGROUNDS_PATH);
+		dir.mkpath(path + MUSIC_PATH);
 	}
 
 	return path;

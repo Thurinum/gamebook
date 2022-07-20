@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
+import QtMultimedia
 import Qt.labs.folderlistmodel
 import Qt5Compat.GraphicalEffects
 import "../scripts/gamescript.js" as GameScript
@@ -576,6 +577,13 @@ ApplicationWindow {
 		Behavior on anchors.rightMargin {
 			NumberAnimation { duration: 500; easing.type: Easing.OutQuad }
 		}
+	}
+
+	MediaPlayer {
+	    id: music
+	    audioOutput: AudioOutput {
+		  volume: 0.05
+	    }
 	}
 
 	Dialog.ScenarioInsertDelete		{ id: scenarioDialog }
