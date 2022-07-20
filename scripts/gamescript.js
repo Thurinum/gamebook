@@ -61,6 +61,6 @@ function displayPrompt(id) {
 
 	if (Game.currentPrompt.music !== "") { // else play the old music
 		music.source = Game.resource("music/" + Game.currentPrompt.music)
+		music.play();
 	}
-	music.play();
 }

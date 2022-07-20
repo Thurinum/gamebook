@@ -250,6 +250,9 @@ ApplicationWindow {
 					if (i >= text.length) {
 						i = 0;
 						promptTimer.stop();
+
+						if (Game.currentPrompt.target !== "")
+							Game.displayPrompt(Game.currentPrompt.target);
 					}
 				}
 			}

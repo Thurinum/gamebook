@@ -56,11 +56,14 @@ Dialog {
 			}
 		}
 
-		Label {
+		CheckBox {
+			id: hasMusicField
 			text: "Music"
+			checked: Game.currentPrompt ? Game.currentPrompt.music !== "" : false
 		}
 		ComboBox {
 			id: musicField
+			enabled: hasMusicField.checked
 			width: 200
 			textRole: "fileName"
 			valueRole: "fileName"
@@ -108,11 +111,12 @@ Dialog {
 
 		Game.currentPrompt.text = textField.text;
 		Game.currentPrompt.target = hasTargetField.checked ? targetField.text : "";
-		Game.currentPrompt.character = characterField.currentText
-		Game.currentPrompt.background = backgroundField.currentText
-		Game.currentPrompt.music = musicField.currentText
+		Game.currentPrompt.character = characterField.currentText;
+		Game.currentPrompt.background = backgroundField.currentText;
+		Game.currentPrompt.music = hasMusicField.checked ? musicField.currentText : "";
 		Game.currentPrompt.isEnd = isEndField.checked;
 
+		music.stop();
 		GameScript.displayPrompt(Game.currentPrompt.id);
 	}
 
