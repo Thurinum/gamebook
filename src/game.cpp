@@ -225,6 +225,10 @@ QString Game::resource(QString& path, bool asUrl) {
 	return appResource(Utils::setting("Main/sFallbackImage").toString(), asUrl);
 }
 
+bool Game::hasPrompt(const QString& id) {
+	return m_scenario->prompts().contains(id);
+}
+
 // accessors
 // --------------------------------------------------------------------------------------
 

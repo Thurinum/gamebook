@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls
 
 Dialog {
-	id: dialog_error
+	id: dialog
 	title: "Error"
 	standardButtons: Dialog.Ok
 	anchors.centerIn: Overlay.overlay
@@ -12,7 +12,15 @@ Dialog {
 
 	property string msg
 
+	function show(title, msg) {
+		dialog.title = title;
+		dialog.msg = msg;
+		dialog.open();
+	}
+
 	Label {
-		text: dialog_error.msg
+		anchors.fill: parent
+		text: dialog.msg
+		wrapMode: Text.WordWrap
 	}
 }

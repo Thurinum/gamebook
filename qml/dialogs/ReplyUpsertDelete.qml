@@ -50,30 +50,37 @@ Dialog {
 	}
 
 	// TODO: Add data validation rules
-	onAccepted: {
+	onAccepted: {		
 		// delete reply?
-		if (shouldDelete) {
+		if (reply && shouldDelete) {
 			Game.currentPrompt.nukeReply(reply);
 			repliesRepeater.model = Game.currentPrompt.replies;
 			shouldDelete = false;
 			return;
 		}
 
+		let target = replyTargetField.text;
+
 		// edit reply?
 		if (reply) {
+			if (!Game.hasPrompt(target)) {
+				errorDialog.show("Cannot edit reply", "Target does not point to a valid prompt.");
+				return;
+			}
+
 			reply.text = replyTextField.text;
 
 			if (replyUseTargetField.checked) {
-				reply.target = replyTargetField.text;
+				reply.target = target;
 			}
 			return;
 		}
 
 		// add reply?
-		let target = replyUseTargetField.checked ? replyUseTargetField.value : null;
+		let useTarget = replyUseTargetField.checked ? replyUseTargetField.value : null;
 
 		Game.addReply(Game.currentPrompt,
-				  GameScript.parseStr(replyTextField.text), target);
+				  GameScript.parseStr(replyTextField.text), useTarget);
 
 		repliesRepeater.model = [];
 		repliesRepeater.model = Game.currentPrompt.replies;

@@ -217,8 +217,11 @@ ApplicationWindow {
 				width: game.width
 				padding: 10
 
-				font.family: "Times New Roman,Linux Libertine,Liberation Serif,Noto Serif,Deja Vu Serif"
-				font.pixelSize: promptView.height * 0.15
+				font.family: "Consolas,Courier New"
+				//font.family: "Times New Roman,Linux Libertine,Liberation Serif,Noto Serif,Deja Vu Serif"
+				//font.pixelSize: promptView.height * 0.15
+				font.pixelSize: promptView.height * 0.11
+				font.letterSpacing: -2
 
 				text: Game.currentPrompt ? Game.currentPrompt.text : "empty prompt"
 				textFormat: Text.StyledText
@@ -249,12 +252,22 @@ ApplicationWindow {
 
 					if (i >= text.length) {
 						i = 0;
-						promptTimer.stop();
 
 						if (Game.currentPrompt.target !== "")
-							Game.displayPrompt(Game.currentPrompt.target);
+
+							promptRedirectionTimer.start();
+						promptTimer.stop();
+
 					}
 				}
+			}
+
+			Timer {
+				id: promptRedirectionTimer
+
+				interval: 1000
+				repeat: false
+				onTriggered: GameScript.displayPrompt(Game.currentPrompt.target);
 			}
 
 			Menu {
@@ -345,7 +358,7 @@ ApplicationWindow {
 
 				anchors.right: repliesPanel.right
 				anchors.bottom: repliesPanel.bottom
-				anchors.bottomMargin: 30
+				//anchors.bottomMargin: 30
 
 				horizontalAlignment: Qt.AlignRight
 				verticalAlignment: Qt.AlignBottom
@@ -380,68 +393,92 @@ ApplicationWindow {
 					model: Game.currentPrompt && Game.currentPrompt.replies.length > 0
 						 ? Game.currentPrompt.replies : 0
 
-					delegate: RoundButton {
+					delegate: MouseArea {
+						id: replyArea
+
 						property int index: model.index
+						property double yPos: 0
+						property int margins: 20
 
 						width: repliesView.width * 0.9
-						height: font.pixelSize + 20
-						radius: 10
+						height: reply.height
 
-						font.pixelSize: repliesPanel.height * 0.09
-						text: (app.isEditingAllowed && Game.childPromptOf(modelData) && Game.childPromptOf(modelData).text === Game.setting("Main/sPromptTextPlaceholder") ? "<i><font color=\"red\">* </font></i>" : "") + modelData.text
+						hoverEnabled: true
 
-						contentItem: Rectangle {
-							color: "transparent"
+						ToolTip.visible: containsMouse
+						ToolTip.delay: 900
+						ToolTip.timeout: 2500
+						ToolTip.text: modelData.text
+
+
+						Rectangle {
+							id: reply
+
+							width: parent.width
+							height: replyLabel.contentHeight + replyArea.margins
+
+							color: Universal.baseLowColor
+							border.width: 5
+							border.color: Universal.baseMediumLowColor
+							radius: 10
 
 							Label {
+								id: replyLabel
+
 								anchors.fill: parent
-								anchors.margins: 20
-								font: parent.parent.font
-								text: parent.parent.text
+								anchors.margins: replyArea.margins
+
+								font.pixelSize: repliesPanel.height * 0.09
+								text: (app.isEditingAllowed && Game.childPromptOf(modelData) && Game.childPromptOf(modelData).text === Game.setting("Main/sPromptTextPlaceholder") ? "<i><font color=\"red\">* </font></i>" : "") + modelData.text
+								wrapMode: Label.WordWrap
+
 								horizontalAlignment: Text.AlignLeft
 								verticalAlignment: Text.AlignVCenter
 							}
 						}
 
-						ToolTip.visible: hovered
-						ToolTip.delay: 900
-						ToolTip.timeout: 2500
-						ToolTip.text: modelData.text
+						DropShadow {
+							id: replyShadow
 
-						MouseArea {
-							anchors.fill: parent
+							anchors.fill: reply
+							source: reply
+							visible: parent.containsMouse
 
-							property double yPos: 0
+							verticalOffset: 9
+							radius: 7.0
+							transparentBorder: true
+							color: "#555"
+						}
 
-							onPressed: mouse => yPos = mouse.y
-							onClicked: GameScript.displayPrompt(Game.currentPrompt.replies[index].target)
-							onPositionChanged: function(mouse) {
-								if (!app.isEditingAllowed)
-									return;
 
-								let offset = mouse.y - yPos;
-								let deadzone = parent.height;
-								let index = parent.index;
-								let indexOffset = Math.round(Math.abs(offset) / deadzone);
+						onPressed: mouse => yPos = mouse.y
+						onClicked: GameScript.displayPrompt(Game.currentPrompt.replies[index].target)
+						onPositionChanged: function(mouse) {
+							if (!app.isEditingAllowed)
+								return;
 
-								let dir = null;
+							let offset = mouse.y - yPos;
+							let deadzone = parent.height;
+							let index = parent.index;
+							let indexOffset = Math.round(Math.abs(offset) / deadzone);
 
-								if (offset > deadzone)
-									dir = 1;
-								else if (offset < -deadzone)
-									dir = -1;
+							let dir = null;
 
-								if (!dir)
-									return;
+							if (offset > deadzone)
+								dir = 1;
+							else if (offset < -deadzone)
+								dir = -1;
 
-								let newIndex = index + (dir * indexOffset);
+							if (!dir)
+								return;
 
-								if (newIndex < 0 || newIndex > Game.currentPrompt.replies.length - 1)
-									return;
+							let newIndex = index + (dir * indexOffset);
 
-								Game.currentPrompt.moveReply(index, newIndex);
-								repliesRepeater.model = Game.currentPrompt.replies;
-							}
+							if (newIndex < 0 || newIndex > Game.currentPrompt.replies.length - 1)
+								return;
+
+							Game.currentPrompt.moveReply(index, newIndex);
+							repliesRepeater.model = Game.currentPrompt.replies;
 						}
 					}
 				}
@@ -583,10 +620,10 @@ ApplicationWindow {
 	}
 
 	MediaPlayer {
-	    id: music
-	    audioOutput: AudioOutput {
-		  volume: 0.05
-	    }
+		id: music
+		audioOutput: AudioOutput {
+			volume: 0.05
+		}
 	}
 
 	Dialog.ScenarioInsertDelete		{ id: scenarioDialog }
