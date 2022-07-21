@@ -333,6 +333,8 @@ ApplicationWindow {
 
 					font.pixelSize: repliesPanel.height * 0.1
 					font.family: "Segoe UI Light"
+					style: Text.Outline
+					styleColor: "lightgrey"
 
 					text: Game.currentPrompt.characterId
 						? Game.getCharacter(Game.currentPrompt.characterId).name
@@ -418,6 +420,7 @@ ApplicationWindow {
 
 							width: parent.width
 							height: replyLabel.contentHeight + replyArea.margins
+							y: parent.pressed ? 5 : 0
 
 							color: Universal.baseLowColor
 							border.width: 5
@@ -436,6 +439,10 @@ ApplicationWindow {
 
 								horizontalAlignment: Text.AlignLeft
 								verticalAlignment: Text.AlignVCenter
+							}
+
+							Behavior on y {
+								NumberAnimation { duration: 150; easing.type: Easing.OutQuad }
 							}
 						}
 
