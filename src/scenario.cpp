@@ -63,19 +63,19 @@ bool Scenario::load() {
 			Prompt* p = new Prompt(this);
 
 			p->setId(id);
-			p->setParentId(reader.attributes().value("parentid").toString());
-			p->setTarget(reader.attributes().value("target").toString());
+			p->setParentId(reader.attributes().value("parent-id").toString());
+			p->setTargetId(reader.attributes().value("target-id").toString());
 			p->setText(reader.attributes().value("text").toString());
-			p->setCharacter(reader.attributes().value("character").toString());
+			p->setCharacterId(reader.attributes().value("character-id").toString());
 			p->setBackground(reader.attributes().value("background").toString());
 			p->setMusic(reader.attributes().value("music").toString());
-			p->setIsEnd(reader.attributes().value("isend").toString() == "true");
+			p->setIsEnd(reader.attributes().value("is-end").toString() == "true");
 
 			this->prompts().insert(id, p);
 			current = p;
 		} else if (current && name == "reply") {
 			Reply* r = new Reply(this);
-			r->setTarget(reader.attributes().value("target").toString());
+			r->setTarget(reader.attributes().value("target-id").toString());
 			r->setText(reader.attributes().value("text").toString());
 			if (reader.isStartElement())
 				current->replies().append(r);
@@ -83,14 +83,15 @@ bool Scenario::load() {
 			// TODO: Implement reply types
 		} else if (name == "character") {
 			Character* c    = new Character(this);
-			QString    name = reader.attributes().value("name").toString();
+			QString    id   = reader.attributes().value("id").toString();
 
-			if (name == "")
+			if (id == "")
 				continue;
 
-			c->setName(name);
+			c->setId(id);
+			c->setName(reader.attributes().value("name").toString());
 			c->setSprite(reader.attributes().value("sprite").toString());
-			this->characters().insert(c->getName(), c);
+			this->characters().insert(id, c);
 		}
 	}
 
@@ -117,6 +118,7 @@ void Scenario::save() {
 	writer.writeStartElement("characters");
 	foreach (Character* c, this->characters()) {
 		writer.writeStartElement("character");
+		writer.writeAttribute("id", c->id());
 		writer.writeAttribute("name", c->getName());
 		writer.writeAttribute("sprite", c->getSprite());
 		writer.writeEndElement();
@@ -136,17 +138,17 @@ void Scenario::save() {
 			continue;
 		writer.writeStartElement("prompt");
 		writer.writeAttribute("id", p->id());
-		writer.writeAttribute("parentid", p->parentId());
-		writer.writeAttribute("target", p->target());
+		writer.writeAttribute("parent-id", p->parentId());
+		writer.writeAttribute("target-id", p->targetId());
 		writer.writeAttribute("text", p->text());
-		writer.writeAttribute("character", p->character());
+		writer.writeAttribute("character-id", p->characterId());
 		writer.writeAttribute("background", p->background());
 		writer.writeAttribute("music", p->music());
-		writer.writeAttribute("isend", p->isEnd() ? "true" : "false");
+		writer.writeAttribute("is-end", p->isEnd() ? "true" : "false");
 		foreach (Reply* r, p->replies()) {
 			writer.writeStartElement("reply");
 			writer.writeAttribute("text", r->text());
-			writer.writeAttribute("target", r->target());
+			writer.writeAttribute("target-id", r->target());
 			// writer.writeAttribute("type", )
 			writer.writeEndElement();
 		}

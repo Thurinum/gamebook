@@ -136,7 +136,7 @@ bool Game::addPrompt(const QString& id, Prompt* parent) {
 	p->setId(id);
 	p->setParentId(parent->id());
 	p->setText(Utils::setting("Main/sPromptTextPlaceholder").toString());
-	p->setCharacter("");
+	p->setCharacterId("");
 	p->setBackground("");
 	p->setReplies(QList<Reply*>());
 	p->setIsEnd(false);
@@ -155,13 +155,13 @@ void Game::addReply(Prompt* prompt, const QString& text, QString target) {
 
 // --------------------------------------------------------------------------------------
 
-Character* Game::getCharacter(const QString& name) {
+Character* Game::getCharacter(const QString& id) {
 	auto* characters = &m_scenario->characters();
 
-	if (!characters->contains(name))
-		qWarning() << "No character " << name;
+	if (!characters->contains(id))
+		qWarning() << "No character " << id;
 
-	return characters->value(name);
+	return characters->value(id);
 }
 
 QList<Character*> Game::getCharacters() {
@@ -172,6 +172,7 @@ void Game::addCharacter(const QString& name, const QString& sprite) {
 	auto*	     characters = &m_scenario->characters();
 	Character* c	    = new Character();
 
+	c->setId(QUuid::createUuid().toString(QUuid::WithoutBraces));
 	c->setName(name);
 	c->setSprite(sprite);
 	characters->insert(name, c);

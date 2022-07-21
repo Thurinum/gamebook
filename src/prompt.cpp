@@ -25,15 +25,15 @@ void Prompt::setParentId(const QString& newParentId) {
 	emit parentIdChanged();
 }
 
-const QString& Prompt::target() const {
-	return m_target;
+const QString& Prompt::targetId() const {
+	return m_targetId;
 }
 
-void Prompt::setTarget(const QString& newTarget) {
-	if (m_target == newTarget)
+void Prompt::setTargetId(const QString& newTarget) {
+	if (m_targetId == newTarget)
 		return;
-	m_target = newTarget;
-	emit targetChanged();
+	m_targetId = newTarget;
+	emit targetIdChanged();
 }
 
 const QString& Prompt::music() const {
@@ -59,16 +59,15 @@ void Prompt::setText(const QString& newText)
 	emit textChanged();
 }
 
-const QString& Prompt::character() const {
-	return m_character;
+const QString& Prompt::characterId() const {
+	return m_characterId;
 }
-void Prompt::setCharacter(const QString& newCharacter)
-{
-	if (m_character == newCharacter)
+void Prompt::setCharacterId(const QString& newCharacter) {
+	if (m_characterId == newCharacter)
 		return;
-	m_character = newCharacter;
+	m_characterId = newCharacter;
 
-	emit characterChanged();
+	emit characterIdChanged();
 }
 
 const QString& Prompt::background() const

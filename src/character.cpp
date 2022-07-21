@@ -2,6 +2,17 @@
 
 Character::Character(QObject* parent) : QObject{parent} {}
 
+const QString& Character::id() const {
+	return m_id;
+}
+
+void Character::setId(const QString& newId) {
+	if (m_id == newId)
+		return;
+	m_id = newId;
+	emit idChanged();
+}
+
 const QString& Character::getName() const
 {
 	return name;

@@ -253,7 +253,7 @@ ApplicationWindow {
 					if (i >= text.length) {
 						i = 0;
 
-						if (Game.currentPrompt.target !== "")
+						if (Game.currentPrompt.targetId !== "")
 
 							promptRedirectionTimer.start();
 						promptTimer.stop();
@@ -267,7 +267,7 @@ ApplicationWindow {
 
 				interval: 1000
 				repeat: false
-				onTriggered: GameScript.displayPrompt(Game.currentPrompt.target);
+				onTriggered: GameScript.displayPrompt(Game.currentPrompt.targetId);
 			}
 
 			Menu {
@@ -276,7 +276,7 @@ ApplicationWindow {
 				MenuItem {
 					text: "Edit prompt..."
 					onTriggered: {
-						promptDialog.name.currentIndex = 0
+						promptDialog.character.currentIndex = 0
 						promptDialog.text.text = Game.currentPrompt.text
 						promptDialog.visible = true
 					}
@@ -332,8 +332,8 @@ ApplicationWindow {
 					font.pixelSize: repliesPanel.height * 0.1
 					font.family: "Times New Roman"
 
-					text: Game.currentPrompt.character
-						? Game.getCharacter(Game.currentPrompt.character).name
+					text: Game.currentPrompt.characterId
+						? Game.getCharacter(Game.currentPrompt.characterId).name
 						: "Unnamed Character"
 				}
 			}
@@ -364,8 +364,8 @@ ApplicationWindow {
 				verticalAlignment: Qt.AlignBottom
 				fillMode: Image.PreserveAspectFit
 
-				source: Game.currentPrompt.character
-					  ? Game.resource("characters/" + Game.getCharacter(Game.currentPrompt.character).sprite)
+				source: Game.currentPrompt.characterId
+					  ? Game.resource("characters/" + Game.getCharacter(Game.currentPrompt.characterId).sprite)
 					  : ""
 			}
 
@@ -495,7 +495,7 @@ ApplicationWindow {
 
 				MenuItem {
 					text: "Add reply..."
-					enabled: Game.currentPrompt ? Game.currentPrompt.target === "" && !Game.currentPrompt.isEnd : false
+					enabled: Game.currentPrompt ? Game.currentPrompt.targetId === "" && !Game.currentPrompt.isEnd : false
 					height: enabled ? implicitHeight : 0
 					onTriggered: {
 						replyDialog.reply = undefined

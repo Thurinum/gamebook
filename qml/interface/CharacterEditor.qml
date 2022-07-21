@@ -51,7 +51,8 @@ Item {
 					text: "Edit"
 
 					onClicked: {
-						characterDialog.character = Game.getCharacter(name.text)
+						characterDialog.character = Game.getCharacter(characters.model[index].id);
+						console.log(characters.model[index].id)
 						characterDialog.open();
 					}
 				}

@@ -11,7 +11,7 @@ Dialog {
 	standardButtons: Dialog.Ok | Dialog.Cancel
 	anchors.centerIn: Overlay.overlay
 
-	property alias name: characterField
+	property alias character: characterField
 	property alias text: textField
 	property alias folder: backgroundFieldModel.folder
 	property alias musicFolder: musicFieldModel.folder
@@ -27,6 +27,7 @@ Dialog {
 			id: characterField
 			model: if (Game.currentPrompt) Game.getCharacters()
 			textRole: "name"
+			valueRole: "id"
 		}
 
 		Label {
@@ -78,7 +79,7 @@ Dialog {
 		CheckBox {
 			id: hasTargetField
 			text: "Leads to another prompt"
-			checked: Game.currentPrompt ? Game.currentPrompt.target !== "" : false
+			checked: Game.currentPrompt ? Game.currentPrompt.targetId !== "" : false
 		}
 		TextField {
 			id: targetField
@@ -96,7 +97,7 @@ Dialog {
 	}
 
 	onOpened: {
-		characterField.currentIndex = characterField.find(Game.currentPrompt.character)
+		characterField.currentIndex = characterField.find(Game.getCharacter(Game.currentPrompt.characterId).name)
 		backgroundField.currentIndex = Game.currentPrompt.background
 				? backgroundField.find(Game.currentPrompt.background)
 				: -1;
@@ -110,8 +111,8 @@ Dialog {
 		}
 
 		Game.currentPrompt.text = textField.text;
-		Game.currentPrompt.target = hasTargetField.checked ? targetField.text : "";
-		Game.currentPrompt.character = characterField.currentText;
+		Game.currentPrompt.targetId = hasTargetField.checked ? targetField.text : "";
+		Game.currentPrompt.characterId = characterField.currentValue;
 		Game.currentPrompt.background = backgroundField.currentText;
 		Game.currentPrompt.music = hasMusicField.checked ? musicField.currentText : "";
 		Game.currentPrompt.isEnd = isEndField.checked;

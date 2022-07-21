@@ -6,6 +6,7 @@
 class Character : public QObject
 {
 	Q_OBJECT
+	Q_PROPERTY(QString id READ id WRITE setId NOTIFY idChanged)
 	Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameChanged)
 	Q_PROPERTY(QString sprite READ getSprite WRITE setSprite NOTIFY spriteChanged)
 public:
@@ -17,11 +18,17 @@ public:
 	const QString& getSprite() const;
 	void		   setSprite(const QString& newSprite);
 
+	const QString& id() const;
+	void		   setId(const QString& newId);
+
 signals:
 	void nameChanged();
 	void spriteChanged();
 
+	void idChanged();
+
 private:
+	QString m_id;
 	QString name;
 	QString sprite;
 };
