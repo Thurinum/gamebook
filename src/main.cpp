@@ -9,6 +9,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickStyle>
+#include <QSurfaceFormat>
 #include <QUuid>
 
 int main(int argc, char* argv[]) {
@@ -23,6 +24,10 @@ int main(int argc, char* argv[]) {
 	QGuiApplication app(argc, argv);
 	QGuiApplication::setOrganizationName("Thurinum");
 	QGuiApplication::setApplicationName(Utils::setting("Main/sApplicationName").toString());
+
+	QSurfaceFormat format;
+	format.setSamples(Utils::setting("Main/iAntialiasSamples").toInt());
+	QSurfaceFormat::setDefaultFormat(format);
 
 	Game			    backend;
 	QQmlApplicationEngine engine;

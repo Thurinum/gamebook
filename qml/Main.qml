@@ -381,6 +381,9 @@ ApplicationWindow {
 				verticalAlignment: Qt.AlignBottom
 				fillMode: Image.PreserveAspectFit
 				playing: true
+				antialiasing: true
+				smooth: true
+				mipmap: true
 
 				source: Game.currentPrompt.characterId
 					  ? Game.resource("characters/" + Game.getCharacter(Game.currentPrompt.characterId).sprite)
