@@ -53,7 +53,7 @@ public:
 	Q_INVOKABLE void setCurrentPrompt(const QString& id);
 
 	explicit Game()
-		: m_scenario(new Scenario), m_profile(new Profile("dummy", m_scenario)),
+		: m_scenario(new Scenario), m_profile(new Profile(setting("Main/sEditModeProfile").toString(), m_scenario)),
 		  m_currentPrompt(new Prompt(this)){};
 
 signals:

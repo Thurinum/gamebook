@@ -51,7 +51,7 @@ QString Game::playerName() {
 
 	if (this->m_profile == nullptr) {
 		qWarning() << "Tried to access profile but none exists.";
-		return "Dummy";
+		return "Invalid";
 	}
 
 	return this->m_profile->name();
@@ -65,7 +65,7 @@ QString Game::playerProgress() {
 
 	if (this->m_profile == nullptr) {
 		qWarning() << "Tried to access profile but none exists.";
-		return "Dummy";
+		return "Invalid";
 	}
 
 	return this->m_profile->promptid();

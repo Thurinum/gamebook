@@ -223,13 +223,26 @@ ApplicationWindow {
 				//font.family: "Times New Roman,Linux Libertine,Liberation Serif,Noto Serif,Deja Vu Serif"
 				//font.pixelSize: promptView.height * 0.15
 				font.pixelSize: promptView.height * 0.11
-				font.letterSpacing: -2
+				font.letterSpacing: -1
 
 				text: Game.currentPrompt ? Game.currentPrompt.text : Game.setting("Main/sPromptTextPlaceholder")
+				color: "orange"
 				textFormat: Text.StyledText
 				style: Text.Outline
-				styleColor: "#888"
+				styleColor: "#666"
 				wrapMode: Text.WordWrap
+			}
+
+			DropShadow {
+				id: promptShadow
+
+				anchors.fill: prompt
+				source: prompt
+
+				verticalOffset: 3
+				radius: 7.0
+				transparentBorder: true
+				color: "#222"
 			}
 
 			Timer {
@@ -354,7 +367,7 @@ ApplicationWindow {
 				radius: 30
 			}
 
-			Image {
+			AnimatedImage {
 				id: character
 
 				width: app.width / 2 - 100
@@ -367,6 +380,7 @@ ApplicationWindow {
 				horizontalAlignment: Qt.AlignRight
 				verticalAlignment: Qt.AlignBottom
 				fillMode: Image.PreserveAspectFit
+				playing: true
 
 				source: Game.currentPrompt.characterId
 					  ? Game.resource("characters/" + Game.getCharacter(Game.currentPrompt.characterId).sprite)
@@ -380,6 +394,7 @@ ApplicationWindow {
 				verticalOffset: 0
 
 				color: Qt.hsla(0, 0, 0, 0.5)
+				transparentBorder: true
 				radius: 30
 			}
 
@@ -436,6 +451,7 @@ ApplicationWindow {
 								font.pixelSize: repliesPanel.height * 0.09
 								text: (app.isEditingAllowed && Game.childPromptOf(modelData) && Game.childPromptOf(modelData).text === Game.setting("Main/sPromptTextPlaceholder") ? "<i><font color=\"red\">* </font></i>" : "") + modelData.text
 								wrapMode: Label.WordWrap
+								textFormat: Text.StyledText
 
 								horizontalAlignment: Text.AlignLeft
 								verticalAlignment: Text.AlignVCenter
