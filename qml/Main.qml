@@ -39,10 +39,12 @@ ApplicationWindow {
 	}
 
 	FastBlur {
+		id: backgroundBlur
+
 		source: background
 		anchors.fill: background
 		scale: 1.5
-		radius: 10
+		radius: 30
 	}
 
 	Rectangle {
@@ -223,7 +225,7 @@ ApplicationWindow {
 				font.pixelSize: promptView.height * 0.11
 				font.letterSpacing: -2
 
-				text: Game.currentPrompt ? Game.currentPrompt.text : "empty prompt"
+				text: Game.currentPrompt ? Game.currentPrompt.text : Game.setting("Main/sPromptTextPlaceholder")
 				textFormat: Text.StyledText
 				style: Text.Outline
 				styleColor: "#888"
@@ -311,7 +313,7 @@ ApplicationWindow {
 				id: characterNameBadge
 
 				width: characterName.implicitWidth + 50
-				height: 80
+				height: repliesPanel.height * 0.2
 
 				anchors.left: repliesPanel.left
 				anchors.top:  repliesPanel.top
@@ -330,7 +332,7 @@ ApplicationWindow {
 					verticalAlignment: Qt.AlignVCenter
 
 					font.pixelSize: repliesPanel.height * 0.1
-					font.family: "Times New Roman"
+					font.family: "Segoe UI Light"
 
 					text: Game.currentPrompt.characterId
 						? Game.getCharacter(Game.currentPrompt.characterId).name
@@ -385,6 +387,7 @@ ApplicationWindow {
 				width: repliesPanel.width - character.paintedWidth - 25
 				x: 25
 				anchors.verticalCenter: repliesPanel.verticalCenter
+				anchors.verticalCenterOffset: 15
 				spacing: 10
 
 				Repeater {
