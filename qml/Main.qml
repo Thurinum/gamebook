@@ -410,7 +410,6 @@ ApplicationWindow {
 						ToolTip.timeout: 2500
 						ToolTip.text: modelData.text
 
-
 						Rectangle {
 							id: reply
 
@@ -458,8 +457,7 @@ ApplicationWindow {
 								return;
 
 							let offset = mouse.y - yPos;
-							let deadzone = parent.height;
-							let index = parent.index;
+							let deadzone = height;
 							let indexOffset = Math.round(Math.abs(offset) / deadzone);
 
 							let dir = null;
