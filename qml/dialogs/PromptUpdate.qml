@@ -28,6 +28,7 @@ Dialog {
 			model: if (Game.currentPrompt) Game.getCharacters()
 			textRole: "name"
 			valueRole: "id"
+			width: contentWidth
 		}
 
 		Label {
@@ -101,6 +102,7 @@ Dialog {
 		backgroundField.currentIndex = Game.currentPrompt.background
 				? backgroundField.find(Game.currentPrompt.background)
 				: -1;
+		musicField.currentIndex = musicField.find(Game.currentPrompt.music)
 	}
 
 	onAccepted: {
