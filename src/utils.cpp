@@ -5,8 +5,8 @@
 const QString Utils::INI_FILE_LOCATION = QDir::currentPath() + "/gamebook.ini";
 const QString Utils::CHARACTERS_PATH   = "assets/characters/";
 const QString Utils::BACKGROUNDS_PATH  = "assets/backgrounds/";
+const QString Utils::MUSIC_PATH	   = "assets/music/";
 const QString Utils::SAVES_PATH	   = "saves/";
-const QString Utils::MUSIC_PATH	   = "music/";
 
 QVariant Utils::setting(const QString& key, const QVariant& fallback) {
 	QSettings settings(INI_FILE_LOCATION, QSettings::IniFormat);
