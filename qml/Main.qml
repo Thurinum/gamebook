@@ -251,16 +251,18 @@ ApplicationWindow {
 				property int i: 0
 				property string text: "Dummy text."
 
-				interval: 100
+				interval: app.isEditingAllowed ? 1 : 100
 				repeat: true
 
 				onTriggered: {
-					if (".:!?".includes(text[i]))
-						interval = 350;
-					else if (",;".includes(text[i]))
-						interval = 150;
-					else
-						interval = 50;
+					if (!app.isEditingAllowed) {
+						if (".:!?".includes(text[i]))
+							interval = 350;
+						else if (",;".includes(text[i]))
+							interval = 150;
+						else
+							interval = 50;
+					}
 
 					prompt.text += text[i];
 					i++;
@@ -622,6 +624,7 @@ ApplicationWindow {
 				// TODO: UNLOAD PROFILE IN C++ (WILL require REWRITE)
 				app.isEditingAllowed = false
 				appMenu.height = app.height
+				music.stop();
 			}
 		}
 		MenuItem {

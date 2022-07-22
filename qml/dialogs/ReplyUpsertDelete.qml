@@ -80,7 +80,7 @@ Dialog {
 		let useTarget = replyUseTargetField.checked ? replyUseTargetField.value : null;
 
 		Game.addReply(Game.currentPrompt,
-				  GameScript.parseStr(replyTextField.text), useTarget);
+				  GameScript.parseStr(replyTextField.text), target);
 
 		repliesRepeater.model = [];
 		repliesRepeater.model = Game.currentPrompt.replies;

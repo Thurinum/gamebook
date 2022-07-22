@@ -119,7 +119,9 @@ Dialog {
 		Game.currentPrompt.music = hasMusicField.checked ? musicField.currentText : "";
 		Game.currentPrompt.isEnd = isEndField.checked;
 
-		music.stop();
+		if (!app.isEditingAllowed)
+			music.stop();
+
 		GameScript.displayPrompt(Game.currentPrompt.id);
 	}
 
