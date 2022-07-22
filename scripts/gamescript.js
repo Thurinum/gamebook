@@ -43,8 +43,9 @@ function writePrompt(text) {
 
 // Displays a prompt and its replies on the UI.
 function displayPrompt(id) {
-	writePrompt("")
-	repliesRepeater.model = []
+	writePrompt("");
+	endScreen.scale = 0;
+	repliesRepeater.model = [];
 	Game.setCurrentPrompt(id);
 
 	if (Game.currentPrompt.isEnd && !app.isEditingAllowed) {
