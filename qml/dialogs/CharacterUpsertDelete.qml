@@ -11,7 +11,7 @@ Dialog {
 	standardButtons: Dialog.Ok | Dialog.Cancel
 	anchors.centerIn: Overlay.overlay
 
-	property var character
+    property var character
 	property bool shouldDelete: false
 	property alias folder: characterImageField_model.folder
 
@@ -46,7 +46,7 @@ Dialog {
 
 	Label {
 		visible: dialog.shouldDelete
-		text: "Are you sure you want to delete '" + dialog.character + "'?"
+        text: "Are you sure you want to delete '" + (dialog.character ? dialog.character.name : "") + "'?"
 	}
 
 	onOpened: {
@@ -60,19 +60,26 @@ Dialog {
 		let sprite = characterImageField.currentText;
 
 		if (shouldDelete && character) {
-			Game.removeCharacter(character);
+            // remove character
+            Game.removeCharacter(character.id);
 			charactersTab.model = [];
 			charactersTab.model = Game.getCharacters();
 			shouldDelete = false;
 		} else if (character) {
+            // edit character
 			character.name = characterNameField.text;
 			character.sprite = characterImageField.currentText;
 		} else if (!shouldDelete) {
+            // add character
 			Game.addCharacter(name, sprite);
 		} else {
 			// TODO: show error popup
 			console.warn("Couldnt remove character! Should delete flag set")
 		}
+
+        // reload scenario
+        Game.saveScenario();
+        Game.loadScenario(Game.getScenarioName());
 
 		charactersTab.model = []
 		charactersTab.model = Game.getCharacters();

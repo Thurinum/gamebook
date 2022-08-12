@@ -178,15 +178,16 @@ void Game::addCharacter(const QString& name, const QString& sprite) {
 	characters->insert(name, c);
 }
 
-void Game::removeCharacter(const QString& name) {
-	auto* characters = &m_scenario->characters();
+void Game::removeCharacter(const QString &key)
+{
+    auto *characters = &m_scenario->characters();
 
-	if (!characters->contains(name)) {
-		qWarning() << "No character " << name;
-		return;
-	}
+    if (!characters->contains(key)) {
+        qWarning() << "No character with id " << key;
+        return;
+    }
 
-	characters->remove(name);
+    characters->remove(key);
 }
 
 // helpers

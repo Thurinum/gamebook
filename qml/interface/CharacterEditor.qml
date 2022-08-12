@@ -52,7 +52,6 @@ Item {
 
 					onClicked: {
 						characterDialog.character = Game.getCharacter(characters.model[index].id);
-						console.log(characters.model[index].id)
 						characterDialog.open();
 					}
 				}
@@ -71,7 +70,7 @@ Item {
 
 					onClicked: {
 						characterDialog.shouldDelete = true
-						characterDialog.character = characters.model[index].name
+                        characterDialog.character = characters.model[index]
 						characterDialog.open()
 					}
 				}

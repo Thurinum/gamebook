@@ -11,8 +11,8 @@ class Prompt;
 class Reply : public QObject
 {
 	Q_OBJECT
-	Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
-	Q_PROPERTY(QString target READ target WRITE setTarget NOTIFY targetChanged)
+    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
+    Q_PROPERTY(QString target READ target WRITE setTarget NOTIFY targetChanged)
 public:
 	explicit Reply(QObject* parent = nullptr);
 

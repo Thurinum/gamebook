@@ -21,8 +21,8 @@ int main(int argc, char* argv[]) {
 	qRegisterMetaType<Scenario*>();
 	qRegisterMetaType<Profile*>();
 
-	QGuiApplication app(argc, argv);
-	QGuiApplication::setOrganizationName("Thurinum");
+    QGuiApplication app(argc, argv);
+    QGuiApplication::setOrganizationName("Thurinum");
 	QGuiApplication::setApplicationName(Utils::setting("Main/sApplicationName").toString());
 
 	QSurfaceFormat format;
