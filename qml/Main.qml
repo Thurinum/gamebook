@@ -622,8 +622,9 @@ ApplicationWindow {
 			height: enabled ? implicitHeight : 0
 			onTriggered: {
 				// TODO: UNLOAD PROFILE IN C++ (WILL require REWRITE)
-				app.isEditingAllowed = false
-				appMenu.height = app.height
+                app.isEditingAllowed = false;
+                appMenu.height = app.height;
+                scenarioProfileDialog.shouldCreate = false;
 				music.stop();
 			}
 		}
