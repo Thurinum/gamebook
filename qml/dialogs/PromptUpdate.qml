@@ -124,5 +124,4 @@ Dialog {
 
 		GameScript.displayPrompt(Game.currentPrompt.id);
 	}
-
 }

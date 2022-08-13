@@ -21,41 +21,41 @@ class Prompt : public QObject
 	Q_PROPERTY(QString background READ background WRITE setBackground NOTIFY backgroundChanged)
 	Q_PROPERTY(QString music READ music WRITE setMusic NOTIFY musicChanged)
 	Q_PROPERTY(bool isEnd READ isEnd WRITE setIsEnd NOTIFY isEndChanged)
-	Q_PROPERTY(QList<Reply*> replies READ replies WRITE setReplies NOTIFY repliesChanged)
+	Q_PROPERTY(QList<Reply *> replies READ replies WRITE setReplies NOTIFY repliesChanged)
 
 public:
-	Prompt(QObject* parent = nullptr) : QObject(parent) {}
+	Prompt(QObject *parent = nullptr) : QObject(parent) {}
 
-	const QString& id() const;
-	void		   setId(const QString& newId);
+	const QString &id() const;
+	void setId(const QString &newId);
 
-	const QString& text() const;
-	void		   setText(const QString& newText);
+	const QString &text() const;
+	void setText(const QString &newText);
 
-	const QString& characterId() const;
-	void		   setCharacterId(const QString& newCharacter);
+	const QString &characterId() const;
+	void setCharacterId(const QString &newCharacter);
 
-	const QString& background() const;
-	void		   setBackground(const QString& newBackground);
+	const QString &background() const;
+	void setBackground(const QString &newBackground);
 
-	QList<Reply*>& replies();
-	void		   setReplies(const QList<Reply*>& newReplies);
+	QList<Reply *> &replies();
+	void setReplies(const QList<Reply *> &newReplies);
 
 	bool isEnd() const;
 	void setIsEnd(bool newIsEnd);
 
-	const QString& parentId() const;
-	void		   setParentId(const QString& newParentId);
+	const QString &parentId() const;
+	void setParentId(const QString &newParentId);
 
-	Q_INVOKABLE void addReply(const QString& text, QString target = nullptr);
+	Q_INVOKABLE void addReply(const QString &text, QString target = nullptr);
 	Q_INVOKABLE void moveReply(int index, int newIndex);
-	Q_INVOKABLE void nukeReply(Reply* reply);
+	Q_INVOKABLE void nukeReply(Reply *reply);
 
-	const QString& targetId() const;
-	void		   setTargetId(const QString& newTarget);
+	const QString &targetId() const;
+	void setTargetId(const QString &newTarget);
 
-	const QString& music() const;
-	void		   setMusic(const QString& newMusic);
+	const QString &music() const;
+	void setMusic(const QString &newMusic);
 
 signals:
 	void idChanged();
@@ -66,19 +66,18 @@ signals:
 	void backgroundChanged();
 	void repliesChanged();
 	void isEndChanged();
-
 	void musicChanged();
 
 private:
-	QString	  m_id;
-	QString	  m_parentId;
-	QString	  m_targetId;
-	QString	  m_text = "";
-	QString	  m_characterId;
-	QString	  m_background;
-	QString	  m_music = "";
-	bool		  m_isEnd = false;
-	QList<Reply*> m_replies;
+	QString m_id;
+	QString m_parentId;
+	QString m_targetId;
+	QString m_text = "";
+	QString m_characterId;
+	QString m_background;
+	QString m_music = "";
+	bool m_isEnd = false;
+	QList<Reply *> m_replies;
 };
 
 #endif // PROMPT_HPP

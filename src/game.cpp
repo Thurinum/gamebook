@@ -13,21 +13,25 @@
 #include <QUuid>
 #include <QXmlStreamReader>
 
-QString Game::getScenarioName() {
+QString Game::getScenarioName()
+{
 	return m_scenario ? m_scenario->name() : "none";
 }
 
-void Game::createScenario(const QString& name) {
+void Game::createScenario(const QString& name)
+{
 	m_scenario = new Scenario(name);
 	m_scenario->create();
 }
 
-void Game::loadScenario(const QString& name) {
+void Game::loadScenario(const QString& name)
+{
 	m_scenario = new Scenario(name);
 	m_scenario->load();
 }
 
-void Game::saveScenario() {
+void Game::saveScenario()
+{
 	if (!m_scenario) {
 		qWarning() << "Cannot save scenario since no scenario is currently opened!";
 		return;
@@ -36,14 +40,16 @@ void Game::saveScenario() {
 	m_scenario->save();
 }
 
-void Game::deleteScenario(const QString& name) {
+void Game::deleteScenario(const QString& name)
+{
 	m_scenario = new Scenario(name);
 	m_scenario->nuke();
 }
 
 // --------------------------------------------------------------------------------------
 
-QString Game::playerName() {
+QString Game::playerName()
+{
 	if (m_scenario == nullptr) {
 		qWarning() << "Tried to access profile before scenario";
 		return "Invalid";
@@ -57,7 +63,8 @@ QString Game::playerName() {
 	return this->m_profile->name();
 }
 
-QString Game::playerProgress() {
+QString Game::playerProgress()
+{
 	if (m_scenario == nullptr) {
 		qWarning() << "Tried to access profile before scenario";
 		return "Invalid";
@@ -71,7 +78,8 @@ QString Game::playerProgress() {
 	return this->m_profile->promptid();
 }
 
-void Game::createScenarioProfile(const QString& name) {
+void Game::createScenarioProfile(const QString& name)
+{
 	if (m_scenario == nullptr) {
 		qWarning() << "Tried to create profile before scenario";
 		return;
@@ -81,11 +89,13 @@ void Game::createScenarioProfile(const QString& name) {
 	m_profile->create();
 }
 
-void Game::deleteScenarioProfile() {
+void Game::deleteScenarioProfile()
+{
 	m_profile->nuke();
 }
 
-void Game::loadScenarioProfile(const QString& name) {
+void Game::loadScenarioProfile(const QString& name)
+{
 	if (!m_scenario) {
 		qWarning() << "Tried to load profile before scenario.";
 		return;
@@ -95,7 +105,8 @@ void Game::loadScenarioProfile(const QString& name) {
 	m_profile->load();
 }
 
-void Game::saveScenarioProfile(const QString& id) {
+void Game::saveScenarioProfile(const QString& id)
+{
 	if (m_scenario == nullptr) {
 		qWarning() << "Tried to save profile before scenario";
 		return;
@@ -112,11 +123,18 @@ void Game::saveScenarioProfile(const QString& id) {
 
 // --------------------------------------------------------------------------------------
 
-Prompt* Game::parentPromptOf(Prompt* prompt) {
+QList<Prompt*> Game::prompts()
+{
+	return m_scenario->prompts().values();
+}
+
+Prompt* Game::parentPromptOf(Prompt* prompt)
+{
 	return m_scenario->prompts().value(prompt->parentId());
 }
 
-Prompt* Game::childPromptOf(const Reply*& reply) {
+Prompt* Game::childPromptOf(const Reply*& reply)
+{
 	const QString& target = reply->target();
 
 	if (target == "" || !m_scenario->prompts().contains(target)) {
@@ -126,7 +144,8 @@ Prompt* Game::childPromptOf(const Reply*& reply) {
 	return m_scenario->prompts().value(target);
 }
 
-bool Game::addPrompt(const QString& id, Prompt* parent) {
+bool Game::addPrompt(const QString& id, Prompt* parent)
+{
 	if (m_scenario->prompts().contains(id)) {
 		qWarning() << "Prompt already exists with key '" << id << "'.";
 		return false;
@@ -145,7 +164,8 @@ bool Game::addPrompt(const QString& id, Prompt* parent) {
 	return true;
 }
 
-void Game::addReply(Prompt* prompt, const QString& text, QString target) {
+void Game::addReply(Prompt* prompt, const QString& text, QString target)
+{
 	if (target == nullptr)
 		target = QUuid::createUuid().toString(QUuid::WithoutBraces);
 
@@ -155,7 +175,8 @@ void Game::addReply(Prompt* prompt, const QString& text, QString target) {
 
 // --------------------------------------------------------------------------------------
 
-Character* Game::getCharacter(const QString& id) {
+Character* Game::getCharacter(const QString& id)
+{
 	auto* characters = &m_scenario->characters();
 
 	if (!characters->contains(id))
@@ -164,13 +185,15 @@ Character* Game::getCharacter(const QString& id) {
 	return characters->value(id);
 }
 
-QList<Character*> Game::getCharacters() {
+QList<Character*> Game::getCharacters()
+{
 	return m_scenario->characters().values();
 }
 
-void Game::addCharacter(const QString& name, const QString& sprite) {
-	auto*	     characters = &m_scenario->characters();
-	Character* c	    = new Character();
+void Game::addCharacter(const QString& name, const QString& sprite)
+{
+	auto* characters = &m_scenario->characters();
+	Character* c = new Character();
 
 	c->setId(QUuid::createUuid().toString(QUuid::WithoutBraces));
 	c->setName(name);
@@ -178,45 +201,51 @@ void Game::addCharacter(const QString& name, const QString& sprite) {
 	characters->insert(name, c);
 }
 
-void Game::removeCharacter(const QString &key)
+void Game::removeCharacter(const QString& key)
 {
-    auto *characters = &m_scenario->characters();
+	auto* characters = &m_scenario->characters();
 
-    if (!characters->contains(key)) {
-        qWarning() << "No character with id " << key;
-        return;
-    }
+	if (!characters->contains(key)) {
+		qWarning() << "No character with id " << key;
+		return;
+	}
 
-    characters->remove(key);
+	characters->remove(key);
 }
 
 // helpers
 // --------------------------------------------------------------------------------------
 
-QVariant Game::setting(const QString& key, const QVariant& fallback) {
+QVariant Game::setting(const QString& key, const QVariant& fallback)
+{
 	return Utils::setting(key, fallback);
 }
-void Game::setSetting(const QString& key, const QVariant& value) {
+void Game::setSetting(const QString& key, const QVariant& value)
+{
 	Utils::setSetting(key, value);
 }
 
 // --------------------------------------------------------------------------------------
 
-QUrl Game::scenariosFolder() {
+QUrl Game::scenariosFolder()
+{
 	return QUrl::fromLocalFile(Utils::rootPath());
 }
 
-QString Game::scenarioFolder(bool asUrl) {
+QString Game::scenarioFolder(bool asUrl)
+{
 	return (asUrl ? "file:///" : "") + Utils::scenarioFolder(m_scenario->name());
 }
 
 // --------------------------------------------------------------------------------------
 
-QString Game::appResource(const QString& path, bool asUrl) {
+QString Game::appResource(const QString& path, bool asUrl)
+{
 	return (asUrl ? "file:///" : "") + QDir::currentPath() + "/resources/" + path;
 }
 
-QString Game::resource(QString& path, bool asUrl) {
+QString Game::resource(QString& path, bool asUrl)
+{
 	path = Utils::scenarioFolder(m_scenario->name()) + "assets/" + path;
 
 	QFileInfo info(path);
@@ -227,18 +256,21 @@ QString Game::resource(QString& path, bool asUrl) {
 	return appResource(Utils::setting("Main/sFallbackImage").toString(), asUrl);
 }
 
-bool Game::hasPrompt(const QString& id) {
+bool Game::hasPrompt(const QString& id)
+{
 	return m_scenario->prompts().contains(id);
 }
 
 // accessors
 // --------------------------------------------------------------------------------------
 
-Prompt* Game::currentPrompt() {
+Prompt* Game::currentPrompt()
+{
 	return m_currentPrompt;
 }
 
-void Game::setCurrentPrompt(const QString& id) {
+void Game::setCurrentPrompt(const QString& id)
+{
 	Prompt* newCurrentPrompt = m_scenario->prompts().value(id);
 
 	if (m_currentPrompt == newCurrentPrompt)

@@ -70,7 +70,6 @@ bool Scenario::load() {
 			p->setBackground(reader.attributes().value("background").toString());
 			p->setMusic(reader.attributes().value("music").toString());
 			p->setIsEnd(reader.attributes().value("is-end").toString() == "true");
-
 			this->prompts().insert(id, p);
 			current = p;
 		} else if (current && name == "reply") {

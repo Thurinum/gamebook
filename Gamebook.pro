@@ -12,4 +12,5 @@ DISTFILES += \
 	$$files("scripts/*.js", true) \
 	$$files("resources/*", true) \
 	$$files("scenarios/*", true) \
-	qml/interface/EndScreen.qml
+	qml/interface/EndScreen.qml \
+	qml/interface/OutlineView.qml
