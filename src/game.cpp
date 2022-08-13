@@ -129,9 +129,14 @@ QList<Prompt*> Game::prompts(const QString& filter)
 	auto prompts = m_scenario->prompts().values();
 
 	// TODO: could be more efficient
-	//	for (int i = 0; i < prompts.length(); i++)
-	//		if (!prompts[i]->text().contains(filter))
-	//			prompts.removeAt(i);
+	for (int i = 0; i < prompts.length(); i++) {
+		if ((Utils::setting("Outline/bHideEmpty").toBool()
+		     && prompts[i]->text() == Utils::setting("Main/sPromptTextPlaceholder"))
+		    || !prompts[i]->text().contains(filter)) {
+			prompts.removeAt(i);
+			i--;
+		}
+	}
 
 	struct
 	{
