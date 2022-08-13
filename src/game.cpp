@@ -4,6 +4,7 @@
 #include "scenario.hpp"
 #include <QQmlContext>
 
+#include <algorithm>
 #include <QDir>
 #include <QGuiApplication>
 #include <QHash>
@@ -123,9 +124,10 @@ void Game::saveScenarioProfile(const QString& id)
 
 // --------------------------------------------------------------------------------------
 
-QList<Prompt*> Game::prompts()
+QList<Prompt*> Game::prompts(QString filter)
 {
-	return m_scenario->prompts().values();
+	if (filter == nullptr)
+		return m_scenario->prompts().values();
 }
 
 Prompt* Game::parentPromptOf(Prompt* prompt)
