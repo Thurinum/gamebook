@@ -594,7 +594,7 @@ ApplicationWindow {
 
         onToggled: {
             charactersTab.model = Game.getCharacters()
-            outlineTab.model = Game.prompts()
+		outlineTab.model = Game.prompts()
 
             Game.saveScenario()
             Game.loadScenario(Game.getScenarioName())

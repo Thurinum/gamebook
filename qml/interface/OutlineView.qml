@@ -11,6 +11,11 @@ Item {
 	property var model
 	property int itemHeight: 50
 
+	function resetModel() {
+		root.model = []
+		root.model = Game.prompts(searchField.text)
+	}
+
 	Rectangle {
 		id: searchPane
 		width: parent.width
@@ -25,23 +30,74 @@ Item {
 		}
 
 		TextField {
+			id: searchField
 			width: root.width - searchIcon.width - 15
 			y: 0
 			anchors.left: searchIcon.right
 			anchors.verticalCenter: parent.verticalCenter
 			placeholderText: "search"
 
-			onTextEdited: {
-				root.model = []
-				root.model = Game.prompts(text)
+			onTextEdited: resetModel()
+		}
+	}
+
+	Rectangle {
+		id: searchOptionsPane
+		width: parent.width
+		height: root.itemHeight
+		anchors.top: searchPane.bottom
+
+		Row {
+			anchors.centerIn: parent
+
+			CheckBox {
+				id: descendingSortToggle
+				text: "Descending"
+				checked: Game.setting("Outline/bSortDescending")
+				onToggled: {
+					Game.setSetting("Outline/bSortDescending", checked);
+					resetModel()
+				}
+			}
+
+			CheckBox {
+				id: caseSensitiveSortToggle
+				text: "Case sensitive"
+				checked: Game.setting("Outline/bSortCaseSensitive")
+				onToggled: {
+					Game.setSetting("Outline/bSortCaseSensitive", checked)
+					resetModel()
+				}
+			}
+
+			CheckBox {
+				id: hideEmptyToggle
+				text: "Hide empty"
+				checked: Game.setting("Outline/bHideEmpty")
+				onToggled: {
+					Game.setSetting("Outline/bHideEmpty", checked)
+					resetModel()
+				}
 			}
 		}
+	}
+
+	DropShadow {
+		anchors.fill: searchOptionsPane
+		source: searchOptionsPane
+		radius: 8.0
+		transparentBorder: true
+		verticalOffset: 5
+		color: "#888"
+		z: 1
+		scale: 1.1
+		cached: true
 	}
 
 	ListView {
 		anchors.left: parent.left
 		anchors.right: parent.right
-		anchors.top: searchPane.bottom
+		anchors.top: searchOptionsPane.bottom
 		anchors.bottom: parent.bottom
 
 		model: root.model

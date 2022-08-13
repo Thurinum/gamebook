@@ -135,9 +135,15 @@ QList<Prompt*> Game::prompts(const QString& filter)
 
 	struct
 	{
+		Qt::CaseSensitivity caseSensitivity
+			= Utils::setting("Outline/bSortCaseSensitive").toBool() ? Qt::CaseSensitive
+												  : Qt::CaseInsensitive;
+		bool isDescending = Utils::setting("Outline/bSortDescending").toBool();
+
 		bool operator()(const Prompt* first, const Prompt* second) const
 		{
-			return first->text().compare(second->text(), Qt::CaseInsensitive) < 0;
+			int result = first->text().compare(second->text(), caseSensitivity);
+			return isDescending ? result > 0 : result < 0;
 		}
 	} comparer;
 
@@ -236,7 +242,14 @@ void Game::removeCharacter(const QString& key)
 
 QVariant Game::setting(const QString& key, const QVariant& fallback)
 {
-	return Utils::setting(key, fallback);
+	QVariant setting = Utils::setting(key, fallback);
+
+	if (setting == "true")
+		setting.setValue(true);
+	else if (setting == "false")
+		setting.setValue(false);
+
+	return setting;
 }
 void Game::setSetting(const QString& key, const QVariant& value)
 {
