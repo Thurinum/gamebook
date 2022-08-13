@@ -31,7 +31,10 @@ Item {
 			anchors.verticalCenter: parent.verticalCenter
 			placeholderText: "search"
 
-			onTextEdited: root.model = Game.prompts(text)
+			onTextEdited: {
+				root.model = []
+				root.model = Game.prompts(text)
+			}
 		}
 	}
 

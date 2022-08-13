@@ -124,10 +124,26 @@ void Game::saveScenarioProfile(const QString& id)
 
 // --------------------------------------------------------------------------------------
 
-QList<Prompt*> Game::prompts(QString filter)
+QList<Prompt*> Game::prompts(const QString& filter)
 {
-	if (filter == nullptr)
-		return m_scenario->prompts().values();
+	auto prompts = m_scenario->prompts().values();
+
+	// TODO: could be more efficient
+	//	for (int i = 0; i < prompts.length(); i++)
+	//		if (!prompts[i]->text().contains(filter))
+	//			prompts.removeAt(i);
+
+	struct
+	{
+		bool operator()(const Prompt* first, const Prompt* second) const
+		{
+			return first->text().compare(second->text(), Qt::CaseInsensitive) < 0;
+		}
+	} comparer;
+
+	std::sort(prompts.begin(), prompts.end(), comparer);
+
+	return prompts;
 }
 
 Prompt* Game::parentPromptOf(Prompt* prompt)

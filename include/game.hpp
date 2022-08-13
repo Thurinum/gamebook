@@ -27,7 +27,7 @@ public:
 	Q_INVOKABLE void createScenarioProfile(const QString &name);
 	Q_INVOKABLE void deleteScenarioProfile();
 
-	Q_INVOKABLE QList<Prompt *> prompts(QString filter = nullptr);
+	Q_INVOKABLE QList<Prompt *> prompts(const QString &filter = "");
 	Q_INVOKABLE bool hasPrompt(const QString &id);
 	Q_INVOKABLE Prompt *parentPromptOf(Prompt *prompt);
 	Q_INVOKABLE Prompt *childPromptOf(const Reply *&reply);
