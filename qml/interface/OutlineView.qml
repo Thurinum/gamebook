@@ -10,6 +10,7 @@ Item {
 
 	property var model
 	property int itemHeight: 50
+	property var selectedPrompts: []
 
 	function resetModel() {
 		root.model = []
@@ -100,24 +101,57 @@ Item {
 		anchors.top: searchOptionsPane.bottom
 		anchors.bottom: parent.bottom
 
+		cacheBuffer: 6969 // prevent disappearing items. nice.
+
 		model: root.model
 		clip: true
 
 		delegate: MouseArea {
+			property string backgroundColor: "#EEE"
+
 			width: parent?.width
 			height: root.itemHeight
 			acceptedButtons: Qt.LeftButton | Qt.RightButton
 
-			onClicked: (event) => {
+			onClicked: function(event) {
 				if (event.button === Qt.RightButton)
 					return promptMenu.popup();
 
 				GameScript.displayPrompt(modelData.id);
+
+				let index = root.selectedPrompts.indexOf(this);
+
+				// remove if already there
+				if (index !== -1) {
+					backgroundColor = "#EEE";
+					root.selectedPrompts.splice(index, 1);
+					return;
+				}
+
+				// select
+				backgroundColor = "#CCC";
+				root.selectedPrompts.push(this);
+				index = root.selectedPrompts.indexOf(this);
+
+				// allow add more if ctrl pressed
+				if (event.modifiers & Qt.ControlModifier)
+					return;
+
+				// deselect old ones otherwise
+				for (let i = 0; i < root.selectedPrompts.length; i++) {
+					if (i === index)
+						continue;
+
+					root.selectedPrompts[i].backgroundColor = "#EEE";
+					root.selectedPrompts.splice(i, 1);
+				}
 			}
 
+
 			Rectangle {
+				id: background
 				anchors.fill: parent
-				color: "#EEEEEE"
+				color: parent.backgroundColor
 			}
 
 			Row {
@@ -131,13 +165,15 @@ Item {
 
 				Label {
 					id: promptText
+
 					width: root.width - 100
 					height: root.itemHeight
-					text: modelData.text === Game.setting("Main/sPromptTextPlaceholder") ? "<i>(empty)</i>" : modelData.text
 					wrapMode: Text.NoWrap
 					textFormat: Text.StyledText
 					elide: Text.ElideRight
 					clip: true
+
+					text: modelData.text === Game.setting("Main/sPromptTextPlaceholder") ? "<i>(empty)</i>" : modelData.text
 				}
 
 				// for copying to clipboard
@@ -174,6 +210,16 @@ Item {
 					enabled: false
 					target: promptDialog
 					function onClosed() { GameScript.displayPrompt(editPromptAction.oldPromptId); enabled = false; }
+				}
+
+				Action {
+					text: "Delete prompt(s)"
+					onTriggered: {
+						for (let i = 0; i < root.selectedPrompts.length; i++) {
+							root.model.remove
+						}
+						root.selectedPrompts = [];
+					}
 				}
 
 				Action {
