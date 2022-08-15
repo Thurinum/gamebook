@@ -107,6 +107,7 @@ Item {
 		clip: true
 
 		delegate: MouseArea {
+			property int modelIndex: model.index
 			property string backgroundColor: "#EEE"
 
 			width: parent?.width
@@ -187,7 +188,7 @@ Item {
 				id: promptMenu
 
 
-				Action {
+				MenuItem {
 					id: editPromptAction
 
 					property string oldPromptId
@@ -212,17 +213,21 @@ Item {
 					function onClosed() { GameScript.displayPrompt(editPromptAction.oldPromptId); enabled = false; }
 				}
 
-				Action {
-					text: "Delete prompt(s)"
+				MenuItem {
+					text: "Batch edit prompts"
+
 					onTriggered: {
-						for (let i = 0; i < root.selectedPrompts.length; i++) {
-							root.model.remove
-						}
-						root.selectedPrompts = [];
+						if (root.selectedPrompts.length === 0)
+							return;
+
+						promptBatchDialog.prompts = root.selectedPrompts;
+						promptBatchDialog.model   = root.model;
+						promptBatchDialog.open();
 					}
 				}
 
-				Action {
+
+				MenuItem {
 					text: "Copy id"
 					onTriggered: {
 						editor.text = modelData.id

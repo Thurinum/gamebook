@@ -595,10 +595,6 @@ ApplicationWindow {
 		onToggled: {
 			charactersTab.model = Game.getCharacters()
 			outlineTab.model = Game.prompts()
-
-			Game.saveScenario()
-			Game.loadScenario(Game.getScenarioName())
-			GameScript.displayPrompt(Game.currentPrompt.id)
 		}
 
 		Interface.OutlineView {
@@ -671,8 +667,9 @@ ApplicationWindow {
 
 	Dialog.ScenarioInsertDelete		{ id: scenarioDialog }
 	Dialog.ScenarioProfileInsertDelete	{ id: scenarioProfileDialog }
-	Dialog.PromptUpdate             { id: promptDialog }
+	Dialog.PromptUpdate			{ id: promptDialog }
+	Dialog.PromptUpdateBatch            { id: promptBatchDialog }
 	Dialog.ReplyUpsertDelete		{ id: replyDialog }
-	Dialog.CharacterUpsertDelete	{ id: characterDialog }
-	Dialog.Error                    { id: errorDialog }
+	Dialog.CharacterUpsertDelete		{ id: characterDialog }
+	Dialog.Error				{ id: errorDialog }
 }

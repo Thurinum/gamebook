@@ -39,6 +39,7 @@ void Game::saveScenario()
 	}
 
 	m_scenario->save();
+	qDebug() << "Saved scenario " << m_scenario->name();
 }
 
 void Game::deleteScenario(const QString& name)
@@ -191,6 +192,16 @@ bool Game::addPrompt(const QString& id, Prompt* parent)
 
 	m_scenario->prompts().insert(id, p);
 	return true;
+}
+
+void Game::removePrompt(Prompt* prompt)
+{
+	if (m_scenario->prompts().contains(prompt->id())) {
+		qWarning() << "Cannot remove prompt " << prompt->id();
+		return;
+	}
+
+	m_scenario->prompts().remove(prompt->id());
 }
 
 void Game::addReply(Prompt* prompt, const QString& text, QString target)

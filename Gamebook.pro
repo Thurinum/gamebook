@@ -12,5 +12,6 @@ DISTFILES += \
 	$$files("scripts/*.js", true) \
 	$$files("resources/*", true) \
 	$$files("scenarios/*", true) \
+	qml/dialogs/PromptUpdateBatch.qml \
 	qml/interface/EndScreen.qml \
 	qml/interface/OutlineView.qml

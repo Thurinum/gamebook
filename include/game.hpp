@@ -32,7 +32,8 @@ public:
 	Q_INVOKABLE Prompt *parentPromptOf(Prompt *prompt);
 	Q_INVOKABLE Prompt *childPromptOf(const Reply *&reply);
 	Q_INVOKABLE bool addPrompt(const QString &id, Prompt *parent);
-	Q_INVOKABLE void addReply(Prompt *prompt, const QString &text, QString target = nullptr);
+	Q_INVOKABLE void removePrompt(Prompt *prompt);
+	void addReply(Prompt *prompt, const QString &text, QString target = nullptr);
 
 	Q_INVOKABLE Character *getCharacter(const QString &id);
 	Q_INVOKABLE QList<Character *> getCharacters();

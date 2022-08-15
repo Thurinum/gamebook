@@ -70,7 +70,7 @@ Item {
 
 					onClicked: {
 						characterDialog.shouldDelete = true
-                        characterDialog.character = characters.model[index]
+						characterDialog.character = characters.model[index]
 						characterDialog.open()
 					}
 				}
