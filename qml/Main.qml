@@ -65,7 +65,7 @@ ApplicationWindow {
 			color: Qt.hsla(0, 0, 1, 0.8)
 			radius: 10
 			border.width: 5
-			border.color: Universal.accent
+			border.color: Game.currentPrompt.color
 
 			Column {
 				anchors.centerIn: appMenuPanel
@@ -226,7 +226,7 @@ ApplicationWindow {
 				font.letterSpacing: -1
 
 				text: Game.currentPrompt ? Game.currentPrompt.text : Game.setting("Main/sPromptTextPlaceholder")
-				color: "orange"
+				color: Game.currentPrompt?.color
 				textFormat: Text.StyledText
 				style: Text.Outline
 				styleColor: "#666"
@@ -321,7 +321,7 @@ ApplicationWindow {
 			y: game.height / 2
 
 			color: Qt.hsla(0, 0, 1, 0.5)
-			border.color: Universal.accent
+			border.color: Game.currentPrompt.color
 			border.width: 9
 
 			Rectangle {
@@ -335,7 +335,7 @@ ApplicationWindow {
 				anchors.leftMargin: 50
 				anchors.topMargin: -(height / 2)
 
-				border.color: Universal.accent
+				border.color: Game.currentPrompt.color
 				border.width: 6
 				radius: 15
 
@@ -593,7 +593,6 @@ ApplicationWindow {
 		]
 
 		onToggled: {
-			console.log(Game.getCharacters())
 			charactersTab.model = Game.getCharacters()
 			outlineTab.model = Game.prompts()
 		}
