@@ -76,22 +76,16 @@ Dialog {
 					Label {
 						text: "Color"
 					}
-					Button {
+					TextField {
 						id: colorField
 
 						Layout.fillWidth: true
+						color: "white"
+						horizontalAlignment: Qt.AlignHCenter
+						text: Game.currentPrompt?.color
 
-						Rectangle {
-							anchors.fill: parent
-							anchors.margins: 5
-							color: Game.currentPrompt?.color
-
-							Label {
-								anchors.centerIn: parent
-
-								color: "white"
-								text: Game.currentPrompt?.color
-							}
+						background: Rectangle {
+							color: colorField.text
 						}
 					}
 				}
@@ -165,6 +159,7 @@ Dialog {
 		Game.currentPrompt.text = textField.text;
 		Game.currentPrompt.targetId = hasTargetField.checked ? targetField.text : "";
 		Game.currentPrompt.characterId = characterField.currentValue ?? "";
+		Game.currentPrompt.color = colorField.text;
 		Game.currentPrompt.background = backgroundField.currentText;
 		Game.currentPrompt.music = hasMusicField.checked ? musicField.currentText : "";
 		Game.currentPrompt.isEnd = isEndField.checked;

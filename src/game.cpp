@@ -2,13 +2,13 @@
 #include "profile.hpp"
 #include "prompt.hpp"
 #include "scenario.hpp"
-#include <QQmlContext>
 
 #include <algorithm>
 #include <QDir>
 #include <QGuiApplication>
 #include <QHash>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include <QStandardPaths>
 #include <QUrl>
 #include <QUuid>
@@ -184,6 +184,7 @@ bool Game::addPrompt(const QString& id, Prompt* parent)
 	Prompt* p = new Prompt(this);
 	p->setId(id);
 	p->setParentId(parent->id());
+	p->setColor("black");
 	p->setText(Utils::setting("Main/sPromptTextPlaceholder").toString());
 	p->setCharacterId("");
 	p->setBackground("");

@@ -321,8 +321,9 @@ ApplicationWindow {
 			y: game.height / 2
 
 			color: Qt.hsla(0, 0, 1, 0.5)
-			border.color: Game.currentPrompt.color
+			border.color: Qt.darker(Game.currentPrompt?.color, 1.5)
 			border.width: 9
+			radius:5
 
 			Rectangle {
 				id: characterNameBadge
@@ -335,7 +336,7 @@ ApplicationWindow {
 				anchors.leftMargin: 50
 				anchors.topMargin: -(height / 2)
 
-				border.color: Game.currentPrompt.color
+				border.color: Qt.darker(Game.currentPrompt?.color, 1.5)
 				border.width: 6
 				radius: 15
 

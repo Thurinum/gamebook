@@ -3,6 +3,7 @@
 
 #include "reply.hpp"
 
+#include <QColor>
 #include <QDebug>
 #include <QList>
 #include <QObject>
@@ -17,6 +18,7 @@ class Prompt : public QObject
 	Q_PROPERTY(QString parentId READ parentId WRITE setParentId NOTIFY parentIdChanged)
 	Q_PROPERTY(QString targetId READ targetId WRITE setTargetId NOTIFY targetIdChanged)
 	Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
+	Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
 	Q_PROPERTY(QString characterId READ characterId WRITE setCharacterId NOTIFY characterIdChanged)
 	Q_PROPERTY(QString background READ background WRITE setBackground NOTIFY backgroundChanged)
 	Q_PROPERTY(QString music READ music WRITE setMusic NOTIFY musicChanged)
@@ -57,6 +59,9 @@ public:
 	const QString &music() const;
 	void setMusic(const QString &newMusic);
 
+	const QColor &color() const;
+	void setColor(const QColor &newColor);
+
 signals:
 	void idChanged();
 	void parentIdChanged();
@@ -68,11 +73,14 @@ signals:
 	void isEndChanged();
 	void musicChanged();
 
+	void colorChanged();
+
 private:
 	QString m_id;
 	QString m_parentId;
 	QString m_targetId;
 	QString m_text = "";
+	QColor m_color;
 	QString m_characterId;
 	QString m_background;
 	QString m_music = "";

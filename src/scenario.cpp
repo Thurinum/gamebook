@@ -70,6 +70,7 @@ bool Scenario::load()
 			p->setParentId(reader.attributes().value("parent-id").toString());
 			p->setTargetId(reader.attributes().value("target-id").toString());
 			p->setText(reader.attributes().value("text").toString());
+			p->setColor(reader.attributes().value("color").toString());
 			p->setCharacterId(reader.attributes().value("character-id").toString());
 			p->setBackground(reader.attributes().value("background").toString());
 			p->setMusic(reader.attributes().value("music").toString());
@@ -145,6 +146,7 @@ void Scenario::save()
 		writer.writeAttribute("parent-id", p->parentId());
 		writer.writeAttribute("target-id", p->targetId());
 		writer.writeAttribute("text", p->text());
+		writer.writeAttribute("color", p->color().name(QColor::NameFormat::HexRgb));
 		writer.writeAttribute("character-id", p->characterId());
 		writer.writeAttribute("background", p->background());
 		writer.writeAttribute("music", p->music());

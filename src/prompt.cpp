@@ -47,6 +47,19 @@ void Prompt::setMusic(const QString& newMusic) {
 	emit musicChanged();
 }
 
+const QColor& Prompt::color() const
+{
+	return m_color;
+}
+
+void Prompt::setColor(const QColor& newColor)
+{
+	if (m_color == newColor)
+		return;
+	m_color = newColor;
+	emit colorChanged();
+}
+
 const QString& Prompt::text() const
 {
 	return m_text;
