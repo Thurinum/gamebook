@@ -20,7 +20,9 @@ Item {
 
 			text: "+ Add"
 			onClicked: {
-				characterDialog.open()
+				characterDialog.character = undefined;
+				characterDialog.shouldDelete = false;
+				characterDialog.open();
 			}
 		}
 

@@ -25,7 +25,6 @@ Dialog {
 		}
 		ComboBox {
 			id: characterField
-			model: if (Game.currentPrompt) Game.getCharacters()
 			textRole: "name"
 			valueRole: "id"
 			width: contentWidth
@@ -98,6 +97,7 @@ Dialog {
 	}
 
 	onOpened: {
+		characterField.model = Game.getCharacters();
 		characterField.currentIndex = characterField.find(Game.getCharacter(Game.currentPrompt.characterId).name)
 		backgroundField.currentIndex = Game.currentPrompt.background
 				? backgroundField.find(Game.currentPrompt.background)

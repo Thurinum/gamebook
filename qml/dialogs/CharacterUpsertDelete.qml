@@ -50,6 +50,9 @@ Dialog {
 	}
 
 	onOpened: {
+		if (!character)
+			characterNameField.clear();
+
 		characterImageField.currentIndex = character && character.sprite
 				? characterImageField.find(character.sprite)
 				: -1;
@@ -76,10 +79,6 @@ Dialog {
 			// TODO: show error popup
 			console.warn("Couldnt remove character! Should delete flag set")
 		}
-
-		// reload scenario
-		Game.saveScenario();
-		Game.loadScenario(Game.getScenarioName());
 
 		charactersTab.model = []
 		charactersTab.model = Game.getCharacters();

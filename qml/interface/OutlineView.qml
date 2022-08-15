@@ -25,7 +25,9 @@ Item {
 		Image {
 			id: searchIcon
 			width: root.itemHeight
-			height: root.itemHeight
+			height: root.itemHeight - 15
+			fillMode: Image.PreserveAspectFit
+			anchors.verticalCenter: parent.verticalCenter
 
 			source: Game.appResource("search.png")
 		}
