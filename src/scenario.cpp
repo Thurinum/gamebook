@@ -5,12 +5,14 @@
 #include <QUuid>
 #include <QXmlStreamWriter>
 
-void Scenario::create() const {
+void Scenario::create() const
+{
 	QString path = Utils::scenarioPath(this->name());
-	QFile	  file(path);
+	QFile file(path);
 
 	if (!file.open(QIODevice::WriteOnly)) {
-		qCritical() << "Failed to open scenario" << path << "for writing:" << file.errorString();
+		qCritical() << "Failed to open scenario" << path
+				<< "for writing:" << file.errorString();
 		return;
 	}
 
@@ -37,17 +39,19 @@ void Scenario::create() const {
 	file.close();
 }
 
-bool Scenario::load() {
+bool Scenario::load()
+{
 	QString path = Utils::scenarioPath(this->name());
-	QFile	  file(path);
+	QFile file(path);
 
 	if (!file.open(QIODevice::ReadOnly)) {
-		qCritical() << "Failed to open scenario" << path << "for reading:" << file.errorString();
+		qCritical() << "Failed to open scenario" << path
+				<< "for reading:" << file.errorString();
 		return false;
 	}
 
 	QXmlStreamReader reader(&file);
-	Prompt*	     current = nullptr;
+	Prompt* current = nullptr;
 	reader.readNextStartElement(); // scenario
 
 	while (!reader.atEnd()) {
@@ -81,8 +85,8 @@ bool Scenario::load() {
 		} else if (name == "replytype") {
 			// TODO: Implement reply types
 		} else if (name == "character") {
-			Character* c    = new Character(this);
-			QString    id   = reader.attributes().value("id").toString();
+			Character* c = new Character(this);
+			QString id = reader.attributes().value("id").toString();
 
 			if (id == "")
 				continue;
@@ -98,9 +102,10 @@ bool Scenario::load() {
 	return true;
 }
 
-void Scenario::save() {
+void Scenario::save()
+{
 	QString path = Utils::scenarioPath(this->name());
-	QFile	  file(path);
+	QFile file(path);
 
 	if (!file.open(QIODevice::WriteOnly)) {
 		qCritical() << "Failed to open scenario for reading: " << file.errorString() << ".";
@@ -148,7 +153,6 @@ void Scenario::save() {
 			writer.writeStartElement("reply");
 			writer.writeAttribute("text", r->text());
 			writer.writeAttribute("target-id", r->target());
-			// writer.writeAttribute("type", )
 			writer.writeEndElement();
 		}
 		writer.writeEndElement();
@@ -160,9 +164,10 @@ void Scenario::save() {
 	file.close();
 }
 
-void Scenario::nuke() const {
+void Scenario::nuke() const
+{
 	QString path = Utils::scenarioFolder(this->name());
-	QDir	  dir(path);
+	QDir dir(path);
 
 	if (!dir.exists()) {
 		qWarning() << "Cannot delete non-existing scenario" << name() << ".\n\tPath:" << path;
@@ -172,7 +177,8 @@ void Scenario::nuke() const {
 	dir.removeRecursively();
 }
 
-const QString& Scenario::name() const {
+const QString& Scenario::name() const
+{
 	return m_name;
 }
 
@@ -184,19 +190,23 @@ void Scenario::setName(const QString& newName)
 	emit nameChanged();
 }
 
-QHash<QString, Prompt*>& Scenario::prompts() {
+QHash<QString, Prompt*>& Scenario::prompts()
+{
 	return m_prompts;
 }
 
-const QHash<QString, ReplyType*>& Scenario::replyTypes() const {
+const QHash<QString, ReplyType*>& Scenario::replyTypes() const
+{
 	return m_replyTypes;
 }
 
-QHash<QString, Character*>& Scenario::characters() {
+QHash<QString, Character*>& Scenario::characters()
+{
 	return m_characters;
 }
 
-void Scenario::setCharacters(const QHash<QString, Character*>& newCharacters) {
+void Scenario::setCharacters(const QHash<QString, Character*>& newCharacters)
+{
 	if (m_characters == newCharacters)
 		return;
 	m_characters = newCharacters;
@@ -205,6 +215,7 @@ void Scenario::setCharacters(const QHash<QString, Character*>& newCharacters) {
 
 Scenario::Scenario() = default;
 
-Scenario::Scenario(QString name) : m_name(std::move(name)) {
+Scenario::Scenario(QString name) : m_name(std::move(name))
+{
 	m_id = QUuid::createUuid().toString(QUuid::WithoutBraces);
 }

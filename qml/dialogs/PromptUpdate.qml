@@ -98,7 +98,7 @@ Dialog {
 
 	onOpened: {
 		characterField.model = Game.getCharacters();
-		characterField.currentIndex = characterField.find(Game.getCharacter(Game.currentPrompt.characterId).name)
+		characterField.currentIndex = characterField.find(Game.getCharacter(Game.currentPrompt.characterId)?.name) ?? 0
 		backgroundField.currentIndex = Game.currentPrompt.background
 				? backgroundField.find(Game.currentPrompt.background)
 				: -1;
@@ -114,7 +114,7 @@ Dialog {
 
 		Game.currentPrompt.text = textField.text;
 		Game.currentPrompt.targetId = hasTargetField.checked ? targetField.text : "";
-		Game.currentPrompt.characterId = characterField.currentValue;
+		Game.currentPrompt.characterId = characterField.currentValue ?? "";
 		Game.currentPrompt.background = backgroundField.currentText;
 		Game.currentPrompt.music = hasMusicField.checked ? musicField.currentText : "";
 		Game.currentPrompt.isEnd = isEndField.checked;

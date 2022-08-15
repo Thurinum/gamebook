@@ -271,8 +271,8 @@ ApplicationWindow {
 						i = 0;
 
 						if (Game.currentPrompt.targetId !== "")
-
 							promptRedirectionTimer.start();
+
 						promptTimer.stop();
 
 					}
@@ -593,6 +593,7 @@ ApplicationWindow {
 		]
 
 		onToggled: {
+			console.log(Game.getCharacters())
 			charactersTab.model = Game.getCharacters()
 			outlineTab.model = Game.prompts()
 		}

@@ -233,12 +233,13 @@ QList<Character*> Game::getCharacters()
 void Game::addCharacter(const QString& name, const QString& sprite)
 {
 	auto* characters = &m_scenario->characters();
-	Character* c = new Character();
+	Character* c = new Character(m_scenario);
+	QString id = QUuid::createUuid().toString(QUuid::WithoutBraces);
 
-	c->setId(QUuid::createUuid().toString(QUuid::WithoutBraces));
+	c->setId(id);
 	c->setName(name);
 	c->setSprite(sprite);
-	characters->insert(name, c);
+	characters->insert(id, c);
 }
 
 void Game::removeCharacter(const QString& key)

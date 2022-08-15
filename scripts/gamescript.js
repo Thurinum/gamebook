@@ -15,9 +15,9 @@ function loadScenario() {
 	if (text !== "") {
 		Game.loadScenario(text)
 		scenarioProfileDialog.folder	= scenarioSubFolder("saves")
-        characterDialog.folder          = scenarioSubFolder("assets/characters")
-        promptDialog.folder             = scenarioSubFolder("assets/backgrounds")
-        promptDialog.musicFolder        = scenarioSubFolder("assets/music")
+		characterDialog.folder          = scenarioSubFolder("assets/characters")
+		promptDialog.folder             = scenarioSubFolder("assets/backgrounds")
+		promptDialog.musicFolder        = scenarioSubFolder("assets/music")
 	}
 	app.title = "Gamebook Studio - " + Game.getScenarioName();
 }
@@ -43,16 +43,21 @@ function writePrompt(text) {
 
 // Displays a prompt and its replies on the UI.
 function displayPrompt(id) {
-    promptRedirectionTimer.stop();
+	promptRedirectionTimer.stop();
 	writePrompt("");
 	endScreen.scale = 0;
 	repliesRepeater.model = [];
 	Game.setCurrentPrompt(id);
 
+	if (!Game.currentPrompt) {
+		writePrompt("Scenario is corrupted and cannot be read. Û<font size='1'>~</font>Û<br/>");
+		return;
+	}
+
 	if (Game.currentPrompt.isEnd && !app.isEditingAllowed) {
-        endScreen.text = parseStr(Game.currentPrompt.text);
-        endScreen.scale = 1;
-        return;
+		endScreen.text = parseStr(Game.currentPrompt.text);
+		endScreen.scale = 1;
+		return;
 	}
 
 	repliesRepeater.model = Game.currentPrompt.replies
@@ -62,7 +67,7 @@ function displayPrompt(id) {
 		Game.saveScenarioProfile(id);
 
 	if (Game.currentPrompt.music !== "") { // else play the old music
-        music.source = Game.resource("music/" + Game.currentPrompt.music);
+		music.source = Game.resource("music/" + Game.currentPrompt.music);
 		music.play();
 	}
 }

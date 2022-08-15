@@ -215,6 +215,8 @@ Item {
 					function onClosed() { GameScript.displayPrompt(editPromptAction.oldPromptId); enabled = false; }
 				}
 
+
+
 				MenuItem {
 					text: "Batch edit prompts"
 
