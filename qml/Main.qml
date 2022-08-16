@@ -125,7 +125,10 @@ ApplicationWindow {
 
 					Button {
 						text: "+"
-						onClicked: scenarioDialog.open()
+						onClicked: {
+							scenarioDialog.shouldDelete = false;
+							scenarioDialog.open();
+						}
 					}
 					Button {
 						text: "-"
@@ -150,7 +153,10 @@ ApplicationWindow {
 					anchors.horizontalCenter: parent.horizontalCenter
 					text: "Load existing save"
 
-					onClicked: scenarioProfileDialog.open()
+					onClicked: {
+						scenarioProfileDialog.shouldCreate = false;
+						scenarioProfileDialog.open();
+					}
 				}
 
 				Button {
