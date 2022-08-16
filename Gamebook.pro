@@ -14,4 +14,5 @@ DISTFILES += \
 	$$files("scenarios/*", true) \
 	qml/dialogs/PromptUpdateBatch.qml \
 	qml/interface/EndScreen.qml \
-	qml/interface/OutlineView.qml
+	qml/interface/OutlineView.qml \
+	qml/reusable/ModalDialog.qml

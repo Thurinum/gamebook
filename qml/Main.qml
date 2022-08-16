@@ -65,14 +65,14 @@ ApplicationWindow {
 			color: Qt.hsla(0, 0, 1, 0.8)
 			radius: 10
 			border.width: 5
-			border.color: Game.currentPrompt.color
+			border.color: Universal.accent
 
 			Column {
 				anchors.centerIn: appMenuPanel
 				spacing: 10
 
 				Label {
-					text: "<h1>Gamebook (Alpha)</h1>"
+					text: "<h1>Gamebook Studio (Alpha)</h1>"
 					anchors.horizontalCenter: parent.horizontalCenter
 				}
 
@@ -178,6 +178,13 @@ ApplicationWindow {
 			}
 		}
 
+		DropShadow {
+			source: appMenuPanel
+			anchors.fill: appMenuPanel
+			verticalOffset: 3
+			radius: 32.0
+			transparentBorder: true
+		}
 
 		Behavior on height {
 			NumberAnimation {
