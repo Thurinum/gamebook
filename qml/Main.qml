@@ -213,6 +213,7 @@ ApplicationWindow {
 
 			width: game.width
 			height: game.height / 2
+			contentHeight: prompt.contentHeight
 
 			x: game.border.width
 			y: game.border.width
@@ -227,9 +228,8 @@ ApplicationWindow {
 				padding: 10
 
 				font.family: "Consolas,Courier New"
-				//font.family: "Times New Roman,Linux Libertine,Liberation Serif,Noto Serif,Deja Vu Serif"
-				//font.pixelSize: promptView.height * 0.15
 				font.pixelSize: promptView.height * 0.11
+				fontSizeMode: Text.Fit
 				font.letterSpacing: -1
 
 				text: Game.currentPrompt ? Game.currentPrompt.text : Game.setting("Main/sPromptTextPlaceholder")
@@ -305,11 +305,18 @@ ApplicationWindow {
 						promptDialog.visible = true
 					}
 				}
+
+				MenuItem {
+					text: "Go back"
+					enabled: Game.currentPrompt.parentId !== ""
+					height: enabled ? implicitHeight : 0
+					onTriggered: GameScript.displayPrompt(Game.currentPrompt.parentId)
+				}
 			}
 
 			MouseArea {
-				width: parent.width
-				height: parent.height / 2
+				width: promptView.width
+				height: promptView.height
 
 				enabled: app.isEditingAllowed
 				acceptedButtons: Qt.RightButton
@@ -411,111 +418,121 @@ ApplicationWindow {
 				radius: 30
 			}
 
-			Column {
+			ScrollView {
 				id: repliesView
 
 				width: repliesPanel.width - character.paintedWidth - 25
+				height: repliesPanel.height - 75
 				x: 25
+				clip: false
 				anchors.verticalCenter: repliesPanel.verticalCenter
-				anchors.verticalCenterOffset: 15
-				spacing: 10
+				anchors.verticalCenterOffset: 30
 
-				Repeater {
-					id: repliesRepeater
+				ScrollBar.vertical.policy: ScrollBar.AlwaysOff
 
-					model: Game.currentPrompt && Game.currentPrompt.replies.length > 0
-						 ? Game.currentPrompt.replies : 0
+				Column {
+					id: repliesLayout
 
-					delegate: MouseArea {
-						id: replyArea
+					width: repliesView.width
+					spacing: 10
 
-						property int index: model.index
-						property double yPos: 0
-						property int margins: 20
+					Repeater {
+						id: repliesRepeater
 
-						width: repliesView.width * 0.9
-						height: reply.height
+						model: Game.currentPrompt && Game.currentPrompt.replies.length > 0
+							 ? Game.currentPrompt.replies : 0
 
-						hoverEnabled: true
+						delegate: MouseArea {
+							id: replyArea
 
-						ToolTip.visible: containsMouse
-						ToolTip.delay: 900
-						ToolTip.timeout: 2500
-						ToolTip.text: modelData.text
+							property int index: model.index
+							property double yPos: 0
+							property int margins: 20
 
-						Rectangle {
-							id: reply
+							width: repliesLayout.width * 0.9
+							height: reply.height
 
-							width: parent.width
-							height: replyLabel.contentHeight + replyArea.margins
-							y: parent.pressed ? 5 : 0
+							hoverEnabled: true
 
-							color: Universal.baseLowColor
-							border.width: 5
-							border.color: Universal.baseMediumLowColor
-							radius: 10
+							ToolTip.visible: containsMouse
+							ToolTip.delay: 900
+							ToolTip.timeout: 2500
+							ToolTip.text: modelData.text
 
-							Label {
-								id: replyLabel
+							Rectangle {
+								id: reply
 
-								anchors.fill: parent
-								anchors.margins: replyArea.margins
+								width: parent.width
+								height: replyLabel.contentHeight + replyArea.margins
+								y: parent.pressed ? 5 : 0
 
-								font.pixelSize: repliesPanel.height * 0.09
-								text: (app.isEditingAllowed && Game.childPromptOf(modelData) && Game.childPromptOf(modelData).text === Game.setting("Main/sPromptTextPlaceholder") ? "<i><font color=\"red\">* </font></i>" : "") + modelData.text
-								wrapMode: Label.WordWrap
-								textFormat: Text.StyledText
+								color: Universal.baseLowColor
+								border.width: 5
+								border.color: Universal.baseMediumLowColor
+								radius: 10
 
-								horizontalAlignment: Text.AlignLeft
-								verticalAlignment: Text.AlignVCenter
+								Label {
+									id: replyLabel
+
+									anchors.fill: parent
+									anchors.margins: replyArea.margins
+
+									font.pixelSize: repliesPanel.height * 0.09
+									text: (app.isEditingAllowed && Game.childPromptOf(modelData) && Game.childPromptOf(modelData).text === Game.setting("Main/sPromptTextPlaceholder") ? "<i><font color=\"red\">* </font></i>" : "") + modelData.text
+									wrapMode: Label.WordWrap
+									textFormat: Text.StyledText
+
+									horizontalAlignment: Text.AlignLeft
+									verticalAlignment: Text.AlignVCenter
+								}
+
+								Behavior on y {
+									NumberAnimation { duration: 150; easing.type: Easing.OutQuad }
+								}
 							}
 
-							Behavior on y {
-								NumberAnimation { duration: 150; easing.type: Easing.OutQuad }
+							DropShadow {
+								id: replyShadow
+
+								anchors.fill: reply
+								source: reply
+								visible: parent.containsMouse
+
+								verticalOffset: 9
+								radius: 7.0
+								transparentBorder: true
+								color: "#555"
 							}
-						}
-
-						DropShadow {
-							id: replyShadow
-
-							anchors.fill: reply
-							source: reply
-							visible: parent.containsMouse
-
-							verticalOffset: 9
-							radius: 7.0
-							transparentBorder: true
-							color: "#555"
-						}
 
 
-						onPressed: mouse => yPos = mouse.y
-						onClicked: GameScript.displayPrompt(Game.currentPrompt.replies[index].target)
-						onPositionChanged: function(mouse) {
-							if (!app.isEditingAllowed)
-								return;
+							onPressed: mouse => yPos = mouse.y
+							onClicked: GameScript.displayPrompt(Game.currentPrompt.replies[index].target)
+							onPositionChanged: function(mouse) {
+								if (!app.isEditingAllowed)
+									return;
 
-							let offset = mouse.y - yPos;
-							let deadzone = height;
-							let indexOffset = Math.round(Math.abs(offset) / deadzone);
+								let offset = mouse.y - yPos;
+								let deadzone = height;
+								let indexOffset = Math.round(Math.abs(offset) / deadzone);
 
-							let dir = null;
+								let dir = null;
 
-							if (offset > deadzone)
-								dir = 1;
-							else if (offset < -deadzone)
-								dir = -1;
+								if (offset > deadzone)
+									dir = 1;
+								else if (offset < -deadzone)
+									dir = -1;
 
-							if (!dir)
-								return;
+								if (!dir)
+									return;
 
-							let newIndex = index + (dir * indexOffset);
+								let newIndex = index + (dir * indexOffset);
 
-							if (newIndex < 0 || newIndex > Game.currentPrompt.replies.length - 1)
-								return;
+								if (newIndex < 0 || newIndex > Game.currentPrompt.replies.length - 1)
+									return;
 
-							Game.currentPrompt.moveReply(index, newIndex);
-							repliesRepeater.model = Game.currentPrompt.replies;
+								Game.currentPrompt.moveReply(index, newIndex);
+								repliesRepeater.model = Game.currentPrompt.replies;
+							}
 						}
 					}
 				}
@@ -574,8 +591,8 @@ ApplicationWindow {
 				enabled: app.isEditingAllowed
 				acceptedButtons: Qt.RightButton
 				onClicked: mouse => {
-						     let pt = mapToItem(repliesView, mouse.x, mouse.y);
-						     repliesContextMenu.selection = repliesView.childAt(pt.x, pt.y);
+						     let pt = mapToItem(repliesLayout, mouse.x, mouse.y);
+						     repliesContextMenu.selection = repliesLayout.childAt(pt.x, pt.y);
 						     repliesContextMenu.popup();
 					     }
 			}
@@ -681,9 +698,3 @@ ApplicationWindow {
 	Dialog.CharacterUpsertDelete		{ id: characterDialog }
 	Dialog.Error				{ id: errorDialog }
 }
-
-/*
-	shrink prompt text left for character space
-	fill prompt menu area to whole text
-	make prompt text scrollable
-*/
