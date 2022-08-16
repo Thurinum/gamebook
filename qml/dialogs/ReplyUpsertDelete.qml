@@ -5,14 +5,15 @@ import "../../scripts/gamescript.js" as GameScript
 
 Dialog {
 	id: dialog
+
+	property var reply
+	property bool shouldDelete: false
+
 	width: 400
 	height: 300
 	title: reply ? "Edit dialogue reply" : "Add dialogue reply"
 	standardButtons: Dialog.Ok | Dialog.Cancel
 	anchors.centerIn: Overlay.overlay
-
-	property var reply
-	property bool shouldDelete: false
 
 	Label {
 		visible: shouldDelete
@@ -23,6 +24,7 @@ Dialog {
 		width: parent.width
 		visible: !shouldDelete
 		anchors.margins: 10
+		spacing: 10
 
 		Label {
 			text: "Reply text"
@@ -50,7 +52,7 @@ Dialog {
 	}
 
 	// TODO: Add data validation rules
-	onAccepted: {		
+	onAccepted: {
 		// delete reply?
 		if (reply && shouldDelete) {
 			Game.currentPrompt.nukeReply(reply);

@@ -5,11 +5,11 @@ import "../../scripts/gamescript.js" as GameScript
 
 Dialog {
 	id: dialog
-	title: "New profile"
+	title: shouldCreate ? "New profile" : "Choose profile"
 	standardButtons: Dialog.Ok | Dialog.Cancel
 	anchors.centerIn: Overlay.overlay
 	width: 400
-	height: 300
+	height: 200
 
 	property bool shouldCreate: false
 	property alias folder: nameFieldModel.folder

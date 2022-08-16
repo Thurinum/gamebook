@@ -4,11 +4,11 @@ import Qt.labs.folderlistmodel
 
 Dialog {
 	id: dialog
-	title: "New Scenario"
+	title: shouldDelete ? "Delete scenario" : "New scenario"
 	standardButtons: shouldDelete ? Dialog.Yes | Dialog.No : Dialog.Ok | Dialog.Cancel
 	anchors.centerIn: Overlay.overlay
 	width: 500
-	height: 300
+	height: 200
 
 	property bool shouldDelete: false
 
@@ -25,7 +25,7 @@ Dialog {
 
 	Label {
 		visible: dialog.shouldDelete
-		text: "Are you sure you want to nuke scenario '" + scenarioNameField.currentText + "'."
+		text: "Are you sure you want to nuke scenario '" + scenarioNameField.currentText + "'?"
 	}
 
 	onAccepted: {
