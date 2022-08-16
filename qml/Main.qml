@@ -235,7 +235,7 @@ ApplicationWindow {
 
 				font.family: "Consolas,Courier New"
 				font.pixelSize: promptView.height * 0.11
-				fontSizeMode: Text.Fit
+				fontSizeMode: Text.VerticalFit
 				font.letterSpacing: -1
 
 				text: Game.currentPrompt ? Game.currentPrompt.text : Game.setting("Main/sPromptTextPlaceholder")
@@ -433,7 +433,10 @@ ApplicationWindow {
 				anchors.verticalCenter: repliesPanel.verticalCenter
 				anchors.verticalCenterOffset: 15
 
+				Component.onCompleted: contentItem.interactive = false
+
 				ScrollBar.vertical.policy: ScrollBar.AlwaysOff
+				 ScrollBar.vertical.interactive: false
 
 				Column {
 					id: repliesLayout

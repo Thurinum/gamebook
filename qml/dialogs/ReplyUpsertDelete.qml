@@ -17,7 +17,7 @@ Dialog {
 
 	Label {
 		visible: shouldDelete
-		text: reply ? "Are you sure you want to nuke this reply from existence?<br><br>Text: " + dialog.reply.text : ""
+		text: reply ? "Are you sure you want to delete this reply?<br><br>Text: " + dialog.reply.text : ""
 	}
 
 	Column {
