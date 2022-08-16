@@ -424,9 +424,8 @@ ApplicationWindow {
 				width: repliesPanel.width - character.paintedWidth - 25
 				height: repliesPanel.height - 75
 				x: 25
-				clip: false
 				anchors.verticalCenter: repliesPanel.verticalCenter
-				anchors.verticalCenterOffset: 30
+				anchors.verticalCenterOffset: 15
 
 				ScrollBar.vertical.policy: ScrollBar.AlwaysOff
 
@@ -434,6 +433,7 @@ ApplicationWindow {
 					id: repliesLayout
 
 					width: repliesView.width
+					y: repliesView.contentHeight < repliesPanel.height ? repliesView.height / 2 - this.height / 2 : 0
 					spacing: 10
 
 					Repeater {
