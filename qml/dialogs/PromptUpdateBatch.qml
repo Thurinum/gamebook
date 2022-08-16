@@ -49,6 +49,21 @@ Dialog {
 		}
 
 		CheckBox {
+			id: colorFieldToggle
+			text: "Change color"
+		}
+		TextField {
+			id: colorField
+
+			color: "white"
+			horizontalAlignment: Qt.AlignHCenter
+
+			background: Rectangle {
+				color: colorField.text
+			}
+		}
+
+		CheckBox {
 			id: backgroundFieldToggle
 			text: "Change background"
 		}
@@ -108,6 +123,9 @@ Dialog {
 
 			if (textFieldToggle.checked)
 				prompt.text = textField.text;
+
+			if (colorFieldToggle.checked)
+				prompt.text = colorField.text;
 
 			if (characterFieldToggle.checked)
 				prompt.characterId = characterField.currentValue;
