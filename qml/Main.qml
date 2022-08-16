@@ -104,7 +104,7 @@ ApplicationWindow {
 							value: {
 								// idk what I'm doing wrong, but this statement
 								// is required for the binding to work
-								scenarioNameField.count
+//								scenarioNameField.count
 
 								let lastScenario = Game.setting("Main/sLastScenario");
 
@@ -433,10 +433,8 @@ ApplicationWindow {
 				anchors.verticalCenter: repliesPanel.verticalCenter
 				anchors.verticalCenterOffset: 15
 
-				Component.onCompleted: contentItem.interactive = false
-
 				ScrollBar.vertical.policy: ScrollBar.AlwaysOff
-				 ScrollBar.vertical.interactive: false
+				ScrollBar.vertical.interactive: false
 
 				Column {
 					id: repliesLayout
@@ -514,7 +512,12 @@ ApplicationWindow {
 							}
 
 
-							onPressed: mouse => yPos = mouse.y
+							onPressed: {
+								repliesView.contentItem.interactive = false;
+								mouse => yPos = mouse.y;
+							}
+							onReleased: repliesView.contentItem.interactive = true;
+
 							onClicked: GameScript.displayPrompt(Game.currentPrompt.replies[index].target)
 							onPositionChanged: function(mouse) {
 								if (!app.isEditingAllowed)
