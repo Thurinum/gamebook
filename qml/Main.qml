@@ -681,3 +681,9 @@ ApplicationWindow {
 	Dialog.CharacterUpsertDelete		{ id: characterDialog }
 	Dialog.Error				{ id: errorDialog }
 }
+
+/*
+	shrink prompt text left for character space
+	fill prompt menu area to whole text
+	make prompt text scrollable
+*/

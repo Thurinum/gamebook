@@ -186,8 +186,8 @@ bool Game::addPrompt(const QString& id, Prompt* parent)
 	p->setParentId(parent->id());
 	p->setColor(m_currentPrompt ? m_currentPrompt->color() : "black");
 	p->setText(Utils::setting("Main/sPromptTextPlaceholder").toString());
-	p->setCharacterId("");
-	p->setBackground("");
+	p->setCharacterId(m_currentPrompt ? m_currentPrompt->characterId() : "");
+	p->setBackground(m_currentPrompt ? m_currentPrompt->background() : "");
 	p->setReplies(QList<Reply*>());
 	p->setIsEnd(false);
 
