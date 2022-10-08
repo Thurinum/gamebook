@@ -1,5 +1,4 @@
-QT += qml quick quickcontrols2 xml
-QT -= network
+QT = core gui qml quick quickcontrols2 xml
 
 CONFIG += c++17
 SOURCES += $$files("src/*.cpp", true)

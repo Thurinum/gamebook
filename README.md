@@ -7,10 +7,20 @@ A fun little tool to create and play simple dialogue-tree based games.
 Gamebook Studio is a simple software for creating and parsing dialogue-tree based scenarios.  
 It's the result of a few months of work as a personal project. While still incomplete, it incorporate all the base features that make it usable.
 
-### Build
-- On Windows: install Qt 6.3 with the online installer and run within Qt Creator.
+### Licensing
+This software is licensed under GNU GPLv3.  
+It's powered by the Qt framework, also under GPLv3.
 
-I'll provide more detailed build instructions (with Linux support) as well as deployed binaries when the project advances further.
+### Running on Windows
+Unzip the archive and run Gamebook.exe.
+To access the dummy scenario, copy the Gamebook Studio Scenarios folder into your My Documents folder.
+Config options are available inside gamebook.ini.
+
+### Installing on Windows and Linux
+- Install Qt 6.3 using the Online Installer.
+- Open the project in Qt Creator.
+- In the "Projects" tab, change the Run Configuration's Working Directory to %{ActiveProject:NativePath}
+- Build and run, it should work fine (hopefully!).
 
 ## How it works
 Scenarios hold *prompts*, which in turn contain *replies* that lead to other prompts.  
@@ -40,4 +50,4 @@ In this alpha release, all essential features are available and ready for use. T
 - Editing prompts and replies, re-ordering replies;
 - Creating and editing characters;
 - Visualizing and filtering prompts in an outline view;
-- Batch-editing prompts;
+- Batch-editing prompts.
