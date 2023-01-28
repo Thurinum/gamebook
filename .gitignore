@@ -1,0 +1,11 @@
+# Qt Creator clangd cache
+.qtc_clangd
+
+# Qt Creator project file (non-portable)
+*.pro.user
+
+# Build artifacts
+build/
+
+# Output binary
+bin/*.exe
