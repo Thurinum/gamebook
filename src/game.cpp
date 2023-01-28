@@ -125,15 +125,18 @@ void Game::saveScenarioProfile(const QString& id)
 
 // --------------------------------------------------------------------------------------
 
-QList<Prompt*> Game::prompts(const QString& filter)
+QList<Prompt*> Game::prompts(const QString& filter, bool isCaseSensitive)
 {
 	auto prompts = m_scenario->prompts().values();
 
 	// TODO: could be more efficient
 	for (int i = 0; i < prompts.length(); i++) {
-		if ((Utils::setting("Outline/bHideEmpty").toBool()
-		     && prompts[i]->text() == Utils::setting("Main/sPromptTextPlaceholder"))
-		    || !prompts[i]->text().contains(filter)) {
+		bool skipEmpty = Utils::setting("Outline/bHideEmpty").toBool();
+		bool isEmpty = prompts[i]->text() == Utils::setting("Main/sPromptTextPlaceholder");
+		bool isMatch = isCaseSensitive ? prompts[i]->text().contains(filter)
+							 : prompts[i]->text().toLower().contains(filter.toLower());
+
+		if ((skipEmpty && isEmpty) || !isMatch) {
 			prompts.removeAt(i);
 			i--;
 		}

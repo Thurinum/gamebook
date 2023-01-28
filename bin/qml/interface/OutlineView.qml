@@ -14,7 +14,7 @@ Item {
 
 	function resetModel() {
 		root.model = []
-		root.model = Game.prompts(searchField.text)
+		root.model = Game.prompts(searchField.text, caseSensitiveSortToggle.checked)
 	}
 
 	Rectangle {
